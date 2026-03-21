@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>OUTSMART — Daily Challenge</title>
+  <meta name="description" content="Can you force the AI to take the last stick? One puzzle. One chance. Play today's OUTSMART Daily Challenge."/>
+
+  <!-- Open Graph / Social sharing -->
+  <meta property="og:title" content="OUTSMART — Daily Challenge"/>
+  <meta property="og:description" content="Can you force the AI to take the last stick? One puzzle. Same board for every player worldwide."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://outsmart.game/daily"/>
+  <meta property="og:image" content="https://outsmart.game/og-image.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="OUTSMART Daily Challenge"/>
+  <meta name="twitter:description" content="Force the AI to take the last stick. Can you beat it?"/>
+
+  <!-- Google Analytics -->
+  <!-- TODO: Replace G-XXXXXXXXXX with your real Measurement ID from analytics.google.com -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HP5RKJQMX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1HP5RKJQMX');
+
+    // Custom event helper — call this to track specific game moments
+    const track = (eventName, params) => {
+      if (typeof gtag !== 'undefined') {
+        gtag('event', eventName, params || {});
+      }
+    };
+  </script>
+
+  <!-- Firebase SDK -->
+  <!-- TODO: Fill in your Firebase config values below (from Firebase Console → Project Settings) -->
+  <script type="module">
+    import { initializeApp }           from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc, increment, setDoc }
+                                        from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // ── PASTE YOUR FIREBASE CONFIG HERE ──────────────────────────
+    // Get this from: Firebase Console → Your Project → Project Settings → Your Apps → SDK setup
+    const firebaseConfig = {
+      apiKey:            "YOUR_API_KEY",
+      authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId:         "YOUR_PROJECT_ID",
+      storageBucket:     "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId:             "YOUR_APP_ID"
+    };
+    // ─────────────────────────────────────────────────────────────
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+    const statsRef = doc(db, "stats", "global");
+
+    // Expose to global scope so the game JS can call these
+    window.fbLoadCounter = async () => {
+      try {
+        const snap = await getDoc(statsRef);
+        if (snap.exists()) {
+          return snap.data(); // { humans: number, machine: number }
+        } else {
+          // First time — seed with starting values
+          await setDoc(statsRef, { humans: 312, machine: 4847 });
+          return { humans: 312, machine: 4847 };
+        }
+      } catch (e) {
+        console.warn("Firebase read failed, using local counter:", e);
+        return null; // fall back to localStorage
+      }
+    };
+
+    window.fbIncrementCounter = async (playerWon) => {
+      try {
+        await updateDoc(statsRef, {
+          [playerWon ? "humans" : "machine"]: increment(1)
+        });
+      } catch (e) {
+        console.warn("Firebase write failed:", e);
+      }
+    };
+
+    window.firebaseReady = true;
+    // Trigger counter load now that Firebase is ready
+    if (window.renderCounterFromFirebase) window.renderCounterFromFirebase();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan:   #00F3FF;
+      --purple: #BC13FE;
+      --red:    #FF003C;
+      --gold:   #FFD700;
+      --bg:     #000;
+      --surface:#07010A;
+    }
+
+    body {
+      background: var(--bg);
+      color: #fff;
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+      min-height: -webkit-fill-available; /* iOS Safari full height fix */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 16px 16px 60px; /* reduced top, more bottom for thumb zone */
+      padding-bottom: max(60px, env(safe-area-inset-bottom, 60px)); /* iPhone notch safe area */
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent; /* remove blue flash on tap */
+      touch-action: manipulation; /* faster tap response, no 300ms delay */
+    }
+
+    /* Scanlines */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Ambient glow */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(0,243,255,0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 90%, rgba(188,19,254,0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap { position: relative; z-index: 1; width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; }
+
+    /* Header */
+    .brand { font-family: 'Orbitron', monospace; font-size: 32px; font-weight: 900; color: var(--cyan); letter-spacing: -1px; margin-bottom: 4px; animation: glitch 5s infinite; }
+    .tagline { font-size: 12px; color: var(--purple); letter-spacing: 0.2em; font-weight: bold; margin-bottom: 8px; }
+    .daily-label { font-size: 13px; color: var(--gold); letter-spacing: 0.2em; font-weight: bold; margin-bottom: 16px; }
+
+    /* Date + rule bar */
+    .info-bar {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 14px; border: 1px solid #1a1a1a; margin-bottom: 18px;
+    }
+    .info-bar .date { font-size: 11px; color: #fff; letter-spacing: 0.15em; font-weight: bold; }
+    .info-bar .rule { font-size: 11px; color: var(--red); letter-spacing: 0.15em; font-weight: bold; }
+    .info-bar .utc-wrap { text-align: right; }
+    .info-bar .utc-time { font-size: 11px; color: #fff; letter-spacing: 0.1em; font-weight: bold; display: block; }
+    .info-bar .utc-reset { font-size: 10px; color: #fff; letter-spacing: 0.1em; font-weight: bold; display: block; margin-top: 2px; }
+
+    /* Turn indicator */
+    .turn-box {
+      font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 900;
+      letter-spacing: 0.05em; margin-bottom: 14px; min-height: 28px; text-align: center;
+      transition: color 0.3s;
+    }
+
+    /* AI thinking bar */
+    .think-bar { width: 100%; height: 2px; background: #111; border-radius: 99px; overflow: hidden; margin-bottom: 14px; opacity: 0; transition: opacity 0.2s; }
+    .think-bar.active { opacity: 1; }
+    .think-bar-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--purple)88); border-radius: 99px; animation: thinkProgress 2s linear forwards; }
+
+    /* Board */
+    .board { width: 100%; display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 14px 12px; /* taller rows = easier to tap */
+      border: 1px solid transparent; border-radius: 4px; transition: all 0.25s;
+      cursor: pointer; min-height: 56px; /* minimum tap target */
+    }
+    .row.selected { border-color: rgba(188,19,254,0.4); background: rgba(188,19,254,0.06); }
+    .row.hinted  { border-color: rgba(255,215,0,0.5);  background: rgba(255,215,0,0.05);  box-shadow: 0 0 14px rgba(255,215,0,0.15); }
+    .row-label { font-size: 10px; color: #fff; width: 20px; flex-shrink: 0; font-weight: bold; }
+    .row-label.hinted { color: var(--gold); }
+    .sticks { display: flex; align-items: flex-end; flex: 1; justify-content: center; gap: 5px; } /* wider gap on mobile */
+    .stick {
+      width: 12px; /* wider sticks — easier to tap */
+      border-radius: 3px 3px 1px 1px;
+      transition: all 0.25s; cursor: pointer;
+    }
+    .stick.alive {
+      background: var(--purple);
+      box-shadow: 0 0 6px rgba(188,19,254,0.5);
+    }
+    .stick.pending {
+      background: var(--gold) !important;
+      box-shadow: 0 0 10px rgba(255,215,0,0.6) !important;
+      transform: scaleY(1.08);
+    }
+    .stick.dead { background: #1a1a1a; box-shadow: none; cursor: default; }
+    .row-count { font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 900; color: var(--purple); width: 20px; text-align: right; flex-shrink: 0; }
+    .row-count.zero { color: #222; }
+
+    /* Confirm / Cancel */
+    .confirm-area { text-align: center; margin-bottom: 12px; animation: fadeUp 0.3s ease; }
+    .confirm-prompt { font-size: 11px; color: #fff; letter-spacing: 0.15em; margin-bottom: 10px; font-weight: bold; }
+    .btn-row { display: flex; gap: 10px; justify-content: center; }
+    .btn {
+      font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 900;
+      letter-spacing: 0.15em; padding: 14px 22px; /* taller for thumb tap */
+      cursor: pointer; outline: none;
+      background: transparent; border: 2px solid; transition: all 0.2s;
+      flex: 1; /* full width share on mobile */
+      min-height: 48px; /* minimum touch target */
+    }
+    .btn-confirm { border-color: var(--purple); color: var(--purple); box-shadow: 0 0 12px rgba(188,19,254,0.3); }
+    .btn-cancel  { border-color: #333; color: #555; }
+
+    /* Rule reminder */
+    .rule-reminder { font-size: 10px; color: #fff; letter-spacing: 0.1em; font-weight: bold; text-align: center; margin-bottom: 14px; }
+
+    /* Taunt */
+    .taunt { font-size: 12px; color: var(--red); letter-spacing: 0.15em; min-height: 20px; text-align: center; font-weight: bold; margin-bottom: 12px; transition: opacity 0.3s; }
+
+    /* Result screen */
+    .result { text-align: center; width: 100%; animation: zoomIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
+    .result-emoji { font-size: 64px; margin-bottom: 10px; }
+    .result-title { font-family: 'Orbitron', monospace; font-size: 36px; font-weight: 900; letter-spacing: 0.05em; margin-bottom: 12px; }
+    .result-sub { font-size: 12px; letter-spacing: 0.1em; color: #fff; margin-bottom: 24px; font-weight: bold; }
+
+    /* CTA section */
+    .cta-box {
+      width: 100%; border: 2px solid var(--cyan); padding: 22px 20px;
+      text-align: center; margin: 20px 0; background: rgba(0,243,255,0.04);
+      animation: fadeUp 0.5s ease 0.3s both;
+    }
+    .cta-box.loss { border-color: var(--purple); background: rgba(188,19,254,0.04); }
+    .cta-eyebrow { font-size: 9px; color: #fff; letter-spacing: 0.25em; margin-bottom: 10px; font-weight: bold; }
+    .cta-headline { font-family: 'Orbitron', monospace; font-size: 16px; font-weight: 900; color: var(--cyan); letter-spacing: 0.1em; margin-bottom: 8px; line-height: 1.3; }
+    .cta-box.loss .cta-headline { color: var(--purple); }
+    .cta-body { font-size: 11px; color: #fff; letter-spacing: 0.05em; line-height: 1.7; margin-bottom: 18px; font-weight: bold; }
+    .store-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .store-btn {
+      font-family: 'Orbitron', monospace; font-size: 10px; font-weight: 900;
+      letter-spacing: 0.12em; padding: 12px 20px; cursor: pointer; outline: none;
+      border: 2px solid var(--cyan); color: var(--cyan); background: rgba(0,243,255,0.08);
+      text-decoration: none; display: inline-block; transition: all 0.2s;
+    }
+    .cta-box.loss .store-btn { border-color: var(--purple); color: var(--purple); background: rgba(188,19,254,0.08); }
+    .store-btn:hover { background: rgba(0,243,255,0.18); }
+    .cta-box.loss .store-btn:hover { background: rgba(188,19,254,0.18); }
+
+    /* Share button */
+    .share-btn {
+      width: 100%; font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 900;
+      letter-spacing: 0.15em; padding: 14px; cursor: pointer; outline: none;
+      background: rgba(255,215,0,0.08); border: 2px solid var(--gold); color: var(--gold);
+      margin-top: 10px; transition: all 0.2s; animation: fadeUp 0.5s ease 0.5s both;
+    }
+    .share-btn:hover { background: rgba(255,215,0,0.18); }
+    .share-sub { font-size: 9px; opacity: 0.7; letter-spacing: 0.15em; margin-top: 4px; }
+
+    /* Stats bar */
+    .stats-bar {
+      width: 100%; display: flex; justify-content: space-around; padding: 14px 0;
+      border-top: 1px solid #111; border-bottom: 1px solid #111; margin: 16px 0;
+      animation: fadeUp 0.5s ease 0.4s both;
+    }
+    .stat-item { text-align: center; }
+    .stat-label { font-size: 8px; color: #fff; letter-spacing: 0.15em; font-weight: bold; }
+    .stat-value { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900; }
+
+    /* Attempt pips */
+    .pips { display: flex; gap: 6px; justify-content: center; margin-bottom: 14px; }
+    .pip { width: 28px; height: 5px; border-radius: 99px; transition: all 0.3s; }
+    .pip.used { background: rgba(255,0,60,0.5); }
+    .pip.remaining { background: var(--gold); }
+
+    /* Waitlist form */
+    .waitlist-form { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center; }
+    .waitlist-input {
+      flex:1; min-width:180px; background:#000; border:1px solid #00F3FF55; color:#fff;
+      font-family:'Share Tech Mono',monospace; font-size:12px; font-weight:bold;
+      padding:10px 14px; outline:none; letter-spacing:0.1em; text-transform:uppercase;
+    }
+    .cta-box.loss .waitlist-input { border-color:#BC13FE55; }
+    .waitlist-btn {
+      font-family:'Orbitron',monospace; font-size:10px; font-weight:900;
+      letter-spacing:0.15em; padding:10px 18px; cursor:pointer; outline:none;
+      border:2px solid var(--cyan); color:var(--cyan); background:rgba(0,243,255,0.1);
+      transition:all 0.2s; flex-shrink:0; white-space:nowrap;
+    }
+    .waitlist-btn.loss { border-color:var(--purple); color:var(--purple); background:rgba(188,19,254,0.1); }
+    .waitlist-btn:hover { background:rgba(0,243,255,0.2); }
+    .waitlist-btn.loss:hover { background:rgba(188,19,254,0.2); }
+    .waitlist-confirm {
+      font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--gold);
+      letter-spacing:0.2em; font-weight:bold; margin-top:12px; text-align:center;
+    }
+    /* ── HOW TO PLAY OVERLAY ── */
+    .htp-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,0.92);
+      z-index:9000; display:flex; align-items:center; justify-content:center;
+      padding:24px; animation:fadeUp 0.3s ease;
+    }
+    .htp-box {
+      background:#06060F; border:1px solid #00F3FF44;
+      max-width:400px; width:100%; padding:32px 28px;
+    }
+    .htp-title {
+      font-family:'Orbitron',monospace; font-size:18px; font-weight:900;
+      color:var(--cyan); letter-spacing:0.1em; margin-bottom:6px;
+    }
+    .htp-sub {
+      font-size:10px; color:#fff; letter-spacing:0.2em; font-weight:bold; margin-bottom:24px;
+    }
+    .htp-rule {
+      background:rgba(255,0,60,0.08); border:1px solid #FF003C44;
+      padding:16px 18px; margin-bottom:20px; text-align:center;
+    }
+    .htp-rule-text {
+      font-family:'Orbitron',monospace; font-size:13px; font-weight:900;
+      color:#FF003C; letter-spacing:0.08em; line-height:1.5;
+    }
+    .htp-step {
+      display:flex; align-items:flex-start; gap:12px; margin-bottom:14px;
+    }
+    .htp-num {
+      font-family:'Orbitron',monospace; font-size:11px; font-weight:900;
+      color:var(--cyan); background:rgba(0,243,255,0.1);
+      border:1px solid #00F3FF44; width:26px; height:26px;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .htp-step-text {
+      font-size:12px; color:#fff; letter-spacing:0.05em; line-height:1.6; font-weight:bold; padding-top:3px;
+    }
+    .htp-example {
+      margin:18px 0; padding:14px; border:1px solid #222; background:#030308;
+    }
+    .htp-example-label {
+      font-size:9px; color:#fff; letter-spacing:0.2em; font-weight:bold; margin-bottom:10px;
+    }
+    .htp-sticks {
+      display:flex; flex-direction:column; gap:6px; align-items:center;
+    }
+    .htp-row {
+      display:flex; gap:4px; align-items:flex-end;
+    }
+    .htp-stick {
+      width:10px; border-radius:3px 3px 1px 1px;
+      background:#BC13FE; box-shadow:0 0 6px rgba(188,19,254,0.5);
+    }
+    .htp-btn {
+      width:100%; font-family:'Orbitron',monospace; font-size:13px; font-weight:900;
+      letter-spacing:0.15em; padding:14px; cursor:pointer; outline:none;
+      background:var(--cyan); border:none; color:#000; margin-top:20px;
+      transition:all 0.2s;
+    }
+    .htp-btn:hover { background:#00d4e8; }
+
+    /* ── HUMANS vs MACHINE COUNTER ── */
+    .counter-bar {
+      width:100%; display:flex; align-items:stretch;
+      border:1px solid #111; margin-bottom:16px; overflow:hidden;
+    }
+    .counter-side {
+      flex:1; padding:12px 14px; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:4px;
+    }
+    .counter-side.humans { background:rgba(0,243,255,0.04); border-right:1px solid #111; }
+    .counter-side.machine { background:rgba(255,0,60,0.04); border-left:1px solid #111; }
+    .counter-vs {
+      padding:0 12px; display:flex; align-items:center; justify-content:center;
+      background:#000;
+    }
+    .counter-label {
+      font-size:8px; letter-spacing:0.2em; font-weight:bold;
+    }
+    .counter-label.humans { color:var(--cyan); }
+    .counter-label.machine { color:var(--red); }
+    .counter-num {
+      font-family:'Orbitron',monospace; font-size:22px; font-weight:900; line-height:1;
+    }
+    .counter-num.humans { color:var(--cyan); }
+    .counter-num.machine { color:var(--red); }
+    .counter-sub {
+      font-size:8px; color:#fff; letter-spacing:0.12em; font-weight:bold;
+    }
+    .counter-vs-text {
+      font-family:'Orbitron',monospace; font-size:11px; font-weight:900;
+      color:#fff; letter-spacing:0.1em;
+    }
+    .counter-bar-track {
+      height:3px; display:flex; width:100%;
+    }
+    .counter-bar-humans { background:var(--cyan); transition:width 1s ease; }
+    .counter-bar-machine { background:var(--red); transition:width 1s ease; }
+
+    /* ── HOOK SECTION (shown before first game only) ── */
+    .hook-section {
+      width:100%; padding:16px 0 8px; text-align:center; margin-bottom:8px;
+    }
+    .hook-stat {
+      font-family:'Orbitron',monospace; font-size:11px; font-weight:900;
+      color:#fff; letter-spacing:0.1em; margin-bottom:6px;
+    }
+    .hook-stat span { color:var(--red); }
+    .hook-cta {
+      font-size:10px; color:#BC13FE; letter-spacing:0.15em; font-weight:bold;
+    }
+      0%,94%,100% { text-shadow: 3px 0 var(--cyan), -3px 0 var(--red); }
+      95% { text-shadow: -3px 0 var(--cyan), 3px 0 var(--red); clip-path: polygon(0 20%,100% 20%,100% 40%,0 40%); transform: translateX(3px); }
+      97% { text-shadow: 3px 0 var(--cyan), -3px 0 var(--red); clip-path: polygon(0 60%,100% 60%,100% 80%,0 80%); transform: translateX(-3px); }
+      98% { clip-path: none; transform: none; }
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes zoomIn { from { opacity:0; transform:scale(0.7); } to { opacity:1; transform:scale(1); } }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+    @keyframes thinkProgress { from { width:0; } to { width:100%; } }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HOW TO PLAY OVERLAY — shown on first visit only -->
+  <div class="htp-overlay" id="htpOverlay">
+    <div class="htp-box">
+      <div class="htp-title">HOW TO PLAY</div>
+      <div class="htp-sub">ONE RULE. ONE ENEMY. NO MERCY.</div>
+
+      <div class="htp-rule">
+        <div class="htp-rule-text">THE PLAYER WHO TAKES<br/>THE LAST STICK — LOSES.</div>
+      </div>
+
+      <div class="htp-step">
+        <div class="htp-num">1</div>
+        <div class="htp-step-text">Pick a row. Remove any number of sticks from it — at least one.</div>
+      </div>
+      <div class="htp-step">
+        <div class="htp-num">2</div>
+        <div class="htp-step-text">You and the AI take turns. The AI plays nearly perfectly.</div>
+      </div>
+      <div class="htp-step">
+        <div class="htp-num">3</div>
+        <div class="htp-step-text">Force the AI to take the last stick. That is your only goal.</div>
+      </div>
+
+      <div class="htp-example">
+        <div class="htp-example-label">THE BOARD — TAP A ROW TO SELECT</div>
+        <div class="htp-sticks">
+          <div class="htp-row">
+            <div class="htp-stick" style="height:24px"></div>
+          </div>
+          <div class="htp-row">
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+          </div>
+          <div class="htp-row">
+            <div class="htp-stick" style="height:38px"></div>
+            <div class="htp-stick" style="height:38px"></div>
+            <div class="htp-stick" style="height:38px"></div>
+            <div class="htp-stick" style="height:38px"></div>
+            <div class="htp-stick" style="height:38px"></div>
+          </div>
+          <div class="htp-row">
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:10px; color:#fff; letter-spacing:0.12em; text-align:center; font-weight:bold;">
+        SAME BOARD FOR EVERY PLAYER WORLDWIDE · 3 ATTEMPTS · RESETS AT 00:00 UTC
+      </div>
+
+      <button class="htp-btn" onclick="dismissHtp()">I UNDERSTAND — LET'S PLAY</button>
+      <div style="font-size:9px; color:#fff; letter-spacing:0.12em; text-align:center; margin-top:10px; font-weight:bold; opacity:0.6;">
+        WON'T SHOW AGAIN AFTER THIS
+      </div>
+    </div>
+  </div>
+
+  <!-- SHARE MODAL — persistent, not injected via innerHTML -->
+  <div id="shareModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:8000; align-items:center; justify-content:center; padding:24px;">
+    <div style="background:#06060F; border:1px solid #FFD70044; max-width:400px; width:100%; padding:28px 24px;">
+      <div style="font-family:'Orbitron',monospace; font-size:14px; font-weight:900; color:#FFD700; letter-spacing:0.1em; margin-bottom:16px;">SHARE YOUR RESULT</div>
+      <div id="shareText" style="font-family:'Share Tech Mono',monospace; font-size:12px; color:#ddd; line-height:1.8; letter-spacing:0.05em; background:#000; border:1px solid #222; padding:14px; margin-bottom:16px; white-space:pre-wrap; word-break:break-word;"></div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button id="shareCopyBtn" style="font-family:'Orbitron',monospace; font-size:12px; font-weight:900; letter-spacing:0.15em; padding:14px; cursor:pointer; outline:none; background:#FFD700; border:none; color:#000; width:100%;">
+          📋 COPY TO CLIPBOARD
+        </button>
+        <button id="shareNativeBtn" style="font-family:'Orbitron',monospace; font-size:12px; font-weight:900; letter-spacing:0.15em; padding:14px; cursor:pointer; outline:none; background:rgba(255,215,0,0.1); border:2px solid #FFD70066; color:#FFD700; width:100%; display:none;">
+          📤 SHARE VIA APPS
+        </button>
+        <button onclick="document.getElementById('shareModal').style.display='none';" style="font-family:'Share Tech Mono',monospace; font-size:11px; font-weight:bold; letter-spacing:0.15em; padding:12px; cursor:pointer; outline:none; background:transparent; border:1px solid #222; color:#555; width:100%;">
+          CLOSE
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div style="text-align:center; margin-bottom:4px; animation: fadeUp 0.4s ease both;">
+    <div class="brand">OUTSMART</div>
+    <div class="tagline">FORCE THE AI TO TAKE THE LAST STICK</div>
+    <div class="daily-label">📅 DAILY CHALLENGE</div>
+  </div>
+
+  <!-- HUMANS vs MACHINE counter -->
+  <div style="width:100%; max-width:420px; animation: fadeUp 0.4s ease 0.05s both;">
+    <div class="counter-bar">
+      <div class="counter-side humans">
+        <div class="counter-label humans">HUMANS</div>
+        <div class="counter-num humans" id="counterHumans">—</div>
+        <div class="counter-sub">WINS</div>
+      </div>
+      <div class="counter-vs">
+        <div class="counter-vs-text">VS</div>
+      </div>
+      <div class="counter-side machine">
+        <div class="counter-label machine">MACHINE</div>
+        <div class="counter-num machine" id="counterMachine">—</div>
+        <div class="counter-sub">WINS</div>
+      </div>
+    </div>
+    <div class="counter-bar-track">
+      <div class="counter-bar-humans" id="barHumans" style="width:50%"></div>
+      <div class="counter-bar-machine" id="barMachine" style="width:50%"></div>
+    </div>
+    <div style="font-size:8px; color:#333; letter-spacing:0.15em; font-weight:bold; text-align:center; margin-top:4px; margin-bottom:4px;" id="counterScope">
+      YOUR STATS · GLOBAL COUNTER COMING WITH APP LAUNCH
+    </div>
+  </div>
+
+  <!-- Rule reminder modal — for returning players who tap the rule bar -->
+  <div id="ruleReminderModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9000; align-items:center; justify-content:center; padding:24px;" onclick="document.getElementById('ruleReminderModal').style.display='none';">
+    <div style="background:#06060F; border:1px solid #FF003C44; max-width:360px; width:100%; padding:28px 24px;" onclick="event.stopPropagation()">
+      <div style="font-family:'Orbitron',monospace; font-size:16px; font-weight:900; color:var(--red); letter-spacing:0.1em; margin-bottom:16px; text-align:center;">THE RULE</div>
+      <div style="background:rgba(255,0,60,0.08); border:1px solid #FF003C44; padding:18px; text-align:center; margin-bottom:20px;">
+        <div style="font-family:'Orbitron',monospace; font-size:14px; font-weight:900; color:#FF003C; letter-spacing:0.08em; line-height:1.6;">THE PLAYER WHO TAKES<br/>THE LAST STICK — LOSES.</div>
+      </div>
+      <div style="font-family:'Share Tech Mono',monospace; font-size:11px; color:#fff; letter-spacing:0.08em; line-height:1.8; margin-bottom:20px; font-weight:bold;">
+        Pick a row each turn. Remove any number of sticks from it. Force the AI to take the very last stick.
+      </div>
+      <button onclick="document.getElementById('ruleReminderModal').style.display='none';" style="width:100%; font-family:'Orbitron',monospace; font-size:12px; font-weight:900; letter-spacing:0.15em; padding:14px; cursor:pointer; outline:none; background:var(--red); border:none; color:#fff;">
+        GOT IT
+      </button>
+    </div>
+  </div>
+
+  <!-- Date + rule -->
+  <div class="info-bar" style="animation: fadeUp 0.4s ease 0.1s both; margin-top:12px;">
+    <span class="date" id="dateLabel"></span>
+    <span class="rule" onclick="document.getElementById('ruleReminderModal').style.display='flex';" style="cursor:pointer;" title="Tap for the rule">LAST TAKER LOSES ⓘ</span>
+    <div class="utc-wrap">
+      <span class="utc-time" id="utcTime"></span>
+      <span class="utc-reset" id="utcReset"></span>
+    </div>
+  </div>
+
+  <!-- Attempt pips -->
+  <div class="pips" id="pips" style="animation: fadeUp 0.4s ease 0.15s both;"></div>
+
+  <!-- Game area -->
+  <div id="gameArea" style="width:100%; animation: fadeUp 0.4s ease 0.2s both;">
+
+    <!-- Taunt -->
+    <div class="taunt" id="taunt" style="opacity:0;"></div>
+
+    <!-- AI thinking bar -->
+    <div class="think-bar" id="thinkBar"><div class="think-bar-fill" id="thinkFill"></div></div>
+
+    <!-- Turn indicator -->
+    <div class="turn-box" id="turnBox" style="color: #BC13FE;">YOUR TURN</div>
+
+    <!-- Board -->
+    <div class="board" id="board"></div>
+
+    <!-- Confirm / Cancel -->
+    <div class="confirm-area" id="confirmArea" style="display:none;">
+      <div class="confirm-prompt" id="confirmPrompt"></div>
+      <div class="btn-row">
+        <button class="btn btn-confirm" onclick="confirmMove()">CONFIRM</button>
+        <button class="btn btn-cancel" onclick="cancelMove()">CANCEL</button>
+      </div>
+    </div>
+
+    <!-- Rule reminder -->
+    <div class="rule-reminder" id="ruleReminder">LAST TAKER LOSES — FORCE THE AI TO TAKE THE FINAL STICK</div>
+
+  </div>
+
+  <!-- Result area (hidden until game ends) -->
+  <div id="resultArea" style="display:none; width:100%;"></div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// OUTSMART DAILY CHALLENGE — Standalone Web Version
+// Same board logic as the app. No accounts. No tracking.
+// ═══════════════════════════════════════════════════════════════
+
+const APP_STORE_URL    = "https://outsmart.game"; // TODO: update to real App Store link
+const PLAY_STORE_URL   = "https://outsmart.game"; // TODO: update to real Play Store link
+const CHALLENGE_URL    = "https://outsmart.game/daily";
+const MAX_ATTEMPTS     = 3;
+
+// ─── DAILY BOARD LOGIC (must match app exactly) ───────────────
+const DAILY_BOARDS = [
+  [1,3,5,7],[2,4,6],[1,2,3,4,5],[3,5,7],[1,4,6,8],
+  [2,3,5,7],[1,3,7,9],[2,5,6,7],[1,2,6,8],[3,4,5,6],
+  [1,2,4,8],[2,6,8],[1,5,7],[3,4,7],[1,2,3,6],
+  [4,5,6],[1,3,4,6],[2,3,8],[1,6,7,8],[2,4,5,7],
+  [1,2,5,6],[3,6,7],[1,4,5,8],[2,3,4,9],[1,7,8],
+  [3,5,6,8],[1,2,7,8],[4,6,7],[1,3,6,9],[2,5,8],
+  [1,4,7,8],[2,3,6,7],[1,5,6,9],[3,4,8],[1,2,4,7],
+  [2,6,7,8],[1,3,5,9],[4,5,8],[1,2,8,9],[3,6,9],
+  [1,4,5,6],[2,7,8,9],[1,3,8,9],[2,4,6,8],[1,5,7,9],
+  [3,5,8,9],[1,2,6,9],[4,7,8],[1,3,4,9],[2,5,6,9],
+];
+
+const getDailyKey = () => new Date().toISOString().slice(0,10);
+
+const hashDate = (s) => {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; }
+  return h;
+};
+
+const getDailyBoard = () => {
+  const idx = hashDate(getDailyKey()) % DAILY_BOARDS.length;
+  return [...DAILY_BOARDS[idx]];
+};
+
+// ─── AI (Hard — 6% mistake rate, matches app) ─────────────────
+const nimSum = (b) => b.reduce((a,v) => a^v, 0);
+
+const getOptimalMove = (board) => {
+  const big = board.filter(p => p > 1).length;
+  if (big > 1) {
+    const ns = nimSum(board);
+    if (ns !== 0) {
+      for (let i = 0; i < board.length; i++) {
+        const t = board[i] ^ ns;
+        if (t < board[i]) return { rowIndex:i, count:board[i]-t };
+      }
+    }
+    const ri = board.findIndex(v => v > 0);
+    if (ri >= 0) return { rowIndex:ri, count:1 };
+  } else if (big === 1) {
+    const ri = board.findIndex(p => p > 1);
+    const ones = board.filter(p => p===1).length;
+    const target = ones % 2 === 1 ? 0 : 1;
+    return { rowIndex:ri, count:board[ri]-target };
+  } else {
+    const ri = board.findIndex(v => v > 0);
+    if (ri >= 0) return { rowIndex:ri, count:1 };
+  }
+  return null;
+};
+
+const getRandomMove = (board) => {
+  const active = board.map((c,i)=>({c,i})).filter(r=>r.c>0);
+  const row = active[Math.floor(Math.random()*active.length)];
+  return { rowIndex:row.i, count:Math.ceil(Math.random()*row.c) };
+};
+
+const getAIMove = (board) => {
+  if (Math.random() < 0.06) return getRandomMove(board);
+  return getOptimalMove(board) || getRandomMove(board);
+};
+
+// ─── TAUNTS ───────────────────────────────────────────────────
+const TAUNTS = [
+  "PREDICTABLE.", "ALREADY MAPPED YOUR MOVES.", "THIS IS TOO EASY.",
+  "FEEL THAT? THAT'S PRESSURE.", "THE TRAP IS SET.", "YOU WALKED RIGHT INTO IT.",
+  "I SEE THE END.", "NOWHERE LEFT TO HIDE.", "RESISTANCE IS FUTILE.",
+  "THE MATH DOESN'T LIE.", "I CONTROL THIS BOARD.", "INEVITABLE.",
+  "YOU'RE FIGHTING MATH.", "I'VE ALREADY WON. YOU JUST DON'T KNOW IT.",
+  "TICK. TOCK.", "YOUR OPTIONS ARE NARROWING.", "DO YOU SEE IT YET? I DO.",
+];
+
+// ─── HOW TO PLAY ──────────────────────────────────────────────
+const dismissHtp = () => {
+  const el = document.getElementById('htpOverlay');
+  if (el) { el.style.opacity = '0'; el.style.transition = 'opacity 0.3s'; setTimeout(() => el.remove(), 300); }
+  try { localStorage.setItem('outsmart_htp_seen', '1'); } catch {}
+};
+
+// ─── COUNTER ──────────────────────────────────────────────────
+// Uses Firebase Firestore for real global counter (all players worldwide).
+// Falls back to localStorage if Firebase config not yet filled in.
+const COUNTER_KEY  = 'outsmart_counter';
+const COUNTER_SEED = { humans: 312, machine: 4847 };
+
+const loadLocalCounter = () => {
+  try { const s = localStorage.getItem(COUNTER_KEY); if (s) return JSON.parse(s); } catch {}
+  return { ...COUNTER_SEED };
+};
+const saveLocalCounter = (c) => { try { localStorage.setItem(COUNTER_KEY, JSON.stringify(c)); } catch {} };
+
+const updateCounterUI = (c) => {
+  const total = c.humans + c.machine;
+  const humanPct   = total > 0 ? Math.round((c.humans  / total) * 100) : 50;
+  const machinePct = 100 - humanPct;
+  const hEl = document.getElementById('counterHumans');
+  const mEl = document.getElementById('counterMachine');
+  const bH  = document.getElementById('barHumans');
+  const bM  = document.getElementById('barMachine');
+  const scopeEl = document.getElementById('counterScope');
+  if (hEl) hEl.textContent = c.humans.toLocaleString();
+  if (mEl) mEl.textContent = c.machine.toLocaleString();
+  if (bH)  bH.style.width  = humanPct + '%';
+  if (bM)  bM.style.width  = machinePct + '%';
+  if (scopeEl) {
+    const isLive = window.firebaseReady && window.fbLoadCounter;
+    scopeEl.textContent = isLive
+      ? 'GLOBAL · ALL PLAYERS WORLDWIDE'
+      : 'YOUR STATS · GLOBAL COUNTER COMING WITH APP LAUNCH';
+    scopeEl.style.color = isLive ? '#00F3FF' : '#fff';
+  }
+};
+
+window.renderCounterFromFirebase = async () => {
+  if (window.fbLoadCounter) {
+    const data = await window.fbLoadCounter();
+    if (data) { updateCounterUI(data); return; }
+  }
+  updateCounterUI(loadLocalCounter());
+};
+
+const renderCounter = () => {
+  if (window.firebaseReady && window.fbLoadCounter) {
+    window.renderCounterFromFirebase();
+  } else {
+    updateCounterUI(loadLocalCounter());
+  }
+};
+
+const incrementCounter = async (playerWon) => {
+  // Update local immediately for instant UI feedback
+  const local = loadLocalCounter();
+  if (playerWon) local.humans++; else local.machine++;
+  saveLocalCounter(local);
+  updateCounterUI(local);
+  // Write to Firebase (global)
+  if (window.fbIncrementCounter) {
+    await window.fbIncrementCounter(playerWon);
+    window.renderCounterFromFirebase(); // refresh with true global count
+  }
+};
+const STORE_KEY = "outsmart_daily_web";
+let state = {
+  board:         [],
+  initialBoard:  [],
+  isPlayerTurn:  true,
+  winner:        null,
+  selectedRow:   null,
+  pendingCount:  0,
+  attempts:      0,
+  attemptDate:   null,
+  won:           false,
+};
+
+const loadState = () => {
+  try {
+    const s = localStorage.getItem(STORE_KEY);
+    if (s) {
+      const p = JSON.parse(s);
+      if (p.attemptDate === getDailyKey()) {
+        state.attempts   = p.attempts || 0;
+        state.won        = p.won      || false;
+      }
+    }
+  } catch {}
+};
+
+const saveState = () => {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify({
+      attempts:    state.attempts,
+      won:         state.won,
+      attemptDate: getDailyKey(),
+    }));
+  } catch {}
+};
+
+// ─── SOUND ────────────────────────────────────────────────────
+let _ctx = null;
+const ac = () => {
+  if (!_ctx) _ctx = new (window.AudioContext || window.webkitAudioContext)();
+  if (_ctx.state === "suspended") _ctx.resume();
+  return _ctx;
+};
+const beep = (type) => {
+  try {
+    const ctx = ac(), now = ctx.currentTime;
+    const play = (type, freq, dur, vol=0.18) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = type; o.frequency.setValueAtTime(freq, now);
+      g.gain.setValueAtTime(vol, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now+dur);
+      o.start(now); o.stop(now+dur);
+    };
+    if (type==="stick")   { play("sine",600,0.08); }
+    if (type==="confirm") { play("triangle",180,0.18,0.28); }
+    if (type==="win")     { [523,659,784,1047].forEach((f,i)=>{setTimeout(()=>play("sine",f,0.3,0.2),i*100);}); }
+    if (type==="loss")    { [392,330,262,196].forEach((f,i)=>{setTimeout(()=>play("sawtooth",f,0.28,0.12),i*120);}); }
+  } catch {}
+};
+
+// ─── RENDER ───────────────────────────────────────────────────
+const ROW_HEIGHTS = [52, 46, 40, 36, 30]; // tallest sticks for bigger rows
+
+const renderBoard = () => {
+  const boardEl = document.getElementById("board");
+  boardEl.innerHTML = "";
+  state.board.forEach((count, ri) => {
+    const maxCount = state.initialBoard[ri];
+    const isSel    = state.selectedRow === ri;
+    const rowEl    = document.createElement("div");
+    rowEl.className = "row" + (isSel ? " selected" : "");
+    rowEl.onclick   = () => rowClick(ri);
+
+    // Row label
+    const label = document.createElement("div");
+    label.className = "row-label";
+    label.textContent = `R${ri+1}`;
+    rowEl.appendChild(label);
+
+    // Sticks
+    const sticksEl = document.createElement("div");
+    sticksEl.className = "sticks";
+    const h = Math.max(24, Math.min(52, 52 - ri * 5));
+
+    for (let si = 0; si < maxCount; si++) {
+      const alive   = si < count;
+      const pending = isSel && si >= (count - state.pendingCount);
+      const s       = document.createElement("div");
+      s.className   = "stick " + (!alive ? "dead" : pending ? "pending" : "alive");
+      s.style.height = h + "px";
+      s.onclick = (e) => {
+        e.stopPropagation();
+        if (state.isPlayerTurn && alive && !state.winner) stickClick(ri, count - si);
+      };
+      sticksEl.appendChild(s);
+    }
+    rowEl.appendChild(sticksEl);
+
+    // Count
+    const cnt = document.createElement("div");
+    cnt.className   = "row-count" + (count === 0 ? " zero" : "");
+    cnt.textContent = count;
+    rowEl.appendChild(cnt);
+
+    boardEl.appendChild(rowEl);
+  });
+};
+
+const renderPips = () => {
+  const el = document.getElementById("pips");
+  el.innerHTML = "";
+  for (let i = 0; i < MAX_ATTEMPTS; i++) {
+    const pip = document.createElement("div");
+    pip.className = "pip " + (i < state.attempts ? "used" : "remaining");
+    el.appendChild(pip);
+  }
+};
+
+const setTaunt = (text) => {
+  const el = document.getElementById("taunt");
+  el.textContent = text;
+  el.style.opacity = text ? "1" : "0";
+};
+
+const setTurn = (text, color="#BC13FE") => {
+  const el = document.getElementById("turnBox");
+  el.textContent = text;
+  el.style.color  = color;
+};
+
+// ─── GAME LOGIC ───────────────────────────────────────────────
+const stickClick = (ri, cnt) => {
+  if (!state.isPlayerTurn || state.winner) return;
+  beep("stick");
+  state.selectedRow   = ri;
+  state.pendingCount  = cnt;
+  renderBoard();
+  const cp = document.getElementById("confirmArea");
+  const pr = document.getElementById("confirmPrompt");
+  pr.textContent = `REMOVE ${cnt} STICK${cnt>1?"S":""} FROM ROW ${ri+1}?`;
+  cp.style.display = "block";
+  document.getElementById("ruleReminder").style.display = "none";
+};
+
+const rowClick = (ri) => {
+  if (!state.isPlayerTurn || state.winner) return;
+  if (state.board[ri] === 0) return;
+  stickClick(ri, 1); // default: remove 1 from row tap
+};
+
+const cancelMove = () => {
+  state.selectedRow  = null;
+  state.pendingCount = 0;
+  renderBoard();
+  document.getElementById("confirmArea").style.display = "none";
+  document.getElementById("ruleReminder").style.display = "block";
+};
+
+const confirmMove = () => {
+  if (state.selectedRow === null || state.pendingCount < 1) return;
+  beep("confirm");
+  applyMove(true, state.selectedRow, state.pendingCount);
+  document.getElementById("confirmArea").style.display = "none";
+  document.getElementById("ruleReminder").style.display = "block";
+};
+
+const applyMove = (isPlayer, rowIndex, count) => {
+  state.board = state.board.map((v,i) => i===rowIndex ? v-count : v);
+  state.selectedRow  = null;
+  state.pendingCount = 0;
+  renderBoard();
+
+  const allGone = state.board.every(v => v===0);
+  if (allGone) {
+    // Last taker loses — whoever took the last stick loses
+    const playerWon = !isPlayer; // if AI took last, player wins
+    state.winner = playerWon ? "PLAYER" : "AI";
+    if (playerWon) { state.won = true; }
+    setTimeout(() => showResult(playerWon), 800);
+    beep(playerWon ? "win" : "loss");
+  } else {
+    state.isPlayerTurn = !isPlayer;
+    if (!isPlayer) {
+      setTurn("YOUR TURN", "#BC13FE");
+      setTaunt("");
+    } else {
+      // AI's turn
+      setTurn("THINKING...", "#FF003C");
+      setTaunt("");
+      const bar = document.getElementById("thinkBar");
+      const fill = document.getElementById("thinkFill");
+      bar.classList.add("active");
+      fill.style.animation = "none";
+      void fill.offsetWidth;
+      fill.style.animation = "thinkProgress 2s linear forwards";
+
+      setTimeout(() => {
+        bar.classList.remove("active");
+        const move = getAIMove(state.board);
+        applyMove(false, move.rowIndex, move.count);
+        setTaunt(TAUNTS[Math.floor(Math.random()*TAUNTS.length)]);
+      }, 2000 + Math.random()*400);
+    }
+  }
+};
+
+// ─── RESULT ───────────────────────────────────────────────────
+const showResult = (playerWon) => {
+  document.getElementById("gameArea").style.display    = "none";
+  document.getElementById("resultArea").style.display = "block";
+  track('game_completed', { result: playerWon ? 'win' : 'loss', attempt_number: state.attempts, date: getDailyKey() });
+  incrementCounter(playerWon);
+
+  const attemptsLeft = MAX_ATTEMPTS - state.attempts;
+  const canRetry     = !playerWon && attemptsLeft > 0;
+  const dateStr      = new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+
+  // Store share text globally so the button can reference it safely
+  window._shareText = playerWon
+    ? `⚡ I just beat the OUTSMART Daily Challenge.\n\nForced the AI to take the last stick.\nSame board for every player worldwide today.\n\nThink you can do it too?\n\n${CHALLENGE_URL}`
+    : `💀 The AI destroyed me in OUTSMART.\n\nThe AI is relentless. ${attemptsLeft > 0 ? `I have ${attemptsLeft} attempt${attemptsLeft>1?"s":""} left.` : "I'm out of attempts."}\nSame board for every player worldwide today.\n\nThink you can do better?\n\n${CHALLENGE_URL}`;
+
+  document.getElementById("resultArea").innerHTML = `
+    <div class="result">
+      <div class="result-emoji">${playerWon ? "⚡" : "💀"}</div>
+      <div class="result-title" style="color:${playerWon?"#00F3FF":"#FF003C"}">
+        ${playerWon ? "DAILY CONQUERED" : "PATHETIC"}
+      </div>
+      <div class="result-sub" style="color:${playerWon?"#00F3FF88":"#FF003C88"}">
+        ${playerWon ? '"An anomaly. It won\'t happen again."' : '"AS EXPECTED, HUMAN."'}
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-label">ATTEMPT</div>
+        <div class="stat-value" style="color:#fff">${state.attempts} / ${MAX_ATTEMPTS}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">RESULT</div>
+        <div class="stat-value" style="color:${playerWon?"#00F3FF":"#FF003C"}">${playerWon?"WIN":"LOSS"}</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">DATE</div>
+        <div class="stat-value" style="color:#FFD700;font-size:10px;margin-top:4px">${dateStr}</div>
+      </div>
+    </div>
+
+    ${canRetry ? `
+      <button class="btn btn-confirm" style="width:100%;margin-bottom:14px;font-size:13px;padding:14px;" onclick="startGame()">
+        TRY AGAIN · ATTEMPT ${state.attempts+1} OF ${MAX_ATTEMPTS}
+      </button>
+    ` : ""}
+
+    <div class="cta-box ${playerWon?"":"loss"}">
+      <div class="cta-eyebrow">THE FULL APP IS COMING</div>
+      <div class="cta-headline">${playerWon ? "TRACK YOUR SCORE.\nCLIMB THE LEADERBOARD." : "PLAY DAILY.\nEARN POINTS. REACH LEGENDARY."}</div>
+      <div class="cta-body">
+        Be first to know when OUTSMART launches on iOS and Android. Free to download.
+      </div>
+      <div class="waitlist-form">
+        <input type="email" id="waitlist-email-result" placeholder="YOUR EMAIL" class="waitlist-input"/>
+        <button onclick="joinWaitlist('waitlist-email-result', this)" class="waitlist-btn ${playerWon?"":"loss"}">NOTIFY ME</button>
+      </div>
+      <div id="waitlist-confirm-result" class="waitlist-confirm" style="display:none;">
+        ✓ YOU'RE ON THE LIST
+      </div>
+    </div>
+
+    <button class="share-btn" onclick="shareResult()">
+      ${playerWon ? "⚡ FLEX ON YOUR FRIENDS" : "📣 CHALLENGE YOUR FRIENDS"}
+      <div class="share-sub">${playerWon ? "BRAG. YOU EARNED IT." : "DARE THEM TO DO BETTER."}</div>
+    </button>
+  `;
+};
+
+const shareResult = () => {
+  track('share_clicked', { date: getDailyKey() });
+  const text = window._shareText || "Play today's OUTSMART Daily Challenge: " + CHALLENGE_URL;
+
+  // Show our custom share modal — always works regardless of browser
+  const modal    = document.getElementById('shareModal');
+  const textEl   = document.getElementById('shareText');
+  const copyBtn  = document.getElementById('shareCopyBtn');
+  const nativeBtn = document.getElementById('shareNativeBtn');
+
+  if (textEl) textEl.textContent = text;
+
+  // Show native share button only on mobile browsers that support it
+  if (navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
+    if (nativeBtn) nativeBtn.style.display = 'block';
+  }
+
+  // Copy button
+  if (copyBtn) {
+    copyBtn.onclick = () => {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          copyBtn.textContent = '✓ COPIED!';
+          copyBtn.style.background = '#00F3FF';
+          setTimeout(() => {
+            copyBtn.textContent = '📋 COPY TO CLIPBOARD';
+            copyBtn.style.background = '#FFD700';
+          }, 2000);
+        }).catch(() => fallbackCopy(text, copyBtn));
+      } else {
+        fallbackCopy(text, copyBtn);
+      }
+    };
+  }
+
+  // Native share button (mobile only)
+  if (nativeBtn) {
+    nativeBtn.onclick = () => {
+      navigator.share({ title: "OUTSMART Daily Challenge", text }).catch(() => {});
+    };
+  }
+
+  if (modal) modal.style.display = 'flex';
+};
+
+const fallbackCopy = (text, btn) => {
+  const el = document.createElement("textarea");
+  el.value = text;
+  el.style.cssText = "position:fixed;top:-9999px;opacity:0";
+  document.body.appendChild(el);
+  el.select();
+  try {
+    document.execCommand("copy");
+    if (btn) { btn.textContent = '✓ COPIED!'; setTimeout(() => { btn.textContent = '📋 COPY TO CLIPBOARD'; }, 2000); }
+  } catch { alert("Please copy the text manually."); }
+  document.body.removeChild(el);
+};
+
+// ─── WAITLIST ─────────────────────────────────────────────────
+// Uses Formspree (formspree.io) — free tier, 50 submissions/month.
+// TODO: Replace FORMSPREE_ID with your real form ID from formspree.io
+// Setup: go to formspree.io → New Form → copy the form ID (8 chars)
+// Example: if your form URL is https://formspree.io/f/abcd1234
+//          then FORMSPREE_ID = "abcd1234"
+const FORMSPREE_ID = "xqeyozev"; // TODO: replace with real ID
+
+const joinWaitlist = async (inputId, btn) => {
+  const input = document.getElementById(inputId);
+  const email = input ? input.value.trim() : "";
+  if (!email || !email.includes("@")) {
+    input.style.borderColor = "#FF003C";
+    setTimeout(() => input.style.borderColor = "", 1500);
+    return;
+  }
+  btn.textContent = "...";
+  btn.disabled = true;
+  track('waitlist_signup', { date: getDailyKey() });
+  try {
+    await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ email, source: "outsmart_daily_challenge" }),
+    });
+  } catch {}
+  // Show confirm regardless — even if fetch fails, don't frustrate the user
+  const confirmId = inputId.replace("email", "confirm");
+  const confirmEl = document.getElementById(confirmId);
+  if (input) input.parentElement.style.display = "none";
+  if (confirmEl) confirmEl.style.display = "block";
+};
+
+// ─── INIT ─────────────────────────────────────────────────────
+const startGame = () => {
+  // Check attempt limit
+  if (state.won || state.attempts >= MAX_ATTEMPTS) {
+    showExhausted();
+    return;
+  }
+
+  state.attempts++;
+  saveState();
+  track('game_started', { attempt_number: state.attempts, date: getDailyKey() });
+
+  state.board        = getDailyBoard();
+  state.initialBoard = [...state.board];
+  state.isPlayerTurn = true;
+  state.winner       = null;
+  state.selectedRow  = null;
+  state.pendingCount = 0;
+
+  document.getElementById("gameArea").style.display    = "block";
+  document.getElementById("resultArea").style.display = "none";
+  document.getElementById("confirmArea").style.display = "none";
+  document.getElementById("ruleReminder").style.display = "block";
+  document.getElementById("thinkBar").classList.remove("active");
+  setTurn("YOUR TURN", "#BC13FE");
+  setTaunt("");
+  renderPips();
+  renderBoard();
+};
+
+const showExhausted = () => {
+  document.getElementById("gameArea").style.display    = "none";
+  document.getElementById("resultArea").style.display = "block";
+  const dateStr = new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+
+  // Set share text so the share button works
+  window._shareText = state.won
+    ? `⚡ I beat today's OUTSMART Daily Challenge.\n\nSame board for every player worldwide today.\nCan you beat it too?\n\n${CHALLENGE_URL}`
+    : `💀 The AI destroyed me in OUTSMART. 3 attempts. 0 wins.\n\nSame board for every player worldwide today.\nThink you can do better?\n\n${CHALLENGE_URL}`;
+
+  document.getElementById("resultArea").innerHTML = `
+    <div class="result">
+      <div class="result-emoji">${state.won ? "⚡" : "💀"}</div>
+      <div class="result-title" style="color:${state.won?"#FFD700":"#FF003C"}">
+        ${state.won ? "ALREADY CONQUERED" : "NO ATTEMPTS LEFT"}
+      </div>
+      <div class="result-sub" style="color:${state.won?"#FFD700":"#fff"}">
+        ${state.won ? "You beat today's puzzle. Come back tomorrow." : "Today's challenge is over. A new board drops at 00:00 UTC."}
+      </div>
+    </div>
+    <div class="cta-box ${state.won?"":"loss"}">
+      <div class="cta-eyebrow">THE FULL APP IS COMING</div>
+      <div class="cta-headline">TRACK YOUR STREAK.\nCLIMB THE LEADERBOARD.</div>
+      <div class="cta-body">Be first to know when OUTSMART launches on iOS and Android. Free to download.</div>
+      <div class="waitlist-form">
+        <input type="email" id="waitlist-email-exhausted" placeholder="YOUR EMAIL" class="waitlist-input"/>
+        <button onclick="joinWaitlist('waitlist-email-exhausted', this)" class="waitlist-btn ${state.won?"":"loss"}">NOTIFY ME</button>
+      </div>
+      <div id="waitlist-confirm-exhausted" class="waitlist-confirm" style="display:none;">
+        ✓ YOU'RE ON THE LIST
+      </div>
+    </div>
+
+    <button class="share-btn" onclick="shareResult()">
+      ${state.won ? "⚡ FLEX ON YOUR FRIENDS" : "📣 CHALLENGE YOUR FRIENDS"}
+      <div class="share-sub">${state.won ? "BRAG. YOU EARNED IT." : "DARE THEM TO DO BETTER."}</div>
+    </button>
+  `;
+};
+
+const init = () => {
+  // Set date label
+  document.getElementById("dateLabel").textContent =
+    new Date().toUTCString().slice(0, 16).toUpperCase();
+
+  // Live UTC clock + time until 00:00 UTC reset
+  const tickClock = () => {
+    const now   = new Date();
+    const hh    = String(now.getUTCHours()).padStart(2,"0");
+    const mm    = String(now.getUTCMinutes()).padStart(2,"0");
+    const ss    = String(now.getUTCSeconds()).padStart(2,"0");
+    const secsLeft = (23 - now.getUTCHours()) * 3600 + (59 - now.getUTCMinutes()) * 60 + (59 - now.getUTCSeconds()) + 1;
+    const rH = String(Math.floor(secsLeft / 3600)).padStart(2,"0");
+    const rM = String(Math.floor((secsLeft % 3600) / 60)).padStart(2,"0");
+    const rS = String(secsLeft % 60).padStart(2,"0");
+    const tEl = document.getElementById("utcTime");
+    const rEl = document.getElementById("utcReset");
+    if (tEl) tEl.textContent = `UTC ${hh}:${mm}:${ss}`;
+    if (rEl) rEl.textContent = `RESETS IN ${rH}:${rM}:${rS}`;
+  };
+  tickClock();
+  setInterval(tickClock, 1000);
+
+  // Render counter immediately
+  renderCounter();
+
+  // Show HTP overlay only on first visit
+  try {
+    const seen = localStorage.getItem('outsmart_htp_seen');
+    if (seen) {
+      const el = document.getElementById('htpOverlay');
+      if (el) el.remove();
+    }
+  } catch {
+    const el = document.getElementById('htpOverlay');
+    if (el) el.remove();
+  }
+
+  // Load persisted attempt count
+  loadState();
+
+  // Show already-won or already-exhausted state without counting an attempt
+  if (state.won || state.attempts >= MAX_ATTEMPTS) {
+    showExhausted();
+    renderPips();
+  } else {
+    startGame();
+  }
+};
+
+// Kick off
+init();
+</script>
+</body>
+</html>
