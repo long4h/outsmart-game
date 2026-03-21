@@ -565,15 +565,28 @@ const fallbackCopy = (text, btn) => {
   document.body.removeChild(el);
 };
 
-const FORMSPREE_ID = "xqeyozev";
+// ─── GOOGLE FORMS WAITLIST ────────────────────────────────────
+// Replace YOUR_GOOGLE_FORM_URL with your real Google Form link
+// Example: "https://forms.gle/xxxxxxxxx"
+// Get this from: forms.google.com → your form → Send → Link icon → Copy
+const GOOGLE_FORM_URL = "https://forms.gle/7HHtwg9VK5xPYoTh7";
+
 const joinWaitlist = async (inputId, btn) => {
-  const input = document.getElementById(inputId); const email = input ? input.value.trim() : "";
-  if (!email || !email.includes("@")) { input.style.borderColor = "#FF003C"; setTimeout(() => input.style.borderColor = "", 1500); return; }
-  btn.textContent = "..."; btn.disabled = true;
+  const input = document.getElementById(inputId);
+  const email = input ? input.value.trim() : "";
+  if (!email || !email.includes("@")) {
+    input.style.borderColor = "#FF003C";
+    setTimeout(() => input.style.borderColor = "", 1500);
+    return;
+  }
   track('waitlist_signup', { date: getDailyKey() });
-  try { await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify({ email, source: "outsmart_daily_challenge" }) }); } catch {}
-  const confirmId = inputId.replace("email", "confirm"); const confirmEl = document.getElementById(confirmId);
-  if (input) input.parentElement.style.display = "none"; if (confirmEl) confirmEl.style.display = "block";
+  // Open Google Form in a new tab
+  window.open(GOOGLE_FORM_URL, '_blank');
+  // Show confirmation immediately
+  const confirmId = inputId.replace("email", "confirm");
+  const confirmEl = document.getElementById(confirmId);
+  if (input) input.parentElement.style.display = "none";
+  if (confirmEl) confirmEl.style.display = "block";
 };
 
 const startGame = () => {
