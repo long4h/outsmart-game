@@ -8,8 +8,8 @@
   <meta property="og:title" content="OUTSMART — Daily Challenge"/>
   <meta property="og:description" content="Can you force the AI to take the last stick? One puzzle. Same board for every player worldwide."/>
   <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://outsmart.game/daily"/>
-  <meta property="og:image" content="https://outsmart.game/og-image.png"/>
+  <meta property="og:url" content="https://www.playoutsmart.com/daily.html"/>
+  <meta property="og:image" content="https://www.playoutsmart.com/og-image.png"/>
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="OUTSMART Daily Challenge"/>
   <meta name="twitter:description" content="Force the AI to take the last stick. Can you beat it?"/>
@@ -272,9 +272,9 @@
 
 </div>
 <script>
-const APP_STORE_URL = "https://outsmart.game";
-const PLAY_STORE_URL = "https://outsmart.game";
-const CHALLENGE_URL = "https://long4h.github.io/outsmart-game/daily.html";
+const APP_STORE_URL = "https://www.playoutsmart.com";
+const PLAY_STORE_URL = "https://www.playoutsmart.com";
+const CHALLENGE_URL = "https://www.playoutsmart.com/daily.html";
 const MAX_ATTEMPTS = 3;
 
 const DAILY_BOARDS = [
@@ -436,9 +436,10 @@ const showResult=(playerWon)=>{
   incrementCounter(playerWon);
   const attemptsLeft=MAX_ATTEMPTS-state.attempts;const canRetry=!playerWon&&attemptsLeft>0;
   const dateStr=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  const machinePct = loadLocalCounter().machine.toLocaleString();
   window._shareText=playerWon
-    ?`⚡ I just beat the OUTSMART Daily Challenge.\n\nForced the AI to take the last stick.\nSame board for every player worldwide today.\n\nThink you can do it too?\n\n${CHALLENGE_URL}`
-    :`💀 The AI destroyed me in OUTSMART.\n\nThe AI is relentless. ${attemptsLeft>0?`I have ${attemptsLeft} attempt${attemptsLeft>1?"s":""} left.`:"I'm out of attempts."}\nSame board for every player worldwide today.\n\nThink you can do better?\n\n${CHALLENGE_URL}`;
+    ?`⚡ I just beat the AI in OUTSMART.\n\nForced it to take the last stick.\nThe AI has beaten ${machinePct} humans and counting.\nI'm one of the few who won.\n\nCan you beat it?\n\n${CHALLENGE_URL}`
+    :`💀 The AI just destroyed me in OUTSMART.\n\n${attemptsLeft>0?`${attemptsLeft} attempt${attemptsLeft>1?"s":""} left and I still can't beat it.`:"3 attempts. 0 wins."}\nThe AI has beaten ${machinePct} humans and counting.\nThink you can do better?\n\n${CHALLENGE_URL}`;
   document.getElementById("resultArea").innerHTML=`
     <div class="result">
       <div class="result-emoji">${playerWon?"⚡":"💀"}</div>
@@ -508,9 +509,10 @@ const startGame=()=>{
 
 const showExhausted=()=>{
   document.getElementById("gameArea").style.display="none";document.getElementById("resultArea").style.display="block";
+  const machineCount = loadLocalCounter().machine.toLocaleString();
   window._shareText=state.won
-    ?`⚡ I beat today's OUTSMART Daily Challenge.\n\nSame board for every player worldwide today.\nCan you beat it too?\n\n${CHALLENGE_URL}`
-    :`💀 The AI destroyed me in OUTSMART. 3 attempts. 0 wins.\n\nSame board for every player worldwide today.\nThink you can do better?\n\n${CHALLENGE_URL}`;
+    ?`⚡ I beat the AI in OUTSMART today.\n\nForced it to take the last stick.\nThe AI has beaten ${machineCount} humans and counting.\nCan you do it?\n\n${CHALLENGE_URL}`
+    :`💀 3 attempts. The AI won every single one.\n\nThe AI has beaten ${machineCount} humans and counting.\nThe AI is nearly unbeatable.\nThink you can prove it wrong?\n\n${CHALLENGE_URL}`;
   document.getElementById("resultArea").innerHTML=`
     <div class="result">
       <div class="result-emoji">${state.won?"⚡":"💀"}</div>
