@@ -54,35 +54,22 @@
   </script>
   <!-- OneSignal Web Push Notifications -->
   <!-- TODO: Replace YOUR_ONESIGNAL_APP_ID with your real App ID from onesignal.com -->
-  <!-- Setup: onesignal.com → New App → Web → Site Setup → copy App ID -->
+  <!-- Once you have your App ID, uncomment the script tags below and replace the placeholder -->
+  <!--
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
       await OneSignal.init({
         appId: "9f59d0b7-0c99-497c-a57f-266243e75cc4",
-        notifyButton: { enable: false }, // we use our own custom button
-        welcomeNotification: {
-          title: "OUTSMART",
-          message: "You'll be notified when the app launches. The AI awaits.",
-        },
-        promptOptions: {
-          slidedown: {
-            prompts: [{
-              type: "push",
-              autoPrompt: false, // only prompt when player taps our button
-              text: {
-                actionMessage: "Get notified the moment OUTSMART launches on iOS and Android.",
-                acceptButton: "NOTIFY ME",
-                cancelButton: "NOT NOW",
-              }
-            }]
-          }
-        }
+        notifyButton: { enable: false },
+        welcomeNotification: { title: "OUTSMART", message: "You will be notified when the app launches." },
+        promptOptions: { slidedown: { prompts: [{ type: "push", autoPrompt: false, text: { actionMessage: "Get notified the moment OUTSMART launches on iOS and Android.", acceptButton: "NOTIFY ME", cancelButton: "NOT NOW" } }] } }
       });
       window.oneSignalReady = true;
     });
   </script>
+  -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
@@ -581,7 +568,7 @@ const showResult=(playerWon)=>{
       🔔 BROWSER NOTIFICATION WHEN APP LAUNCHES
     </button>
     <button class="share-btn" onclick="shareResult()">${playerWon?"⚡ FLEX ON YOUR FRIENDS":"📣 CHALLENGE YOUR FRIENDS"}<div class="share-sub">${playerWon?"BRAG. YOU EARNED IT.":"DARE THEM TO DO BETTER."}</div></button>
-  \`;
+  `;
 };
 
 const shareResult=()=>{
@@ -707,7 +694,7 @@ const showExhausted=()=>{
       🔔 BROWSER NOTIFICATION WHEN APP LAUNCHES
     </button>
     <button class="share-btn" onclick="shareResult()">${state.won?"⚡ FLEX ON YOUR FRIENDS":"📣 CHALLENGE YOUR FRIENDS"}<div class="share-sub">${state.won?"BRAG. YOU EARNED IT.":"DARE THEM TO DO BETTER."}</div></button>
-  \`;
+  `;
 };
 
 const init=()=>{
