@@ -251,7 +251,7 @@
         </div>
       </div>
       <div style="font-size:10px;color:#fff;letter-spacing:0.12em;text-align:center;font-weight:bold;">SAME BOARD FOR EVERY PLAYER WORLDWIDE · 3 ATTEMPTS · RESETS AT 00:00 UTC</div>
-      <button class="htp-btn" onclick="dismissHtp()">I UNDERSTAND — LET'S PLAY</button>
+      <button class="htp-btn" onclick="dismissHtp()">TAP TO START</button>
       <div style="font-size:9px;color:#fff;letter-spacing:0.12em;text-align:center;margin-top:10px;font-weight:bold;opacity:0.6;">WON'T SHOW AGAIN AFTER THIS</div>
     </div>
   </div>
@@ -606,35 +606,7 @@ const fallbackCopy=(text,btn)=>{
 
 // ─── WHATSAPP COMMUNITY ───────────────────────────────────────
 // TODO: Replace with your real WhatsApp Community invite link
-// How to get it: WhatsApp → Communities → Your community → Community info → Invite link → Copy link
-const WHATSAPP_COMMUNITY_URL = "YOUR_WHATSAPP_COMMUNITY_LINK";
-
-// ─── ONESIGNAL PUSH ───────────────────────────────────────────
-const requestPushPermission = async () => {
-  const btn = document.getElementById('pushPermBtn');
-  if (!window.oneSignalReady || !window.OneSignalDeferred) {
-    // Fallback if OneSignal not configured — open Google Form
-    window.open("https://forms.gle/7HHtwg9VK5xPYoTh7", '_blank');
-    return;
-  }
-  try {
-    OneSignalDeferred.push(async (OneSignal) => {
-      await OneSignal.Slidedown.promptPush();
-      const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
-      if (isSubscribed && btn) {
-        btn.textContent = '✓ YOU WILL BE NOTIFIED';
-        btn.classList.add('done');
-        track('push_subscribed', { date: getDailyKey() });
-      }
-    });
-  } catch(e) {
-    console.warn('Push permission error:', e);
-  }
-};
-
-// ─── WHATSAPP COMMUNITY ───────────────────────────────────────
-// TODO: Replace with your real WhatsApp Community invite link
-// How: WhatsApp → Communities icon → Your community → Community info → Invite link → Copy link
+// How: WhatsApp → Communities → Your community → Community info → Invite link → Copy link
 const WHATSAPP_COMMUNITY_URL = "YOUR_WHATSAPP_COMMUNITY_LINK";
 
 // ─── ONESIGNAL PUSH PERMISSION ────────────────────────────────
