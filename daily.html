@@ -52,6 +52,38 @@
     window.firebaseReady = true;
     if (window.renderCounterFromFirebase) window.renderCounterFromFirebase();
   </script>
+  <!-- OneSignal Web Push Notifications -->
+  <!-- TODO: Replace YOUR_ONESIGNAL_APP_ID with your real App ID from onesignal.com -->
+  <!-- Setup: onesignal.com → New App → Web → Site Setup → copy App ID -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "YOUR_ONESIGNAL_APP_ID",
+        notifyButton: { enable: false }, // we use our own custom button
+        welcomeNotification: {
+          title: "OUTSMART",
+          message: "You'll be notified when the app launches. The AI awaits.",
+        },
+        promptOptions: {
+          slidedown: {
+            prompts: [{
+              type: "push",
+              autoPrompt: false, // only prompt when player taps our button
+              text: {
+                actionMessage: "Get notified the moment OUTSMART launches on iOS and Android.",
+                acceptButton: "NOTIFY ME",
+                cancelButton: "NOT NOW",
+              }
+            }]
+          }
+        }
+      });
+      window.oneSignalReady = true;
+    });
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
   <style>
@@ -121,6 +153,18 @@
     .waitlist-btn { font-family:'Orbitron',monospace; font-size:10px; font-weight:900; letter-spacing:0.15em; padding:10px 18px; cursor:pointer; outline:none; border:2px solid var(--cyan); color:var(--cyan); background:rgba(0,243,255,0.1); transition:all 0.2s; flex-shrink:0; white-space:nowrap; }
     .waitlist-btn.loss { border-color:var(--purple); color:var(--purple); background:rgba(188,19,254,0.1); }
     .waitlist-confirm { font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-top:12px; text-align:center; }
+    /* WhatsApp Community button */
+    .wa-btn {
+      width:100%; font-family:'Orbitron',monospace; font-size:11px; font-weight:900;
+      letter-spacing:0.12em; padding:13px 14px; cursor:pointer; outline:none;
+      background:rgba(37,211,102,0.1); border:2px solid #25D366; color:#25D366;
+      margin-top:10px; transition:all 0.2s; display:flex; align-items:center;
+      justify-content:center; gap:10px; text-decoration:none;
+    }
+    .wa-btn:hover { background:rgba(37,211,102,0.2); }
+    .wa-btn-icon { font-size:18px; line-height:1; }
+    .wa-btn-text { text-align:left; }
+    .wa-btn-sub { font-size:8px; opacity:0.7; letter-spacing:0.15em; margin-top:2px; display:block; font-family:'Share Tech Mono',monospace; font-weight:bold; }
     .htp-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9000; display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeUp 0.3s ease; }
     .htp-box { background:#06060F; border:1px solid #00F3FF44; max-width:400px; width:100%; padding:32px 28px; }
     .htp-title { font-family:'Orbitron',monospace; font-size:18px; font-weight:900; color:var(--cyan); letter-spacing:0.1em; margin-bottom:6px; }
@@ -153,6 +197,26 @@
     .counter-bar-track { height:3px; display:flex; width:100%; }
     .counter-bar-humans { background:var(--cyan); transition:width 1s ease; }
     .counter-bar-machine { background:var(--red); transition:width 1s ease; }
+    /* ── WHATSAPP COMMUNITY BUTTON ── */
+    .wa-btn {
+      width:100%; font-family:'Orbitron',monospace; font-size:11px; font-weight:900;
+      letter-spacing:0.12em; padding:14px; cursor:pointer; outline:none;
+      background:rgba(37,211,102,0.1); border:2px solid #25D366; color:#25D366;
+      margin-top:10px; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .wa-btn:hover { background:rgba(37,211,102,0.2); }
+    .wa-sub { font-size:9px; opacity:0.7; letter-spacing:0.12em; margin-top:4px; font-family:'Share Tech Mono',monospace; }
+
+    /* ── PUSH NOTIFICATION BUTTON ── */
+    .push-btn {
+      width:100%; font-family:'Orbitron',monospace; font-size:11px; font-weight:900;
+      letter-spacing:0.12em; padding:12px; cursor:pointer; outline:none;
+      background:rgba(188,19,254,0.08); border:1px solid #BC13FE55; color:#BC13FE;
+      margin-top:8px; transition:all 0.2s;
+    }
+    .push-btn:hover { background:rgba(188,19,254,0.18); }
+    .push-btn.done { border-color:#25D36655; color:#25D366; background:rgba(37,211,102,0.08); cursor:default; }
+
     @keyframes glitch {
       0%,94%,100% { text-shadow:3px 0 var(--cyan),-3px 0 var(--red); }
       95% { text-shadow:-3px 0 var(--cyan),3px 0 var(--red); clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%); transform:translateX(3px); }
@@ -509,8 +573,15 @@ const showResult=(playerWon)=>{
       </div>
       <div id="waitlist-confirm-result" class="waitlist-confirm" style="display:none;">✓ YOU'RE ON THE LIST</div>
     </div>
+    <a href="${WHATSAPP_COMMUNITY_URL}" target="_blank" class="wa-btn" onclick="track('whatsapp_community_click',{date:getDailyKey()})">
+      <span class="wa-btn-icon">💬</span>
+      <span class="wa-btn-text">JOIN THE OUTSMART COMMUNITY<span class="wa-btn-sub">GET NOTIFIED WHEN THE APP DROPS · WHATSAPP</span></span>
+    </a>
+    <button class="push-btn" id="pushPermBtn" onclick="requestPushPermission()">
+      🔔 BROWSER NOTIFICATION WHEN APP LAUNCHES
+    </button>
     <button class="share-btn" onclick="shareResult()">${playerWon?"⚡ FLEX ON YOUR FRIENDS":"📣 CHALLENGE YOUR FRIENDS"}<div class="share-sub">${playerWon?"BRAG. YOU EARNED IT.":"DARE THEM TO DO BETTER."}</div></button>
-  `;
+  \`;
 };
 
 const shareResult=()=>{
@@ -532,12 +603,92 @@ const fallbackCopy=(text,btn)=>{
   document.body.removeChild(el);
 };
 
+
+// ─── WHATSAPP COMMUNITY ───────────────────────────────────────
+// TODO: Replace with your real WhatsApp Community invite link
+// How to get it: WhatsApp → Communities → Your community → Community info → Invite link → Copy link
+const WHATSAPP_COMMUNITY_URL = "YOUR_WHATSAPP_COMMUNITY_LINK";
+
+// ─── ONESIGNAL PUSH ───────────────────────────────────────────
+const requestPushPermission = async () => {
+  const btn = document.getElementById('pushPermBtn');
+  if (!window.oneSignalReady || !window.OneSignalDeferred) {
+    // Fallback if OneSignal not configured — open Google Form
+    window.open("https://forms.gle/7HHtwg9VK5xPYoTh7", '_blank');
+    return;
+  }
+  try {
+    OneSignalDeferred.push(async (OneSignal) => {
+      await OneSignal.Slidedown.promptPush();
+      const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
+      if (isSubscribed && btn) {
+        btn.textContent = '✓ YOU WILL BE NOTIFIED';
+        btn.classList.add('done');
+        track('push_subscribed', { date: getDailyKey() });
+      }
+    });
+  } catch(e) {
+    console.warn('Push permission error:', e);
+  }
+};
+
+// ─── WHATSAPP COMMUNITY ───────────────────────────────────────
+// TODO: Replace with your real WhatsApp Community invite link
+// How: WhatsApp → Communities icon → Your community → Community info → Invite link → Copy link
+const WHATSAPP_COMMUNITY_URL = "YOUR_WHATSAPP_COMMUNITY_LINK";
+
+// ─── ONESIGNAL PUSH PERMISSION ────────────────────────────────
+const requestPushPermission = async () => {
+  if (!window.oneSignalReady) {
+    // OneSignal not configured yet — fall back to Google Form
+    window.open(GOOGLE_FORM_URL, '_blank');
+    return;
+  }
+  try {
+    OneSignalDeferred.push(async (OneSignal) => {
+      await OneSignal.Slidedown.promptPush();
+      const isSubscribed = await OneSignal.User.PushSubscription.optedIn;
+      if (isSubscribed) {
+        ['pushPermBtn','pushPermBtnEx'].forEach(id => {
+          const btn = document.getElementById(id);
+          if (btn) { btn.textContent = '✓ YOU WILL BE NOTIFIED'; btn.classList.add('done'); }
+        });
+        track('push_subscribed', { date: getDailyKey() });
+      }
+    });
+  } catch(e) { console.warn('Push error:', e); }
+};
+
 const GOOGLE_FORM_URL="https://forms.gle/7HHtwg9VK5xPYoTh7";
+
+// ── INLINE WAITLIST — submits without leaving the page ────────
+// Uses Google Apps Script as a free relay to Google Sheets.
+// TODO: Replace YOUR_APPS_SCRIPT_URL with your deployed script URL.
+// Full setup guide is in the companion document.
+// Until configured, falls back to opening Google Form in a new tab.
+const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_URL";
+
 const joinWaitlist=async(inputId,btn)=>{
   const input=document.getElementById(inputId);const email=input?input.value.trim():"";
   if(!email||!email.includes("@")){input.style.borderColor="#FF003C";setTimeout(()=>input.style.borderColor="",1500);return;}
+  if(btn){btn.textContent="...";btn.disabled=true;}
   track('waitlist_signup',{date:getDailyKey()});
-  window.open(GOOGLE_FORM_URL,'_blank');
+
+  if(APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_APPS_SCRIPT_URL") {
+    // Inline submission — player stays on the page
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method:"POST",
+        mode:"no-cors", // required for Google Apps Script
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ email, source:"outsmart_daily", date:getDailyKey() })
+      });
+    } catch(e) { console.warn("Apps Script submission failed:", e); }
+  } else {
+    // Fallback until Apps Script is configured
+    window.open(GOOGLE_FORM_URL,'_blank');
+  }
+
   const confirmId=inputId.replace("email","confirm");const confirmEl=document.getElementById(confirmId);
   if(input)input.parentElement.style.display="none";if(confirmEl)confirmEl.style.display="block";
 };
@@ -576,8 +727,15 @@ const showExhausted=()=>{
       </div>
       <div id="waitlist-confirm-exhausted" class="waitlist-confirm" style="display:none;">✓ YOU'RE ON THE LIST</div>
     </div>
+    <a href="${WHATSAPP_COMMUNITY_URL}" target="_blank" class="wa-btn" onclick="track('whatsapp_community_click',{date:getDailyKey()})">
+      <span class="wa-btn-icon">💬</span>
+      <span class="wa-btn-text">JOIN THE OUTSMART COMMUNITY<span class="wa-btn-sub">GET NOTIFIED WHEN THE APP DROPS · WHATSAPP</span></span>
+    </a>
+    <button class="push-btn" id="pushPermBtnEx" onclick="requestPushPermission()">
+      🔔 BROWSER NOTIFICATION WHEN APP LAUNCHES
+    </button>
     <button class="share-btn" onclick="shareResult()">${state.won?"⚡ FLEX ON YOUR FRIENDS":"📣 CHALLENGE YOUR FRIENDS"}<div class="share-sub">${state.won?"BRAG. YOU EARNED IT.":"DARE THEM TO DO BETTER."}</div></button>
-  `;
+  \`;
 };
 
 const init=()=>{
