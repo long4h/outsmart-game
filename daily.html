@@ -832,7 +832,7 @@ var init=function(){
   try{
     var seen=localStorage.getItem('outsmart_htp_seen');
     if(seen){var el=document.getElementById('htpOverlay');if(el)el.remove();}
-  }catch(e){var el2=document.getElementById('htpOverlay');if(el2)el2.remove();}
+  }catch(e){ /* localStorage unavailable, keep overlay visible */ }
   loadState();
   if(state.won||state.attempts>=MAX_ATTEMPTS){showExhausted();renderPips();}
   else{startGame();}
