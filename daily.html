@@ -603,12 +603,16 @@ var applyMove=function(isPlayer,rowIndex,count){
 
 var getShareText = function(playerWon, attempts) {
   var suffix = attempts > 1 ? "s" : "";
-  if (playerWon) {
-    return "OUTSMART #DAILY\n\n\uD83D\uDD25 Won in " + attempts + " attempt" + suffix + "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nCan you beat it?\n\n" + CHALLENGE_URL;
-  }
-  return "OUTSMART #DAILY\n\n\uD83D\uDC80 Lost in " + attempts + " attempt" + suffix + "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nThink you're smarter?\n\n" + CHALLENGE_URL;
-};
+  var shareUrl = playerWon
+    ? "https://playoutsmart.com/win"
+    : "https://playoutsmart.com/lose";
 
+  if (playerWon) {
+    return "OUTSMART #DAILY\n\n\u26A1 Won in " + attempts + " attempt" + suffix + "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nCan you beat it?\n\n" + shareUrl;
+  }
+
+  return "OUTSMART #DAILY\n\n\uD83D\uDC80 Lost in " + attempts + " attempt" + suffix + "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nThink you're smarter?\n\n" + shareUrl;
+};
 var showResult=function(playerWon){
   document.getElementById("gameArea").style.display="none";
   document.getElementById("resultArea").style.display="block";
