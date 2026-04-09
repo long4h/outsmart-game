@@ -102,7 +102,7 @@
     .cta-box { width:100%; border:2px solid var(--cyan); padding:22px 20px; text-align:center; margin:20px 0; background:rgba(0,243,255,0.04); animation:fadeUp 0.5s ease 0.3s both; }
     .cta-box.loss { border-color:var(--purple); background:rgba(188,19,254,0.04); }
     .cta-eyebrow { font-size:9px; color:#fff; letter-spacing:0.25em; margin-bottom:10px; font-weight:bold; }
-    .cta-headline { font-family:'Orbitron',monospace; font-size:16px; font-weight:900; color:var(--cyan); letter-spacing:0.1em; margin-bottom:8px; line-height:1.3; }
+    .cta-headline { font-family:'Orbitron',monospace; font-size:16px; font-weight:900; color:var(--cyan); letter-spacing:0.1em; margin-bottom:8px; line-height:1.3; white-space:pre-line; }
     .cta-box.loss .cta-headline { color:var(--purple); }
     .cta-body { font-size:11px; color:#fff; letter-spacing:0.05em; line-height:1.7; margin-bottom:18px; font-weight:bold; }
     .share-btn { width:100%; font-family:'Orbitron',monospace; font-size:12px; font-weight:900; letter-spacing:0.15em; padding:14px; cursor:pointer; outline:none; background:rgba(255,215,0,0.08); border:2px solid var(--gold); color:var(--gold); margin-top:10px; transition:all 0.2s; animation:fadeUp 0.5s ease 0.5s both; }
@@ -154,6 +154,36 @@
     .counter-bar-track { height:3px; display:flex; width:100%; }
     .counter-bar-humans { background:var(--cyan); transition:width 1s ease; }
     .counter-bar-machine { background:var(--red); transition:width 1s ease; }
+
+    .share-platform-btn {
+      width:100%;
+      font-family:'Orbitron',monospace;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:0.12em;
+      padding:14px 16px;
+      cursor:pointer;
+      outline:none;
+      border:1px solid #222;
+      background:#09090f;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      transition:all 0.2s;
+    }
+    .share-platform-btn:hover { transform:translateY(-1px); }
+    .share-platform-btn.twitter { border-color:#2c2c2c; color:#fff; }
+    .share-platform-btn.whatsapp { border-color:rgba(37,211,102,0.45); color:#25D366; background:rgba(37,211,102,0.08); }
+    .share-platform-btn.facebook { border-color:rgba(24,119,242,0.45); color:#1877F2; background:rgba(24,119,242,0.08); }
+    .share-platform-btn.telegram { border-color:rgba(34,158,217,0.45); color:#229ED9; background:rgba(34,158,217,0.08); }
+    .share-platform-btn.reddit { border-color:rgba(255,69,0,0.45); color:#FF4500; background:rgba(255,69,0,0.08); }
+    .share-platform-btn.copy { border-color:rgba(255,215,0,0.45); color:#FFD700; background:rgba(255,215,0,0.08); }
+    .share-platform-left { text-align:left; display:flex; flex-direction:column; gap:3px; }
+    .share-platform-title { font-size:11px; letter-spacing:0.14em; }
+    .share-platform-sub { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:0.12em; opacity:0.75; }
+    .share-platform-arrow { font-size:16px; line-height:1; opacity:0.8; }
+
     @keyframes glitch {
       0%,94%,100% { text-shadow:3px 0 var(--cyan),-3px 0 var(--red); }
       95% { text-shadow:-3px 0 var(--cyan),3px 0 var(--red); clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%); transform:translateX(3px); }
@@ -197,9 +227,64 @@
     <div style="background:#06060F;border:1px solid #FFD70044;max-width:400px;width:100%;padding:28px 24px;">
       <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:#FFD700;letter-spacing:0.1em;margin-bottom:16px;">SHARE YOUR RESULT</div>
       <div id="shareText" style="font-family:'Share Tech Mono',monospace;font-size:12px;color:#ddd;line-height:1.8;letter-spacing:0.05em;background:#000;border:1px solid #222;padding:14px;margin-bottom:16px;white-space:pre-wrap;word-break:break-word;"></div>
+
       <div style="display:flex;flex-direction:column;gap:10px;">
-        <button id="shareCopyBtn" style="font-family:'Orbitron',monospace;font-size:12px;font-weight:900;letter-spacing:0.15em;padding:14px;cursor:pointer;outline:none;background:#FFD700;border:none;color:#000;width:100%;">📋 COPY TO CLIPBOARD</button>
-        <button id="shareNativeBtn" style="font-family:'Orbitron',monospace;font-size:12px;font-weight:900;letter-spacing:0.15em;padding:14px;cursor:pointer;outline:none;background:rgba(255,215,0,0.1);border:2px solid #FFD70066;color:#FFD700;width:100%;display:none;">📤 SHARE VIA APPS</button>
+        <button type="button" class="share-platform-btn twitter" onclick="shareTo('twitter')">
+          <div class="share-platform-left">
+            <div class="share-platform-title">𝕏 / TWITTER</div>
+            <div class="share-platform-sub">TAP TO SHARE</div>
+          </div>
+          <div class="share-platform-arrow">→</div>
+        </button>
+
+        <button type="button" class="share-platform-btn whatsapp" onclick="shareTo('whatsapp')">
+          <div class="share-platform-left">
+            <div class="share-platform-title">WHATSAPP</div>
+            <div class="share-platform-sub">TAP TO SHARE</div>
+          </div>
+          <div class="share-platform-arrow">→</div>
+        </button>
+
+        <button type="button" class="share-platform-btn facebook" onclick="shareTo('facebook')">
+          <div class="share-platform-left">
+            <div class="share-platform-title">FACEBOOK</div>
+            <div class="share-platform-sub">TAP TO SHARE</div>
+          </div>
+          <div class="share-platform-arrow">→</div>
+        </button>
+
+        <button type="button" class="share-platform-btn telegram" onclick="shareTo('telegram')">
+          <div class="share-platform-left">
+            <div class="share-platform-title">TELEGRAM</div>
+            <div class="share-platform-sub">TAP TO SHARE</div>
+          </div>
+          <div class="share-platform-arrow">→</div>
+        </button>
+
+        <button type="button" class="share-platform-btn reddit" onclick="shareTo('reddit')">
+          <div class="share-platform-left">
+            <div class="share-platform-title">REDDIT</div>
+            <div class="share-platform-sub">TAP TO SHARE</div>
+          </div>
+          <div class="share-platform-arrow">→</div>
+        </button>
+
+        <button type="button" id="shareCopyBtn" class="share-platform-btn copy">
+          <div class="share-platform-left">
+            <div class="share-platform-title">COPY</div>
+            <div class="share-platform-sub">COPY TO CLIPBOARD</div>
+          </div>
+          <div class="share-platform-arrow">→</div>
+        </button>
+
+        <button type="button" id="shareNativeBtn" class="share-platform-btn copy" style="display:none;">
+          <div class="share-platform-left">
+            <div class="share-platform-title">SHARE VIA APPS</div>
+            <div class="share-platform-sub">USE PHONE SHARE SHEET</div>
+          </div>
+          <div class="share-platform-arrow">→</div>
+        </button>
+
         <button onclick="document.getElementById('shareModal').style.display='none';" style="font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:bold;letter-spacing:0.15em;padding:12px;cursor:pointer;outline:none;background:transparent;border:1px solid #222;color:#555;width:100%;">CLOSE</button>
       </div>
     </div>
@@ -292,27 +377,20 @@ const getDailyBoard = () => { const idx=hashDate(getDailyKey())%DAILY_BOARDS.len
 
 const nimSum = (b) => b.reduce((a,v)=>a^v,0);
 
-// ── FIX: Collect ALL valid optimal moves, pick one at random ──
-// This eliminates the "always same sequence" feel from feedback #2.
-// When multiple rows can be reduced to achieve nim-sum 0, the AI
-// chooses randomly among them rather than always taking the first.
 const getOptimalMove = (board) => {
   const big = board.filter(p => p > 1).length;
   if (big > 1) {
     const ns = nimSum(board);
     if (ns !== 0) {
-      // Collect all valid winning moves
       const candidates = [];
       for (let i = 0; i < board.length; i++) {
         const t = board[i] ^ ns;
         if (t < board[i]) candidates.push({ rowIndex:i, count:board[i]-t });
       }
       if (candidates.length > 0) {
-        // Randomise among equally valid moves — eliminates predictable sequence
         return candidates[Math.floor(Math.random() * candidates.length)];
       }
     }
-    // No winning move — pick randomly from any non-empty row, remove 1
     const active = board.map((c,i)=>({c,i})).filter(r=>r.c>0);
     const row = active[Math.floor(Math.random() * active.length)];
     return { rowIndex:row.i, count:1 };
@@ -334,12 +412,9 @@ const getRandomMove = (board) => {
   return { rowIndex:row.i, count:Math.ceil(Math.random() * row.c) };
 };
 
-// ── FIX: Never make random mistakes in endgame (≤3 sticks total) ──
-// Feedback #3: when only 2+1 sticks remain, AI was randomly missing
-// the winning move. Endgame positions are too obvious — always play perfect.
 const getAIMove = (board) => {
   const totalSticks = board.reduce((a,v) => a+v, 0);
-  if (totalSticks <= 3) return getOptimalMove(board); // never blunder endgame
+  if (totalSticks <= 3) return getOptimalMove(board);
   if (Math.random() < 0.06) return getRandomMove(board);
   return getOptimalMove(board) || getRandomMove(board);
 };
@@ -354,9 +429,8 @@ const dismissHtp = () => {
 
 const COUNTER_KEY='outsmart_counter';
 const COUNTER_SEED={humans:312,machine:4847};
-// Live counter cache — always matches what's shown on screen.
-// Share messages read from this so counter in text matches counter on page.
 window._liveCounter = {...COUNTER_SEED};
+
 const loadLocalCounter=()=>{try{const s=localStorage.getItem(COUNTER_KEY);if(s)return JSON.parse(s);}catch{}return{...COUNTER_SEED};};
 const saveLocalCounter=(c)=>{try{localStorage.setItem(COUNTER_KEY,JSON.stringify(c));}catch{}};
 const updateCounterUI=(c)=>{
@@ -366,7 +440,7 @@ const updateCounterUI=(c)=>{
   const hEl=document.getElementById('counterHumans');const mEl=document.getElementById('counterMachine');
   const bH=document.getElementById('barHumans');const bM=document.getElementById('barMachine');
   const scopeEl=document.getElementById('counterScope');
-  window._liveCounter = { humans: c.humans, machine: c.machine }; // keep share messages in sync
+  window._liveCounter = { humans: c.humans, machine: c.machine };
   if(hEl)hEl.textContent=c.humans.toLocaleString();if(mEl)mEl.textContent=c.machine.toLocaleString();
   if(bH)bH.style.width=humanPct+'%';if(bM)bM.style.width=machinePct+'%';
   if(scopeEl){const isLive=window.firebaseReady&&window.fbLoadCounter;scopeEl.textContent=isLive?'GLOBAL · ALL PLAYERS WORLDWIDE':'YOUR STATS · GLOBAL COUNTER COMING WITH APP LAUNCH';scopeEl.style.color=isLive?'#00F3FF':'#fff';}
@@ -374,26 +448,21 @@ const updateCounterUI=(c)=>{
 window.renderCounterFromFirebase=async()=>{if(window.fbLoadCounter){const data=await window.fbLoadCounter();if(data){updateCounterUI(data);return;}}updateCounterUI(loadLocalCounter());};
 const renderCounter=()=>{if(window.firebaseReady&&window.fbLoadCounter){window.renderCounterFromFirebase();}else{updateCounterUI(loadLocalCounter());}};
 
-// ── DOUBLE INCREMENT FIX ──────────────────────────────────────
-// Do NOT update UI from local counter — only show the Firebase result.
-// This prevents the counter jumping by 2 before settling back to +1.
 const incrementCounter = async (playerWon) => {
-  // Save locally for fallback only — no UI update here
   const local = loadLocalCounter();
   if (playerWon) local.humans++; else local.machine++;
   saveLocalCounter(local);
-  // Write to Firebase, then refresh UI from the single authoritative source
   if (window.fbIncrementCounter) {
     await window.fbIncrementCounter(playerWon);
     window.renderCounterFromFirebase();
   } else {
-    // No Firebase configured — fall back to showing local count
     updateCounterUI(local);
   }
 };
 
 const STORE_KEY="outsmart_daily_web";
 let state={board:[],initialBoard:[],isPlayerTurn:true,winner:null,selectedRow:null,pendingCount:0,attempts:0,attemptDate:null,won:false};
+
 const loadState=()=>{try{const s=localStorage.getItem(STORE_KEY);if(s){const p=JSON.parse(s);if(p.attemptDate===getDailyKey()){state.attempts=p.attempts||0;state.won=p.won||false;}}}catch{}};
 const saveState=()=>{try{localStorage.setItem(STORE_KEY,JSON.stringify({attempts:state.attempts,won:state.won,attemptDate:getDailyKey()}));}catch{}};
 
@@ -478,21 +547,46 @@ const applyMove=(isPlayer,rowIndex,count)=>{
   }
 };
 
+const getShareText = (playerWon, attempts) => {
+  if (playerWon) {
+    return `OUTSMART #DAILY
+
+🔥 Won in ${attempts} attempt${attempts > 1 ? "s" : ""}
+
+The AI is nearly unbeatable.
+Most players fail.
+
+Can you beat it?
+
+${CHALLENGE_URL}`;
+  }
+
+  return `OUTSMART #DAILY
+
+💀 Lost in ${attempts} attempt${attempts > 1 ? "s" : ""}
+
+The AI is nearly unbeatable.
+Most players fail.
+
+Think you're smarter?
+
+${CHALLENGE_URL}`;
+};
+
 const showResult=(playerWon)=>{
   document.getElementById("gameArea").style.display="none";document.getElementById("resultArea").style.display="block";
   track('game_completed',{result:playerWon?'win':'loss',attempt_number:state.attempts,date:getDailyKey()});
   incrementCounter(playerWon);
   const attemptsLeft=MAX_ATTEMPTS-state.attempts;const canRetry=!playerWon&&attemptsLeft>0;
   const dateStr=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
-  const machinePct = (window._liveCounter || loadLocalCounter()).machine.toLocaleString();
-  window._shareText=playerWon
-    ?`⚡ I just beat the AI in OUTSMART.\n\nForced it to take the last stick.\nThe AI has beaten ${machinePct} humans and counting.\nI'm one of the few who won.\n\nCan you beat it?\n\n${CHALLENGE_URL}`
-    :`💀 The AI just destroyed me in OUTSMART.\n\n${attemptsLeft>0?`${attemptsLeft} attempt${attemptsLeft>1?"s":""} left and I still can't beat it.`:"3 attempts. 0 wins."}\nThe AI has beaten ${machinePct} humans and counting.\nThink you can do better?\n\n${CHALLENGE_URL}`;
+
+  window._shareText = getShareText(playerWon, state.attempts);
+
   document.getElementById("resultArea").innerHTML=`
     <div class="result">
       <div class="result-emoji">${playerWon?"⚡":"💀"}</div>
       <div class="result-title" style="color:${playerWon?"#00F3FF":"#FF003C"}">${playerWon?"DAILY CONQUERED":"PATHETIC"}</div>
-      <div class="result-sub" style="color:${playerWon?"#00F3FF88":"#FF003C88"}">${playerWon?'"An anomaly. It won\'t happen again."':'"AS EXPECTED, HUMAN."'}</div>
+      <div class="result-sub" style="color:${playerWon?"#00F3FF88":"#FF003C88"}">${playerWon?'"An anomaly. It won\\'t happen again."':'"AS EXPECTED, HUMAN."'}</div>
     </div>
     <div class="stats-bar">
       <div class="stat-item"><div class="stat-label">ATTEMPT</div><div class="stat-value" style="color:#fff">${state.attempts} / ${MAX_ATTEMPTS}</div></div>
@@ -514,33 +608,103 @@ const showResult=(playerWon)=>{
   `;
 };
 
+const shareTo = (platform) => {
+  track('share_platform_clicked', { platform, date:getDailyKey() });
+
+  const text = window._shareText || `Play today's OUTSMART Daily Challenge:\n\n${CHALLENGE_URL}`;
+  const encodedText = encodeURIComponent(text);
+  const encodedUrl = encodeURIComponent(CHALLENGE_URL);
+  let shareUrl = "";
+
+  switch(platform) {
+    case "twitter":
+      shareUrl = `https://twitter.com/intent/tweet?text=${encodedText}`;
+      break;
+    case "whatsapp":
+      shareUrl = `https://wa.me/?text=${encodedText}`;
+      break;
+    case "facebook":
+      shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+      break;
+    case "telegram":
+      shareUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`;
+      break;
+    case "reddit":
+      shareUrl = `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedText}`;
+      break;
+    default:
+      return;
+  }
+
+  window.open(shareUrl, "_blank", "noopener,noreferrer");
+};
+
 const shareResult=()=>{
   track('share_clicked',{date:getDailyKey()});
-  const text=window._shareText||"Play today's OUTSMART Daily Challenge: "+CHALLENGE_URL;
-  const modal=document.getElementById('shareModal');const textEl=document.getElementById('shareText');
-  const copyBtn=document.getElementById('shareCopyBtn');const nativeBtn=document.getElementById('shareNativeBtn');
+  const text=window._shareText||`Play today's OUTSMART Daily Challenge:\n\n${CHALLENGE_URL}`;
+  const modal=document.getElementById('shareModal');
+  const textEl=document.getElementById('shareText');
+  const copyBtn=document.getElementById('shareCopyBtn');
+  const nativeBtn=document.getElementById('shareNativeBtn');
+
   if(textEl)textEl.textContent=text;
-  if(navigator.share&&/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)){if(nativeBtn)nativeBtn.style.display='block';}
-  if(copyBtn){copyBtn.onclick=()=>{if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>{copyBtn.textContent='✓ COPIED!';copyBtn.style.background='#00F3FF';setTimeout(()=>{copyBtn.textContent='📋 COPY TO CLIPBOARD';copyBtn.style.background='#FFD700';},2000);}).catch(()=>fallbackCopy(text,copyBtn));}else{fallbackCopy(text,copyBtn);}};}
-  if(nativeBtn){nativeBtn.onclick=()=>{navigator.share({title:"OUTSMART Daily Challenge",text}).catch(()=>{});};}
+
+  if(navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)){
+    if(nativeBtn)nativeBtn.style.display='flex';
+  } else {
+    if(nativeBtn)nativeBtn.style.display='none';
+  }
+
+  if(copyBtn){
+    copyBtn.onclick=()=>{
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(text).then(()=>{
+          const titleEl = copyBtn.querySelector('.share-platform-title');
+          const subEl = copyBtn.querySelector('.share-platform-sub');
+          if (titleEl) titleEl.textContent = 'COPIED';
+          if (subEl) subEl.textContent = 'READY TO PASTE';
+          setTimeout(()=>{
+            if (titleEl) titleEl.textContent = 'COPY';
+            if (subEl) subEl.textContent = 'COPY TO CLIPBOARD';
+          },2000);
+        }).catch(()=>fallbackCopy(text,copyBtn));
+      } else {
+        fallbackCopy(text,copyBtn);
+      }
+    };
+  }
+
+  if(nativeBtn){
+    nativeBtn.onclick=()=>{
+      navigator.share({title:"OUTSMART Daily Challenge",text,url:CHALLENGE_URL}).catch(()=>{});
+    };
+  }
+
   if(modal)modal.style.display='flex';
 };
 
 const fallbackCopy=(text,btn)=>{
   const el=document.createElement("textarea");el.value=text;el.style.cssText="position:fixed;top:-9999px;opacity:0";
   document.body.appendChild(el);el.select();
-  try{document.execCommand("copy");if(btn){btn.textContent='✓ COPIED!';setTimeout(()=>{btn.textContent='📋 COPY TO CLIPBOARD';},2000);}}catch{alert("Please copy the text manually.");}
+  try{
+    document.execCommand("copy");
+    if(btn){
+      const titleEl = btn.querySelector('.share-platform-title');
+      const subEl = btn.querySelector('.share-platform-sub');
+      if (titleEl) titleEl.textContent = 'COPIED';
+      if (subEl) subEl.textContent = 'READY TO PASTE';
+      setTimeout(()=>{
+        if (titleEl) titleEl.textContent = 'COPY';
+        if (subEl) subEl.textContent = 'COPY TO CLIPBOARD';
+      },2000);
+    }
+  }catch{
+    alert("Please copy the text manually.");
+  }
   document.body.removeChild(el);
 };
 
-
 const GOOGLE_FORM_URL="https://forms.gle/7HHtwg9VK5xPYoTh7";
-
-// ── INLINE WAITLIST — submits without leaving the page ────────
-// Uses Google Apps Script as a free relay to Google Sheets.
-// TODO: Replace YOUR_APPS_SCRIPT_URL with your deployed script URL.
-// Full setup guide is in the companion document.
-// Until configured, falls back to opening Google Form in a new tab.
 const APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_URL";
 
 const joinWaitlist=async(inputId,btn)=>{
@@ -550,17 +714,15 @@ const joinWaitlist=async(inputId,btn)=>{
   track('waitlist_signup',{date:getDailyKey()});
 
   if(APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_APPS_SCRIPT_URL") {
-    // Inline submission — player stays on the page
     try {
       await fetch(APPS_SCRIPT_URL, {
         method:"POST",
-        mode:"no-cors", // required for Google Apps Script
+        mode:"no-cors",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({ email, source:"outsmart_daily", date:getDailyKey() })
       });
     } catch(e) { console.warn("Apps Script submission failed:", e); }
   } else {
-    // Fallback until Apps Script is configured
     window.open(GOOGLE_FORM_URL,'_blank');
   }
 
@@ -582,10 +744,11 @@ const startGame=()=>{
 
 const showExhausted=()=>{
   document.getElementById("gameArea").style.display="none";document.getElementById("resultArea").style.display="block";
-  const machineCount = (window._liveCounter || loadLocalCounter()).machine.toLocaleString();
-  window._shareText=state.won
-    ?`⚡ I beat the AI in OUTSMART today.\n\nForced it to take the last stick.\nThe AI has beaten ${machineCount} humans and counting.\nCan you do it?\n\n${CHALLENGE_URL}`
-    :`💀 3 attempts. The AI won every single one.\n\nThe AI has beaten ${machineCount} humans and counting.\nThe AI is nearly unbeatable.\nThink you can prove it wrong?\n\n${CHALLENGE_URL}`;
+
+  window._shareText = state.won
+    ? getShareText(true, state.attempts || 1)
+    : getShareText(false, MAX_ATTEMPTS);
+
   document.getElementById("resultArea").innerHTML=`
     <div class="result">
       <div class="result-emoji">${state.won?"⚡":"💀"}</div>
@@ -640,6 +803,6 @@ init();
   <a href="/privacy.html" style="margin-right:12px; color:#00f0ff; text-decoration:none;">Privacy</a>
   <a href="/terms.html" style="color:#00f0ff; text-decoration:none;">Terms</a>
 </div>
-  
+
 </body>
 </html>
