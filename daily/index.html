@@ -1,4 +1,6 @@
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -102,12 +104,12 @@
   display:flex;
   align-items:center;
   gap:6px;
-  padding:8px 10px;
+  padding:6px 8px;
   border:1px solid transparent;
   border-radius:4px;
   transition:all 0.25s;
   cursor:pointer;
-  min-height:42px;
+  min-height:36px;
 }
     .row.selected { border-color:rgba(188,19,254,0.4); background:rgba(188,19,254,0.06); }
     .row.hinted { border-color:rgba(255,215,0,0.5); background:rgba(255,215,0,0.05); box-shadow:0 0 14px rgba(255,215,0,0.15); }
@@ -582,13 +584,14 @@
 .board-logo-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 .board-logo-img {
-  width: 160px;
-  max-width: 60%;
+  width: 110px;
+  max-width: 42%;
   height: auto;
+  opacity: 0.95;
 }
   </style>
 </head>
@@ -790,11 +793,11 @@
     <div class="think-bar-fill" id="thinkFill"></div>
   </div>
 
-  <div class="turn-box" id="turnBox" style="color:#BC13FE;font-size:14px;margin-bottom:8px;">
+  <div class="turn-box" id="turnBox" style="color:#BC13FE;font-size:13px;margin-bottom:4px;">
     YOUR TURN
   </div>
 
-  <div class="board" id="board" style="margin-bottom:10px;"></div>
+  <div class="board" id="board" style="margin-bottom:6px;"></div>
 
   <div class="confirm-area" id="confirmArea" style="display:none;margin-top:6px;">
     <div class="confirm-prompt" id="confirmPrompt" style="font-size:10px;margin-bottom:6px;"></div>
@@ -805,7 +808,7 @@
     </div>
   </div>
 
-  <div class="rule-reminder" id="ruleReminder" style="font-size:9px;margin-top:8px;opacity:0.6;">
+  <div class="rule-reminder" id="ruleReminder" style="font-size:8px;margin-top:4px;opacity:0.6;">
     LAST TAKER LOSES &mdash; FORCE THE AI TO TAKE THE FINAL STICK
   </div>
 
