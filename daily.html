@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,13 +64,13 @@
     body { 
   background:var(--bg); 
   color:#fff; 
-  font-family:'Orbitron', sans-serif; min-height:100vh; min-height:-webkit-fill-available; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:16px 16px 60px; padding-bottom:max(60px,env(safe-area-inset-bottom,60px)); overflow-x:hidden; user-select:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+  font-family:'Orbitron', sans-serif; min-height:100vh; min-height:-webkit-fill-available; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:8px 16px 40px; padding-bottom:max(60px,env(safe-area-inset-bottom,60px)); overflow-x:hidden; user-select:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
     body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px); pointer-events:none; z-index:9999; }
     body::after { content:''; position:fixed; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(0,243,255,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 90%,rgba(188,19,254,0.03) 0%,transparent 50%); pointer-events:none; z-index:0; }
     .wrap { position:relative; z-index:1; width:100%; max-width:420px; display:flex; flex-direction:column; align-items:center; }
-    .brand { font-family:'Orbitron',monospace; font-size:32px; font-weight:900; color:var(--cyan); letter-spacing:-1px; margin-bottom:4px; animation:glitch 5s infinite; }
-    .tagline { font-size:12px; color:var(--purple); letter-spacing:0.2em; font-weight:bold; margin-bottom:8px; }
-    .daily-label { font-size:13px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-bottom:16px; }
+    .brand { font-family:'Orbitron',monospace; font-size:32px; font-weight:900; color:var(--cyan); letter-spacing:-1px; margin-bottom:2px; animation:glitch 5s infinite; }
+    .tagline { font-size:11px; color:var(--purple); letter-spacing:0.2em; font-weight:bold; margin-bottom:4px; }
+    .daily-label { font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-bottom:8px; }
     .info-bar { width:100%; display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border:1px solid #1a1a1a; margin-bottom:18px; }
     .info-bar .date { font-size:11px; color:#fff; letter-spacing:0.15em; font-weight:bold; }
     .info-bar .rule { font-size:11px; color:var(--red); letter-spacing:0.15em; font-weight:bold; }
@@ -525,8 +523,8 @@
 
     @media (max-height: 820px) {
   body {
-    padding-top: 10px;
-    padding-bottom: max(36px, env(safe-area-inset-bottom, 36px));
+    padding-top: 4px;
+    padding-bottom: max(24px, env(safe-area-inset-bottom, 24px));
   }
 
   .brand {
@@ -568,9 +566,9 @@
 /* ===== HERO LOGO ===== */
 .hero-logo {
   display: block;
-  width: min(460px, 80vw);
+  width: min(380px, 72vw);
   height: auto;
-  margin: 0 auto 8px auto;
+  margin: 0 auto 4px auto;
 }
 
 /* ===== HTP LOGO ===== */
@@ -720,7 +718,7 @@
     </div>
   </div>
 
-  <div style="text-align:center;margin-bottom:2px;animation:fadeUp 0.4s ease both;">
+  <div style="text-align:center;margin-bottom:0px;margin-top:-6px;animation:fadeUp 0.4s ease both;">
   <img src="/outsmart_logo_final.png" alt="OUTSMART" class="hero-logo">
   <div class="tagline" style="font-size:9px;opacity:0.7;margin-top:2px;">FORCE THE AI TO TAKE THE LAST STICK</div>
   <div class="daily-label" style="font-size:9px;margin-top:4px;">&#128197; DAILY CHALLENGE</div>
@@ -780,7 +778,7 @@
 <div id="gameArea" style="
   width:100%;
   max-width:420px;
-  margin:-2px auto 0;
+  margin:-6px auto 0;
   transform-origin:top center;
   animation:fadeUp 0.4s ease 0.2s both;
 ">
