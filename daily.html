@@ -601,14 +601,9 @@ var applyMove=function(isPlayer,rowIndex,count){
   }
 };
 
-var getShareText = function(playerWon, attempts) {
-  var suffix = attempts > 1 ? "s" : "";
-
-  var today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
-
-  var shareUrl = playerWon
-    ? "https://playoutsmart.com/daily/" + today + "/win"
-    : "https://playoutsmart.com/daily/" + today + "/lose";
+var shareUrl = playerWon
+  ? "https://playoutsmart.com/daily/win"
+  : "https://playoutsmart.com/daily/lose";
   if (playerWon) {
     return "OUTSMART #DAILY\n\n\u26A1 Won in " + attempts + " attempt" + suffix + "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nCan you beat it?\n\n" + shareUrl;
   }
