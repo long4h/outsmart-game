@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -736,7 +737,13 @@
 
   <div class="pips" id="pips" style="margin:6px 0 4px;animation:fadeUp 0.4s ease 0.15s both;"></div>
 
-<div id="gameArea" style="width:100%;max-width:420px;margin:0 auto;animation:fadeUp 0.4s ease 0.2s both;">
+<div id="gameArea" style="
+  width:100%;
+  max-width:420px;
+  margin:0 auto;
+  transform-origin:top center;
+  animation:fadeUp 0.4s ease 0.2s both;
+">
 
   <div class="taunt" id="taunt" style="opacity:0;margin-bottom:4px;"></div>
 
@@ -1265,6 +1272,21 @@ var init=function(){
 };
 
 init();
+  function scaleGameArea() {
+  const gameArea = document.getElementById("gameArea");
+  if (!gameArea) return;
+
+  const screenHeight = window.innerHeight;
+  const targetHeight = 720;
+
+  const scale = Math.min(1, screenHeight / targetHeight);
+
+  gameArea.style.transform = `scale(${scale})`;
+}
+
+scaleGameArea();
+window.addEventListener("load", scaleGameArea);
+window.addEventListener("resize", scaleGameArea);
 </script>
 <div style="position:fixed;bottom:14px;right:14px;font-size:12px;z-index:9999;background:rgba(0,0,0,0.75);padding:6px 10px;border:1px solid rgba(0,240,255,0.35);border-radius:8px;box-shadow:0 0 10px rgba(0,240,255,0.12);">
   <a href="/privacy.html" style="margin-right:12px;color:#00f0ff;text-decoration:none;">Privacy</a>
