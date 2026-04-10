@@ -94,8 +94,9 @@
   width:100%;
   display:flex;
   flex-direction:column;
-  gap:4px;
-  margin-bottom:10px;
+  gap:2px;
+  margin-top:-4px;
+  margin-bottom:4px;
 }
     .row {
   display:flex;
@@ -145,7 +146,7 @@
     .row-count.zero { color:#222; }
     .confirm-area {
   text-align:center;
-  margin-bottom:8px;
+  margin-bottom:2px;
   animation:fadeUp 0.3s ease;
 }
     .confirm-prompt {
@@ -581,14 +582,16 @@
 .board-logo-wrap {
   display: flex;
   justify-content: center;
-  margin-bottom: 2px;
+  margin: -2px 0 -6px 0;
+  line-height: 0;
 }
 
 .board-logo-img {
-  width: 110px;
-  max-width: 42%;
+  width: 92px;
+  max-width: 36%;
   height: auto;
   opacity: 0.95;
+  display: block;
 }
   </style>
 </head>
@@ -775,22 +778,18 @@
 <div id="gameArea" style="
   width:100%;
   max-width:420px;
-  margin:0 auto;
+  margin:-8px auto 0;
   transform-origin:top center;
   animation:fadeUp 0.4s ease 0.2s both;
 ">
 
-  <div class="board-logo-wrap">
-  <img src="/outsmart_logo_final.png" alt="OUTSMART" class="board-logo-img">
-</div>
-  
   <div class="taunt" id="taunt" style="opacity:0;margin-bottom:4px;"></div>
 
   <div class="think-bar" id="thinkBar" style="margin-bottom:6px;">
     <div class="think-bar-fill" id="thinkFill"></div>
   </div>
 
-  <div class="turn-box" id="turnBox" style="color:#BC13FE;font-size:13px;margin-bottom:4px;">
+  <div class="turn-box" id="turnBox" style="color:#BC13FE;font-size:12px;margin-top:-6px;margin-bottom:2px;">
     YOUR TURN
   </div>
 
