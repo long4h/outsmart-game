@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,7 +63,10 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --cyan:#00F3FF; --purple:#BC13FE; --red:#FF003C; --gold:#FFD700; --bg:#000; --surface:#07010A; }
-    body { background:var(--bg); color:#fff; font-family:'Share Tech Mono',monospace; min-height:100vh; min-height:-webkit-fill-available; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:16px 16px 60px; padding-bottom:max(60px,env(safe-area-inset-bottom,60px)); overflow-x:hidden; user-select:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+    body { 
+  background:var(--bg); 
+  color:#fff; 
+  font-family:'Orbitron', sans-serif; min-height:100vh; min-height:-webkit-fill-available; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:16px 16px 60px; padding-bottom:max(60px,env(safe-area-inset-bottom,60px)); overflow-x:hidden; user-select:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
     body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px); pointer-events:none; z-index:9999; }
     body::after { content:''; position:fixed; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(0,243,255,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 90%,rgba(188,19,254,0.03) 0%,transparent 50%); pointer-events:none; z-index:0; }
     .wrap { position:relative; z-index:1; width:100%; max-width:420px; display:flex; flex-direction:column; align-items:center; }
@@ -201,11 +205,11 @@
     .pip.used { background:rgba(255,0,60,0.5); }
     .pip.remaining { background:var(--gold); }
     .waitlist-form { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center; }
-    .waitlist-input { flex:1; min-width:180px; background:#000; border:1px solid #00F3FF55; color:#fff; font-family:'Share Tech Mono',monospace; font-size:12px; font-weight:bold; padding:10px 14px; outline:none; letter-spacing:0.1em; text-transform:uppercase; }
+    .waitlist-input { flex:1; min-width:180px; background:#000; border:1px solid #00F3FF55; color:#fff; font-family:'Orbitron', sans-serif; font-size:12px; font-weight:bold; padding:10px 14px; outline:none; letter-spacing:0.1em; text-transform:uppercase; }
     .cta-box.loss .waitlist-input { border-color:#BC13FE55; }
     .waitlist-btn { font-family:'Orbitron',monospace; font-size:10px; font-weight:900; letter-spacing:0.15em; padding:10px 18px; cursor:pointer; outline:none; border:2px solid var(--cyan); color:var(--cyan); background:rgba(0,243,255,0.1); transition:all 0.2s; flex-shrink:0; white-space:nowrap; }
     .waitlist-btn.loss { border-color:var(--purple); color:var(--purple); background:rgba(188,19,254,0.1); }
-    .waitlist-confirm { font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-top:12px; text-align:center; }
+    .waitlist-confirm { font-family:'Orbitron', sans-serif; font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-top:12px; text-align:center; }
     .htp-overlay {
   position:fixed;
   inset:0;
@@ -503,7 +507,7 @@
     .share-platform-btn.copy { border-color:rgba(255,215,0,0.45); color:#FFD700; background:rgba(255,215,0,0.08); }
     .share-platform-left { text-align:left; display:flex; flex-direction:column; gap:3px; }
     .share-platform-title { font-size:11px; letter-spacing:0.14em; }
-    .share-platform-sub { font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:0.12em; opacity:0.75; }
+    .share-platform-sub { font-family:'Orbitron', sans-serif;font-size:10px; letter-spacing:0.12em; opacity:0.75; }
     .share-platform-arrow { font-size:16px; line-height:1; opacity:0.8; }
 
     @keyframes glitch {
@@ -555,6 +559,38 @@
     width: 9px;
   }
 }
+    /* ===== GLOBAL ORBITRON FORCE ===== */
+* {
+  font-family: 'Orbitron', sans-serif !important;
+}
+
+/* ===== HERO LOGO ===== */
+.hero-logo {
+  display: block;
+  width: min(460px, 80vw);
+  height: auto;
+  margin: 0 auto 8px auto;
+}
+
+/* ===== HTP LOGO ===== */
+.htp-logo {
+  display: block;
+  width: min(320px, 70vw);
+  margin: 0 auto 12px auto;
+}
+
+/* ===== BOARD LOGO ===== */
+.board-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+.board-logo-img {
+  width: 160px;
+  max-width: 60%;
+  height: auto;
+}
   </style>
 </head>
 <body>
@@ -564,7 +600,7 @@
   <div class="htp-box htp-box--new">
     <div class="htp-hero-kicker">CAN YOU BEAT THE AI?</div>
 
-    <div class="htp-title htp-title--hero">OUTSMART</div>
+    <img src="/outsmart_logo_final.png" alt="OUTSMART" class="htp-logo">
 
     <div class="htp-hero-sub">
       95% of players lose.<br/>
@@ -616,7 +652,7 @@
   <div id="shareModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:8000;align-items:center;justify-content:center;padding:24px;">
     <div style="background:#06060F;border:1px solid #FFD70044;max-width:400px;width:100%;padding:28px 24px;">
       <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:#FFD700;letter-spacing:0.1em;margin-bottom:16px;">SHARE YOUR RESULT</div>
-      <div id="shareText" style="font-family:'Share Tech Mono',monospace;font-size:12px;color:#ddd;line-height:1.8;letter-spacing:0.05em;background:#000;border:1px solid #222;padding:14px;margin-bottom:16px;white-space:pre-wrap;word-break:break-word;"></div>
+      <div id="shareText" style="font-family:'Orbitron', sans-serif;font-size:12px;color:#ddd;line-height:1.8;letter-spacing:0.05em;background:#000;border:1px solid #222;padding:14px;margin-bottom:16px;white-space:pre-wrap;word-break:break-word;"></div>
 
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button type="button" class="share-platform-btn twitter" onclick="shareTo('twitter')">
@@ -675,13 +711,13 @@
           <div class="share-platform-arrow">&rarr;</div>
         </button>
 
-        <button onclick="document.getElementById('shareModal').style.display='none';" style="font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:bold;letter-spacing:0.15em;padding:12px;cursor:pointer;outline:none;background:transparent;border:1px solid #222;color:#555;width:100%;">CLOSE</button>
+        <button onclick="document.getElementById('shareModal').style.display='none';" style="font-family:'Orbitron', sans-serif;font-size:11px;font-weight:bold;letter-spacing:0.15em;padding:12px;cursor:pointer;outline:none;background:transparent;border:1px solid #222;color:#555;width:100%;">CLOSE</button>
       </div>
     </div>
   </div>
 
   <div style="text-align:center;margin-bottom:2px;animation:fadeUp 0.4s ease both;">
-  <div class="brand" style="font-size:28px;letter-spacing:0.12em;">OUTSMART</div>
+  <img src="/outsmart_logo_final.png" alt="OUTSMART" class="hero-logo">
   <div class="tagline" style="font-size:9px;opacity:0.7;margin-top:2px;">FORCE THE AI TO TAKE THE LAST STICK</div>
   <div class="daily-label" style="font-size:9px;margin-top:4px;">&#128197; DAILY CHALLENGE</div>
 </div>
@@ -721,7 +757,7 @@
       <div style="background:rgba(255,0,60,0.08);border:1px solid #FF003C44;padding:18px;text-align:center;margin-bottom:20px;">
         <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:#FF003C;letter-spacing:0.08em;line-height:1.6;">THE PLAYER WHO TAKES<br/>THE LAST STICK &mdash; LOSES.</div>
       </div>
-      <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:#fff;letter-spacing:0.08em;line-height:1.8;margin-bottom:20px;font-weight:bold;">Pick a row each turn. Remove any number of sticks from it. Force the AI to take the very last stick.</div>
+      <div style="font-family:'Orbitron', sans-serif;font-size:11px;color:#fff;letter-spacing:0.08em;line-height:1.8;margin-bottom:20px;font-weight:bold;">Pick a row each turn. Remove any number of sticks from it. Force the AI to take the very last stick.</div>
       <button onclick="document.getElementById('ruleReminderModal').style.display='none';" style="width:100%;font-family:'Orbitron',monospace;font-size:12px;font-weight:900;letter-spacing:0.15em;padding:14px;cursor:pointer;outline:none;background:var(--red);border:none;color:#fff;">GOT IT</button>
     </div>
   </div>
@@ -745,6 +781,10 @@
   animation:fadeUp 0.4s ease 0.2s both;
 ">
 
+  <div class="board-logo-wrap">
+  <img src="/outsmart_logo_final.png" alt="OUTSMART" class="board-logo-img">
+</div>
+  
   <div class="taunt" id="taunt" style="opacity:0;margin-bottom:4px;"></div>
 
   <div class="think-bar" id="thinkBar" style="margin-bottom:6px;">
