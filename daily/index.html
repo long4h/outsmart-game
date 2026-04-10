@@ -602,16 +602,29 @@ var applyMove=function(isPlayer,rowIndex,count){
 };
 
 var getShareText = function(playerWon, attempts) {
-  var suffix = attempts === 1 ? "" : "s";
+  var suffix = attempts > 1 ? "s" : "";
+
+  var today = new Date().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
   var shareUrl = playerWon
     ? "https://playoutsmart.com/daily/win"
     : "https://playoutsmart.com/daily/lose";
+
   if (playerWon) {
-    return "OUTSMART #DAILY\n\n\u26A1 Won in " + attempts + " attempt" + suffix +
-           "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nCan you beat it?\n\n" + shareUrl;
+    return "OUTSMART #DAILY\n\n🔥 Won in " + attempts + " attempt" + suffix +
+      "\n" + today +
+      "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nCan you beat it?\n\n" +
+      shareUrl;
   }
-  return "OUTSMART #DAILY\n\n\uD83D\uDC80 Lost in " + attempts + " attempt" + suffix +
-         "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nThink you're smarter?\n\n" + shareUrl;
+
+  return "OUTSMART #DAILY\n\n💀 Lost in " + attempts + " attempt" + suffix +
+    "\n" + today +
+    "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nThink you're smarter?\n\n" +
+    shareUrl;
 };
   
 var showResult=function(playerWon){
