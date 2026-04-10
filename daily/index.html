@@ -222,10 +222,18 @@
   padding:24px;
 }
 
-.htp-box {
-  background: rgba(6, 6, 15, 0.94);
-  border: 1px solid #00F3FF55;
-  box-shadow: 0 0 30px rgba(0,243,255,0.08);
+.htp-box--new{
+  position:relative;
+  width:min(100%, 430px);
+  padding:28px 24px 22px;
+  border:1px solid rgba(0,243,255,0.35);
+  background:rgba(6,6,15,0.94);
+  box-shadow:
+    0 0 0 1px rgba(0,243,255,0.08) inset,
+    0 0 30px rgba(0,243,255,0.10),
+    0 0 50px rgba(179,0,255,0.08);
+  text-align:center;
+  overflow:hidden;
 }
     
 .htp-box--new::before{
