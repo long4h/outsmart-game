@@ -1126,7 +1126,7 @@ var stickClick=function(ri,cnt){
   if(cnt<1)return;
   beep("stick");state.selectedRow=ri;state.pendingCount=cnt;renderBoard();
   var cp=document.getElementById("confirmArea");var pr=document.getElementById("confirmPrompt");
-  pr.textContent="REMOVE "+cnt+" STICK"+(cnt>1?"S":"")+" FROM ROW "+(ri+1)+"?";
+  pr.textContent="REMOVE "+cnt+" STICK"+(cnt>1?"S":"")+"?";
   cp.style.display="block";
   document.getElementById("ruleReminder").style.display="none";
 };
@@ -1402,7 +1402,7 @@ var init=function(){
     var rS=String(secsLeft%60).padStart(2,"0");
     var tEl=document.getElementById("utcTime");var rEl=document.getElementById("utcReset");
     if (tEl) tEl.textContent = "UTC\n" + hh + ":" + mm + ":" + ss;
-if (rEl) rEl.textContent = "RESETS IN\n" + rh + ":" + rm + ":" + rs;
+if (rEl) rEl.textContent = "RESETS IN\n" + rH + ":" + rM + ":" + rS;
   };
   tickClock();setInterval(tickClock,1000);
   renderCounter();
