@@ -97,9 +97,24 @@
 }
     .info-bar .date { font-size:11px; color:#fff; letter-spacing:0.15em; font-weight:bold; }
     .info-bar .rule { font-size:11px; color:var(--red); letter-spacing:0.15em; font-weight:bold; }
-    .info-bar .utc-wrap { text-align:right; }
-    .info-bar .utc-time { font-size:11px; color:#fff; letter-spacing:0.1em; font-weight:bold; display:block; }
-    .info-bar .utc-reset { font-size:10px; color:#fff; letter-spacing:0.1em; font-weight:bold; display:block; margin-top:2px; }
+    .info-bar .utc-wrap {
+  flex: 0 0 110px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.05;
+}
+
+.info-bar .utc-time,
+.info-bar .utc-reset {
+  font-size: 11px;
+  color: #fff;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+  display: block;
+  white-space: pre-line; /* 🔥 THIS IS THE KEY */
+}
     .turn-box {
   font-family:'Orbitron',monospace;
   font-size:16px;
@@ -133,14 +148,7 @@
   min-height:36px;
 }
     .row.selected { border-color:rgba(188,19,254,0.4); background:rgba(188,19,254,0.06); }
-    .row.hinted { border-color:rgba(255,215,0,0.5); background:rgba(255,215,0,0.05); box-shadow:0 0 14px rgba(255,215,0,0.15); }
-    .row-label {
-  font-size:9px;
-  color:#fff;
-  width:18px;
-  flex-shrink:0;
-  font-weight:bold;
-}
+    .row.hinted { border-color:rgba(255,215,0,0.5); background:rgba(255,215,0,0.05); box-shadow:0 0 14px rgba(255,215,0,0.15); }    
     .sticks {
   display:flex;
   align-items:flex-end;
@@ -592,6 +600,10 @@
 .info-bar .utc-wrap {
   flex: 0 0 96px;    
 }
+      .board-logo-img {
+  width: 140px;
+  max-width: 60%;
+}
     /* ===== GLOBAL ORBITRON FORCE ===== */
 * {
   font-family: 'Orbitron', sans-serif !important;
@@ -616,16 +628,16 @@
 .board-logo-wrap {
   display: flex;
   justify-content: center;
-  margin: 10px 0 6px 0;
-  line-height: 0;
+  margin: 6px 0 4px;
 }
-
+      
 .board-logo-img {
-  width: 150px;
-  max-width: 52%;
+  width: 200px;        /* 🔥 bigger */
+  max-width: 70%;      /* allow it to scale */
   height: auto;
   display: block;
   opacity: 0.96;
+  margin: 6px 0 4px;   /* tighten spacing above/below */
 }
     /* ===== GLOBAL POLISH ===== */
 body {
@@ -1079,7 +1091,6 @@ var renderBoard=function(){
     var rowEl=document.createElement("div");
     rowEl.className="row"+(isSel?" selected":"");
     rowEl.onclick=(function(r){return function(){rowClick(r);};})(ri);
-    var label=document.createElement("div");label.className="row-label";label.textContent="R"+(ri+1);rowEl.appendChild(label);
     var sticksEl=document.createElement("div");sticksEl.className="sticks";
     var h=Math.max(24,Math.min(52,52-ri*5));
     for(var si=0;si<maxCount;si++){
@@ -1390,8 +1401,8 @@ var init=function(){
     var rM=String(Math.floor((secsLeft%3600)/60)).padStart(2,"0");
     var rS=String(secsLeft%60).padStart(2,"0");
     var tEl=document.getElementById("utcTime");var rEl=document.getElementById("utcReset");
-    if(tEl)tEl.textContent="UTC "+hh+":"+mm+":"+ss;
-    if(rEl)rEl.textContent="RESETS IN "+rH+":"+rM+":"+rS;
+    if (tEl) tEl.textContent = "UTC\n" + hh + ":" + mm + ":" + ss;
+if (rEl) rEl.textContent = "RESETS IN\n" + rh + ":" + rm + ":" + rs;
   };
   tickClock();setInterval(tickClock,1000);
   renderCounter();
