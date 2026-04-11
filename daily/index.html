@@ -323,7 +323,7 @@
     .counter-bar-machine { background:var(--red); transition:width 1s ease; }
 
     /* ===== SHARE MODAL BUTTONS ===== */
-    .share-platform-btn { width:100%; font-family:'Orbitron',monospace; font-size:12px; font-weight:900; letter-spacing:0.12em; padding:14px 16px; cursor:pointer; outline:none; border:1px solid #222; background:#09090f; color:#fff; display:flex; align-items:center; justify-content:space-between; transition:all 0.2s; }
+    .share-platform-btn { width:100%; font-family:'Orbitron',monospace; font-size:12px; font-weight:900; letter-spacing:0.12em; padding:10px 14px; cursor:pointer; outline:none; border:1px solid #222; background:#09090f; color:#fff; display:flex; align-items:center; justify-content:space-between; transition:all 0.2s; }
     .share-platform-btn:hover { transform:translateY(-1px); }
     .share-platform-btn.twitter { border-color:#2c2c2c; color:#fff; }
     .share-platform-btn.whatsapp { border-color:rgba(37,211,102,0.45); color:#25D366; background:rgba(37,211,102,0.08); }
@@ -452,40 +452,46 @@
     </div>
   </div>
 
-  <div id="shareModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:8000;align-items:center;justify-content:center;padding:24px;">
-    <div style="background:#06060F;border:1px solid #FFD70044;max-width:400px;width:100%;padding:28px 24px;">
-      <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:#FFD700;letter-spacing:0.1em;margin-bottom:16px;">SHARE YOUR RESULT</div>
-      <div id="shareText" style="font-family:'Orbitron', sans-serif;font-size:12px;color:#ddd;line-height:1.8;letter-spacing:0.05em;background:#000;border:1px solid #222;padding:14px;margin-bottom:16px;white-space:pre-wrap;word-break:break-word;"></div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
+  <div id="shareModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:8000;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;" onclick="document.getElementById('shareModal').style.display='none';">
+    <div style="background:#06060F;border:1px solid #FFD70044;max-width:400px;width:100%;padding:20px 18px 18px;margin:auto;position:relative;" onclick="event.stopPropagation()">
+
+      <!-- Header row with title + X close -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:#FFD700;letter-spacing:0.1em;">SHARE YOUR RESULT</div>
+        <button onclick="document.getElementById('shareModal').style.display='none';" style="font-family:'Orbitron',monospace;font-size:16px;font-weight:900;background:transparent;border:1px solid #333;color:#fff;cursor:pointer;padding:4px 10px;line-height:1;letter-spacing:0;">&times;</button>
+      </div>
+
+      <div id="shareText" style="font-family:'Orbitron', sans-serif;font-size:11px;color:#ddd;line-height:1.8;letter-spacing:0.05em;background:#000;border:1px solid #222;padding:12px;margin-bottom:12px;white-space:pre-wrap;word-break:break-word;"></div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;">
         <button type="button" class="share-platform-btn twitter" onclick="shareTo('twitter')">
-          <div class="share-platform-left"><div class="share-platform-title">X / TWITTER</div><div class="share-platform-sub">TAP TO SHARE</div></div>
+          <div class="share-platform-left"><div class="share-platform-title">X / TWITTER</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
         <button type="button" class="share-platform-btn whatsapp" onclick="shareTo('whatsapp')">
-          <div class="share-platform-left"><div class="share-platform-title">WHATSAPP</div><div class="share-platform-sub">TAP TO SHARE</div></div>
+          <div class="share-platform-left"><div class="share-platform-title">WHATSAPP</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
         <button type="button" class="share-platform-btn facebook" onclick="shareTo('facebook')">
-          <div class="share-platform-left"><div class="share-platform-title">FACEBOOK</div><div class="share-platform-sub">TAP TO SHARE</div></div>
+          <div class="share-platform-left"><div class="share-platform-title">FACEBOOK</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
         <button type="button" class="share-platform-btn telegram" onclick="shareTo('telegram')">
-          <div class="share-platform-left"><div class="share-platform-title">TELEGRAM</div><div class="share-platform-sub">TAP TO SHARE</div></div>
+          <div class="share-platform-left"><div class="share-platform-title">TELEGRAM</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
         <button type="button" class="share-platform-btn reddit" onclick="shareTo('reddit')">
-          <div class="share-platform-left"><div class="share-platform-title">REDDIT</div><div class="share-platform-sub">TAP TO SHARE</div></div>
+          <div class="share-platform-left"><div class="share-platform-title">REDDIT</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
         <button type="button" id="shareCopyBtn" class="share-platform-btn copy">
-          <div class="share-platform-left"><div class="share-platform-title">COPY</div><div class="share-platform-sub">COPY TO CLIPBOARD</div></div>
+          <div class="share-platform-left"><div class="share-platform-title">COPY TO CLIPBOARD</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
         <button type="button" id="shareNativeBtn" class="share-platform-btn copy" style="display:none;">
-          <div class="share-platform-left"><div class="share-platform-title">SHARE VIA APPS</div><div class="share-platform-sub">USE PHONE SHARE SHEET</div></div>
+          <div class="share-platform-left"><div class="share-platform-title">SHARE VIA APPS</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
-        <button onclick="document.getElementById('shareModal').style.display='none';" style="font-family:'Orbitron', sans-serif;font-size:11px;font-weight:bold;letter-spacing:0.15em;padding:12px;cursor:pointer;outline:none;background:transparent;border:1px solid #222;color:#555;width:100%;">CLOSE</button>
       </div>
     </div>
   </div>
