@@ -61,439 +61,238 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --cyan:#00F3FF; --purple:#BC13FE; --red:#FF003C; --gold:#FFD700; --bg:#000; --surface:#07010A; }
-    body { 
-  background:var(--bg); 
-  color:#fff; 
-  font-family:'Orbitron', sans-serif; min-height:100vh; min-height:-webkit-fill-available; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:8px 16px 40px; padding-bottom:max(60px,env(safe-area-inset-bottom,60px)); overflow-x:hidden; user-select:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+
+    body {
+      background:var(--bg);
+      color:#fff;
+      font-family:'Orbitron', sans-serif;
+      min-height:100vh;
+      min-height:-webkit-fill-available;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding:8px 16px 40px;
+      padding-bottom:max(60px,env(safe-area-inset-bottom,60px));
+      overflow-x:hidden;
+      user-select:none;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      letter-spacing: 0.04em;
+    }
     body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px); pointer-events:none; z-index:9999; }
     body::after { content:''; position:fixed; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(0,243,255,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 90%,rgba(188,19,254,0.03) 0%,transparent 50%); pointer-events:none; z-index:0; }
+
     .wrap { position:relative; z-index:1; width:100%; max-width:420px; display:flex; flex-direction:column; align-items:center; }
     .brand { font-family:'Orbitron',monospace; font-size:32px; font-weight:900; color:var(--cyan); letter-spacing:-1px; margin-bottom:2px; animation:glitch 5s infinite; }
     .tagline { font-size:11px; color:var(--purple); letter-spacing:0.2em; font-weight:bold; margin-bottom:4px; }
     .daily-label { font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-bottom:8px; }
+
     .info-bar {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border: 1px solid #1a1a1a;
-  margin-bottom: 18px;
-}
-    .info-bar .date {
-  flex: 0 0 120px;
-}
-
-.info-bar .rule {
-  flex: 1 1 auto;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.info-bar .utc-wrap {
-  flex: 0 0 110px;
-  text-align: right;
-}
-    .info-bar .date { font-size:11px; color:#fff; letter-spacing:0.15em; font-weight:bold; }
-    .info-bar .rule { font-size:11px; color:var(--red); letter-spacing:0.15em; font-weight:bold; }
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 1px solid #1a1a1a;
+      margin-bottom: 18px;
+    }
+    .info-bar .date { flex: 0 0 120px; font-size:11px; color:#fff; letter-spacing:0.15em; font-weight:bold; }
+    .info-bar .rule { flex: 1 1 auto; text-align: center; white-space: nowrap; font-size:11px; color:var(--red); letter-spacing:0.15em; font-weight:bold; }
     .info-bar .utc-wrap {
-  flex: 0 0 110px;
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  line-height: 1.05;
-}
+      flex: 0 0 110px;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1.05;
+    }
+    .info-bar .utc-time,
+    .info-bar .utc-reset {
+      font-size: 11px;
+      color: #fff;
+      letter-spacing: 0.1em;
+      font-weight: bold;
+      display: block;
+      white-space: pre-line;
+    }
 
-.info-bar .utc-time,
-.info-bar .utc-reset {
-  font-size: 11px;
-  color: #fff;
-  letter-spacing: 0.1em;
-  font-weight: bold;
-  display: block;
-  white-space: pre-line; /* 🔥 THIS IS THE KEY */
-}
     .turn-box {
-  font-family:'Orbitron',monospace;
-  font-size:16px;
-  font-weight:900;
-  letter-spacing:0.05em;
-  margin-bottom:8px;
-  min-height:22px;
-  text-align:center;
-  transition:color 0.3s;
-}
+      font-family:'Orbitron',monospace;
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:0.05em;
+      margin-bottom:8px;
+      min-height:22px;
+      text-align:center;
+      transition:color 0.3s;
+    }
     .think-bar { width:100%; height:2px; background:#111; border-radius:99px; overflow:hidden; margin-bottom:14px; opacity:0; transition:opacity 0.2s; }
     .think-bar.active { opacity:1; }
     .think-bar-fill { height:100%; background:linear-gradient(90deg,var(--purple),var(--purple)88); border-radius:99px; animation:thinkProgress 2s linear forwards; }
+
     .board {
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  margin-top:-4px;
-  margin-bottom:4px;
-}
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      margin-top:-4px;
+      margin-bottom:4px;
+    }
     .row {
-  display:flex;
-  align-items:center;
-  gap:6px;
-  padding:6px 8px;
-  border:1px solid transparent;
-  border-radius:4px;
-  transition:all 0.25s;
-  cursor:pointer;
-  min-height:36px;
-}
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 8px;
+      border:1px solid transparent;
+      border-radius:4px;
+      transition:all 0.25s;
+      cursor:pointer;
+      min-height:36px;
+    }
     .row.selected { border-color:rgba(188,19,254,0.4); background:rgba(188,19,254,0.06); }
-    .row.hinted { border-color:rgba(255,215,0,0.5); background:rgba(255,215,0,0.05); box-shadow:0 0 14px rgba(255,215,0,0.15); }    
+    .row.hinted { border-color:rgba(255,215,0,0.5); background:rgba(255,215,0,0.05); box-shadow:0 0 14px rgba(255,215,0,0.15); }
     .sticks {
-  display:flex;
-  align-items:flex-end;
-  flex:1;
-  justify-content:center;
-  gap:4px;
-}
+      display:flex;
+      align-items:flex-end;
+      flex:1;
+      justify-content:center;
+      gap:4px;
+    }
     .stick {
-  width:10px;
-  border-radius:3px 3px 1px 1px;
-  transition:all 0.25s;
-  cursor:pointer;
-}
+      width:10px;
+      border-radius:3px 3px 1px 1px;
+      transition:all 0.25s;
+      cursor:pointer;
+    }
     .stick.alive { background:var(--purple); box-shadow:0 0 6px rgba(188,19,254,0.5); }
     .stick.pending { background:var(--gold)!important; box-shadow:0 0 10px rgba(255,215,0,0.6)!important; transform:scaleY(1.08); }
     .stick.dead { background:#1a1a1a; box-shadow:none; cursor:default; }
     .row-count {
-  font-family:'Orbitron',monospace;
-  font-size:10px;
-  font-weight:900;
-  color:var(--purple);
-  width:18px;
-  text-align:right;
-  flex-shrink:0;
-}
+      font-family:'Orbitron',monospace;
+      font-size:10px;
+      font-weight:900;
+      color:var(--purple);
+      width:18px;
+      text-align:right;
+      flex-shrink:0;
+    }
     .row-count.zero { color:#222; }
-    .confirm-area {
-  text-align:center;
-  margin-bottom:2px;
-  animation:fadeUp 0.3s ease;
-}
-    .confirm-prompt {
-  font-size:10px;
-  color:#fff;
-  letter-spacing:0.12em;
-  margin-bottom:6px;
-  font-weight:bold;
-}
+
+    .confirm-area { text-align:center; margin-bottom:2px; animation:fadeUp 0.3s ease; }
+    .confirm-prompt { font-size:10px; color:#fff; letter-spacing:0.12em; margin-bottom:6px; font-weight:bold; }
     .btn-row { display:flex; gap:10px; justify-content:center; }
     .btn {
-  font-family:'Orbitron',monospace;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:0.14em;
-  padding:10px 16px;
-  cursor:pointer;
-  outline:none;
-  background:transparent;
-  border:2px solid;
-  transition:all 0.2s;
-  flex:1;
-  min-height:42px;
-}
+      font-family:'Orbitron',monospace;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:0.14em;
+      padding:10px 16px;
+      cursor:pointer;
+      outline:none;
+      background:transparent;
+      border:2px solid;
+      transition:all 0.2s;
+      flex:1;
+      min-height:42px;
+    }
     .btn-confirm { border-color:var(--purple); color:var(--purple); box-shadow:0 0 12px rgba(188,19,254,0.3); }
     .btn-cancel { border-color:#333; color:#555; }
-    .rule-reminder {
-  font-size:9px;
-  color:#fff;
-  letter-spacing:0.08em;
-  font-weight:bold;
-  text-align:center;
-  margin-bottom:8px;
-}
+
+    .rule-reminder { font-size:9px; color:#fff; letter-spacing:0.08em; font-weight:bold; text-align:center; margin-bottom:8px; }
     .taunt { font-size:11px; color:var(--red); letter-spacing:0.12em; min-height:18px; text-align:center; font-weight:bold; margin-bottom:6px; transition:opacity 0.3s; }
+
     .result { text-align:center; width:100%; animation:zoomIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
     .result-emoji { font-size:64px; margin-bottom:10px; }
     .result-title { font-family:'Orbitron',monospace; font-size:36px; font-weight:900; letter-spacing:0.05em; margin-bottom:12px; }
     .result-sub { font-size:12px; letter-spacing:0.1em; color:#fff; margin-bottom:24px; font-weight:bold; }
+
     .cta-box { width:100%; border:2px solid var(--cyan); padding:22px 20px; text-align:center; margin:20px 0; background:rgba(0,243,255,0.04); animation:fadeUp 0.5s ease 0.3s both; }
     .cta-box.loss { border-color:var(--purple); background:rgba(188,19,254,0.04); }
     .cta-eyebrow { font-size:9px; color:#fff; letter-spacing:0.25em; margin-bottom:10px; font-weight:bold; }
     .cta-headline { font-family:'Orbitron',monospace; font-size:16px; font-weight:900; color:var(--cyan); letter-spacing:0.1em; margin-bottom:8px; line-height:1.3; white-space:pre-line; }
     .cta-box.loss .cta-headline { color:var(--purple); }
     .cta-body { font-size:11px; color:#fff; letter-spacing:0.05em; line-height:1.7; margin-bottom:18px; font-weight:bold; }
+
     .share-btn { width:100%; font-family:'Orbitron',monospace; font-size:12px; font-weight:900; letter-spacing:0.15em; padding:14px; cursor:pointer; outline:none; background:rgba(255,215,0,0.08); border:2px solid var(--gold); color:var(--gold); margin-top:10px; transition:all 0.2s; animation:fadeUp 0.5s ease 0.5s both; }
     .share-btn:hover { background:rgba(255,215,0,0.18); }
     .share-sub { font-size:9px; opacity:0.7; letter-spacing:0.15em; margin-top:4px; }
+
     .stats-bar { width:100%; display:flex; justify-content:space-around; padding:14px 0; border-top:1px solid #111; border-bottom:1px solid #111; margin:16px 0; animation:fadeUp 0.5s ease 0.4s both; }
     .stat-item { text-align:center; }
     .stat-label { font-size:8px; color:#fff; letter-spacing:0.15em; font-weight:bold; }
     .stat-value { font-family:'Orbitron',monospace; font-size:18px; font-weight:900; }
+
     .pips { display:flex; gap:6px; justify-content:center; margin-bottom:14px; }
     .pip { width:28px; height:5px; border-radius:99px; transition:all 0.3s; }
     .pip.used { background:rgba(255,0,60,0.5); }
     .pip.remaining { background:var(--gold); }
+
     .waitlist-form { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center; }
     .waitlist-input { flex:1; min-width:180px; background:#000; border:1px solid #00F3FF55; color:#fff; font-family:'Orbitron', sans-serif; font-size:12px; font-weight:bold; padding:10px 14px; outline:none; letter-spacing:0.1em; text-transform:uppercase; }
     .cta-box.loss .waitlist-input { border-color:#BC13FE55; }
     .waitlist-btn { font-family:'Orbitron',monospace; font-size:10px; font-weight:900; letter-spacing:0.15em; padding:10px 18px; cursor:pointer; outline:none; border:2px solid var(--cyan); color:var(--cyan); background:rgba(0,243,255,0.1); transition:all 0.2s; flex-shrink:0; white-space:nowrap; }
     .waitlist-btn.loss { border-color:var(--purple); color:var(--purple); background:rgba(188,19,254,0.1); }
     .waitlist-confirm { font-family:'Orbitron', sans-serif; font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-top:12px; text-align:center; }
+
+    /* ===== HTP OVERLAY ===== */
     .htp-overlay {
-  position:fixed;
-  inset:0;
+      position:fixed; inset:0;
+      background:rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index:9000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .htp-box--new {
+      position:relative;
+      width:min(100%, 430px);
+      padding:28px 24px 22px;
+      border:1px solid rgba(0,243,255,0.35);
+      background:rgba(6,6,15,0.94);
+      box-shadow: 0 0 0 1px rgba(0,243,255,0.08) inset, 0 0 30px rgba(0,243,255,0.10), 0 0 50px rgba(179,0,255,0.08);
+      text-align:center;
+      overflow:hidden;
+    }
+    .htp-box--new::before {
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 20%), repeating-linear-gradient(to bottom, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 4px);
+      opacity:0.35;
+    }
+    .htp-hero-kicker { position:relative; font-size:15px; line-height:1.25; letter-spacing:0.16em; font-weight:800; color:#ffffff; margin-bottom:16px; text-transform:uppercase; }
+    .htp-title--hero { position:relative; margin:0 0 12px; font-size:44px; line-height:0.95; letter-spacing:0.08em; font-weight:900; color:#00F3FF; text-transform:uppercase; text-shadow: 0 0 8px rgba(0,243,255,0.35), 0 0 18px rgba(0,243,255,0.18); }
+    .htp-hero-sub { position:relative; font-size:17px; line-height:1.45; letter-spacing:0.06em; font-weight:800; color:#ffffff; text-transform:uppercase; margin-bottom:20px; }
+    .htp-board-preview { position:relative; margin:0 auto 18px; padding:16px 14px 14px; border:1px solid rgba(255,255,255,0.10); background:linear-gradient(180deg, rgba(5,8,25,0.92) 0%, rgba(0,0,0,0.88) 100%); overflow:hidden; }
+    .htp-board-glow { position:absolute; inset:auto 50% 10px 50%; width:180px; height:180px; transform:translateX(-50%); border-radius:50%; background:radial-gradient(circle, rgba(179,0,255,0.22) 0%, rgba(0,243,255,0.08) 35%, transparent 70%); filter:blur(10px); pointer-events:none; }
+    .htp-board-copy { position:relative; font-size:10px; line-height:1.4; letter-spacing:0.18em; font-weight:800; color:#ffffff; text-transform:uppercase; margin-bottom:14px; }
+    .htp-sticks--hero { position:relative; display:flex; flex-direction:column; align-items:center; gap:6px; }
+    .htp-row { display:flex; justify-content:center; gap:6px; }
+    .htp-stick { width:11px; border-radius:3px; background:linear-gradient(180deg, #ff4dff 0%, #b300ff 100%); box-shadow: 0 0 8px rgba(179,0,255,0.45), 0 0 18px rgba(179,0,255,0.22); }
+    .htp-mini-rule { position:relative; margin:0 0 14px; font-size:12px; line-height:1.6; letter-spacing:0.14em; font-weight:800; color:#ffffff; text-transform:uppercase; }
+    .htp-meta { position:relative; font-size:10px; line-height:1.5; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.72); text-transform:uppercase; margin-bottom:18px; }
+    .htp-btn--hero {
+      position:relative; display:block; width:100%; border:none; padding:16px 18px; cursor:pointer;
+      background:linear-gradient(180deg, #3ef7ff 0%, #00F3FF 100%);
+      color:#00131a; font-size:16px; line-height:1; letter-spacing:0.16em; font-weight:900; text-transform:uppercase;
+      box-shadow: 0 0 14px rgba(0,243,255,0.35), 0 0 28px rgba(0,243,255,0.18);
+      transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      animation:htpPulse 1.8s ease-in-out infinite;
+    }
+    .htp-btn--hero:hover { transform:translateY(-1px); filter:brightness(1.04); box-shadow: 0 0 18px rgba(0,243,255,0.42), 0 0 36px rgba(0,243,255,0.22); }
+    .htp-skip { position:relative; margin-top:12px; border:none; background:transparent; color:rgba(255,255,255,0.52); font-size:10px; line-height:1; letter-spacing:0.16em; font-weight:800; text-transform:uppercase; cursor:pointer; }
+    .htp-skip:hover { color:rgba(255,255,255,0.78); }
 
-  /* 🔥 key change */
-  background:rgba(0,0,0,0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+    /* ===== LOGO STYLES ===== */
+    .hero-logo { display:block; width:min(380px, 72vw); height:auto; margin:0 auto 4px auto; }
+    .htp-logo { display:block; width:min(320px, 70vw); margin:0 auto 12px auto; }
+    .board-logo-wrap { display:flex; justify-content:center; margin:6px 0 4px; }
+    .board-logo-img { width:200px; max-width:70%; height:auto; display:block; opacity:0.96; margin:6px 0 4px; }
 
-  z-index:9000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-}
-
-.htp-box--new{
-  position:relative;
-  width:min(100%, 430px);
-  padding:28px 24px 22px;
-  border:1px solid rgba(0,243,255,0.35);
-  background:rgba(6,6,15,0.94);
-  box-shadow:
-    0 0 0 1px rgba(0,243,255,0.08) inset,
-    0 0 30px rgba(0,243,255,0.10),
-    0 0 50px rgba(179,0,255,0.08);
-  text-align:center;
-  overflow:hidden;
-}
-    
-.htp-box--new::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 20%),
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.018) 0px,
-      rgba(255,255,255,0.018) 1px,
-      transparent 1px,
-      transparent 4px
-    );
-  opacity:0.35;
-}
-
-.htp-hero-kicker{
-  position:relative;
-  font-size:15px;
-  line-height:1.25;
-  letter-spacing:0.16em;
-  font-weight:800;
-  color:#ffffff;
-  margin-bottom:16px;
-  text-transform:uppercase;
-}
-
-.htp-title--hero{
-  position:relative;
-  margin:0 0 12px;
-  font-size:44px;
-  line-height:0.95;
-  letter-spacing:0.08em;
-  font-weight:900;
-  color:#00F3FF;
-  text-transform:uppercase;
-  text-shadow:
-    0 0 8px rgba(0,243,255,0.35),
-    0 0 18px rgba(0,243,255,0.18);
-}
-
-.htp-hero-sub{
-  position:relative;
-  font-size:17px;
-  line-height:1.45;
-  letter-spacing:0.06em;
-  font-weight:800;
-  color:#ffffff;
-  text-transform:uppercase;
-  margin-bottom:20px;
-}
-
-.htp-board-preview{
-  position:relative;
-  margin:0 auto 18px;
-  padding:16px 14px 14px;
-  border:1px solid rgba(255,255,255,0.10);
-  background:linear-gradient(180deg, rgba(5,8,25,0.92) 0%, rgba(0,0,0,0.88) 100%);
-  overflow:hidden;
-}
-
-.htp-board-glow{
-  position:absolute;
-  inset:auto 50% 10px 50%;
-  width:180px;
-  height:180px;
-  transform:translateX(-50%);
-  border-radius:50%;
-  background:radial-gradient(circle, rgba(179,0,255,0.22) 0%, rgba(0,243,255,0.08) 35%, transparent 70%);
-  filter:blur(10px);
-  pointer-events:none;
-}
-
-.htp-board-copy{
-  position:relative;
-  font-size:10px;
-  line-height:1.4;
-  letter-spacing:0.18em;
-  font-weight:800;
-  color:#ffffff;
-  text-transform:uppercase;
-  margin-bottom:14px;
-}
-
-.htp-sticks--hero{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-}
-
-.htp-row{
-  display:flex;
-  justify-content:center;
-  gap:6px;
-}
-
-.htp-stick{
-  width:11px;
-  border-radius:3px;
-  background:linear-gradient(180deg, #ff4dff 0%, #b300ff 100%);
-  box-shadow:
-    0 0 8px rgba(179,0,255,0.45),
-    0 0 18px rgba(179,0,255,0.22);
-}
-
-.htp-mini-rule{
-  position:relative;
-  margin:0 0 14px;
-  font-size:12px;
-  line-height:1.6;
-  letter-spacing:0.14em;
-  font-weight:800;
-  color:#ffffff;
-  text-transform:uppercase;
-}
-
-.htp-meta{
-  position:relative;
-  font-size:10px;
-  line-height:1.5;
-  letter-spacing:0.16em;
-  font-weight:800;
-  color:rgba(255,255,255,0.72);
-  text-transform:uppercase;
-  margin-bottom:18px;
-}
-
-.htp-btn--hero{
-  position:relative;
-  display:block;
-  width:100%;
-  border:none;
-  padding:16px 18px;
-  cursor:pointer;
-  background:linear-gradient(180deg, #3ef7ff 0%, #00F3FF 100%);
-  color:#00131a;
-  font-size:16px;
-  line-height:1;
-  letter-spacing:0.16em;
-  font-weight:900;
-  text-transform:uppercase;
-  box-shadow:
-    0 0 14px rgba(0,243,255,0.35),
-    0 0 28px rgba(0,243,255,0.18);
-  transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-  animation:htpPulse 1.8s ease-in-out infinite;
-}
-
-.htp-btn--hero:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.04);
-  box-shadow:
-    0 0 18px rgba(0,243,255,0.42),
-    0 0 36px rgba(0,243,255,0.22);
-}
-
-.htp-skip{
-  position:relative;
-  margin-top:12px;
-  border:none;
-  background:transparent;
-  color:rgba(255,255,255,0.52);
-  font-size:10px;
-  line-height:1;
-  letter-spacing:0.16em;
-  font-weight:800;
-  text-transform:uppercase;
-  cursor:pointer;
-}
-
-.htp-skip:hover{
-  color:rgba(255,255,255,0.78);
-}
-
-@keyframes htpPulse{
-  0%, 100%{
-    transform:scale(1);
-    box-shadow:
-      0 0 14px rgba(0,243,255,0.35),
-      0 0 28px rgba(0,243,255,0.18);
-  }
-  50%{
-    transform:scale(1.015);
-    box-shadow:
-      0 0 18px rgba(0,243,255,0.48),
-      0 0 40px rgba(0,243,255,0.24);
-  }
-}
-
-@media (max-width: 480px){
-  .htp-box--new{
-    width:min(100%, 390px);
-    padding:24px 18px 18px;
-  }
-
-  .htp-title--hero{
-    font-size:36px;
-  }
-
-  .htp-hero-kicker{
-    font-size:13px;
-  }
-
-  .htp-hero-sub{
-    font-size:15px;
-  }
-
-  .htp-mini-rule{
-    font-size:11px;
-    letter-spacing:0.12em;
-  }
-
-  .htp-btn--hero{
-    font-size:14px;
-    padding:15px 16px;
-  }
-
-  .htp-stick{
-    width:10px;
-  }
-}
+    /* ===== COUNTER BAR ===== */
     .counter-bar { width:100%; display:flex; align-items:stretch; border:1px solid #111; margin-bottom:16px; overflow:hidden; }
     .counter-side { flex:1; padding:12px 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
     .counter-side.humans { background:rgba(0,243,255,0.04); border-right:1px solid #111; }
@@ -511,23 +310,8 @@
     .counter-bar-humans { background:var(--cyan); transition:width 1s ease; }
     .counter-bar-machine { background:var(--red); transition:width 1s ease; }
 
-    .share-platform-btn {
-      width:100%;
-      font-family:'Orbitron',monospace;
-      font-size:12px;
-      font-weight:900;
-      letter-spacing:0.12em;
-      padding:14px 16px;
-      cursor:pointer;
-      outline:none;
-      border:1px solid #222;
-      background:#09090f;
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      transition:all 0.2s;
-    }
+    /* ===== SHARE MODAL BUTTONS ===== */
+    .share-platform-btn { width:100%; font-family:'Orbitron',monospace; font-size:12px; font-weight:900; letter-spacing:0.12em; padding:14px 16px; cursor:pointer; outline:none; border:1px solid #222; background:#09090f; color:#fff; display:flex; align-items:center; justify-content:space-between; transition:all 0.2s; }
     .share-platform-btn:hover { transform:translateY(-1px); }
     .share-platform-btn.twitter { border-color:#2c2c2c; color:#fff; }
     .share-platform-btn.whatsapp { border-color:rgba(37,211,102,0.45); color:#25D366; background:rgba(37,211,102,0.08); }
@@ -537,9 +321,10 @@
     .share-platform-btn.copy { border-color:rgba(255,215,0,0.45); color:#FFD700; background:rgba(255,215,0,0.08); }
     .share-platform-left { text-align:left; display:flex; flex-direction:column; gap:3px; }
     .share-platform-title { font-size:11px; letter-spacing:0.14em; }
-    .share-platform-sub { font-family:'Orbitron', sans-serif;font-size:10px; letter-spacing:0.12em; opacity:0.75; }
+    .share-platform-sub { font-family:'Orbitron', sans-serif; font-size:10px; letter-spacing:0.12em; opacity:0.75; }
     .share-platform-arrow { font-size:16px; line-height:1; opacity:0.8; }
 
+    /* ===== ANIMATIONS ===== */
     @keyframes glitch {
       0%,94%,100% { text-shadow:3px 0 var(--cyan),-3px 0 var(--red); }
       95% { text-shadow:-3px 0 var(--cyan),3px 0 var(--red); clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%); transform:translateX(3px); }
@@ -551,306 +336,142 @@
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
     @keyframes thinkProgress { from{width:0} to{width:100%} }
     @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+    @keyframes htpPulse {
+      0%, 100%{ transform:scale(1); box-shadow: 0 0 14px rgba(0,243,255,0.35), 0 0 28px rgba(0,243,255,0.18); }
+      50%{ transform:scale(1.015); box-shadow: 0 0 18px rgba(0,243,255,0.48), 0 0 40px rgba(0,243,255,0.24); }
+    }
 
+    /* ===== RESPONSIVE OVERRIDES (small screens only) ===== */
     @media (max-height: 820px) {
-  body {
-    padding-top: 4px;
-    padding-bottom: max(24px, env(safe-area-inset-bottom, 24px));
-  }
+      body { padding-top:4px; padding-bottom:max(24px, env(safe-area-inset-bottom, 24px)); }
+      .brand { font-size:26px; margin-bottom:2px; }
+      .tagline, .daily-label { margin-bottom:4px; }
+      .counter-bar { margin-bottom:8px; }
+      .info-bar { margin-bottom:8px; padding:6px 10px; }
+      .pips { margin-bottom:8px; }
+      .row { min-height:38px; padding:7px 10px; }
+      .stick { width:9px; }
+      .info-bar .date { flex:0 0 105px; }
+      .info-bar .rule { font-size:10px; white-space:nowrap; }
+      .info-bar .utc-wrap { flex:0 0 96px; }
+      .board-logo-img { width:140px; max-width:60%; }
+    }
 
-  .brand {
-    font-size: 26px;
-    margin-bottom: 2px;
-  }
-
-  .tagline,
-  .daily-label {
-    margin-bottom: 4px;
-  }
-
-  .counter-bar {
-    margin-bottom: 8px;
-  }
-
-  .info-bar {
-    margin-bottom: 8px;
-  }
-
-  .pips {
-    margin-bottom: 8px;
-  }
-
-  .row {
-    min-height: 38px;
-    padding: 7px 10px;
-  }
-
-  .stick {
-    width: 9px;
-  }
-.info-bar .date {
-  flex: 0 0 105px;
-}
-
-.info-bar .rule {
-  font-size: 10px;
-  white-space: nowrap;
-}
-
-.info-bar .utc-wrap {
-  flex: 0 0 96px;    
-}
-      .board-logo-img {
-  width: 140px;
-  max-width: 60%;
-}
-    /* ===== GLOBAL ORBITRON FORCE ===== */
-* {
-  font-family: 'Orbitron', sans-serif !important;
-}
-
-/* ===== HERO LOGO ===== */
-.hero-logo {
-  display: block;
-  width: min(380px, 72vw);
-  height: auto;
-  margin: 0 auto 4px auto;
-}
-
-/* ===== HTP LOGO ===== */
-.htp-logo {
-  display: block;
-  width: min(320px, 70vw);
-  margin: 0 auto 12px auto;
-}
-
-/* ===== BOARD LOGO ===== */
-.board-logo-wrap {
-  display: flex;
-  justify-content: center;
-  margin: 6px 0 4px;
-}
-      
-.board-logo-img {
-  width: 200px;        /* 🔥 bigger */
-  max-width: 70%;      /* allow it to scale */
-  height: auto;
-  display: block;
-  opacity: 0.96;
-  margin: 6px 0 4px;   /* tighten spacing above/below */
-}
-    /* ===== GLOBAL POLISH ===== */
-body {
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 0.04em;
-}
-
-/* ===== CONTAINER ===== */
-.container {
-  max-width: 420px;
-  margin: auto;
-  padding: 20px;
-  text-align: center;
-}
-
-/* ===== CTA ===== */
-.cta-text {
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-
-.cta-sub {
-  font-size: 14px;
-  opacity: 0.8;
-  margin-bottom: 20px;
-}
-
-.cta-button {
-  background: #00F3FF;
-  color: black;
-  padding: 14px 28px;
-  border-radius: 10px;
-  font-weight: bold;
-  box-shadow: 0 0 20px rgba(0,243,255,0.4);
-  border: none;
-  cursor: pointer;
-}
-
-.cta-button:hover {
-  transform: scale(1.05);
-  transition: 0.2s ease;
-}
-
-/* ===== SPACING ===== */
-.brand {
-  margin-top: 60px;
-  margin-bottom: 12px;
-}
-
-.tagline {
-  margin-bottom: 24px;
-}
-
-/* ===== ANIMATION ===== */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+    @media (max-width: 480px) {
+      .htp-box--new { width:min(100%, 390px); padding:24px 18px 18px; }
+      .htp-title--hero { font-size:36px; }
+      .htp-hero-kicker { font-size:13px; }
+      .htp-hero-sub { font-size:15px; }
+      .htp-mini-rule { font-size:11px; letter-spacing:0.12em; }
+      .htp-btn--hero { font-size:14px; padding:15px 16px; }
+      .htp-stick { width:10px; }
+    }
   </style>
 </head>
 <body>
 <div class="wrap">
 
   <div class="htp-overlay" id="htpOverlay">
-  <div class="htp-box htp-box--new">
-    <div class="htp-hero-kicker">CAN YOU BEAT THE AI?</div>
-
-    <img src="/outsmart_logo_final.png" alt="OUTSMART" class="htp-logo">
-
-    <div class="htp-hero-sub">
-      95% of players lose.<br/>
-      Will you?
-    </div>
-
-    <div class="htp-board-preview">
-      <div class="htp-board-glow"></div>
-      <div class="htp-board-copy">SAME BOARD FOR EVERY PLAYER WORLDWIDE</div>
-
-      <div class="htp-sticks htp-sticks--hero">
-        <div class="htp-row">
-          <div class="htp-stick" style="height:24px"></div>
-        </div>
-        <div class="htp-row">
-          <div class="htp-stick" style="height:30px"></div>
-          <div class="htp-stick" style="height:30px"></div>
-          <div class="htp-stick" style="height:30px"></div>
-        </div>
-        <div class="htp-row">
-          <div class="htp-stick" style="height:38px"></div>
-          <div class="htp-stick" style="height:38px"></div>
-          <div class="htp-stick" style="height:38px"></div>
-          <div class="htp-stick" style="height:38px"></div>
-          <div class="htp-stick" style="height:38px"></div>
-        </div>
-        <div class="htp-row">
-          <div class="htp-stick" style="height:46px"></div>
-          <div class="htp-stick" style="height:46px"></div>
-          <div class="htp-stick" style="height:46px"></div>
-          <div class="htp-stick" style="height:46px"></div>
-          <div class="htp-stick" style="height:46px"></div>
-          <div class="htp-stick" style="height:46px"></div>
-          <div class="htp-stick" style="height:46px"></div>
+    <div class="htp-box htp-box--new">
+      <div class="htp-hero-kicker">CAN YOU BEAT THE AI?</div>
+      <img src="/outsmart_logo_final.png" alt="OUTSMART" class="htp-logo">
+      <div class="htp-hero-sub">95% of players lose.<br/>Will you?</div>
+      <div class="htp-board-preview">
+        <div class="htp-board-glow"></div>
+        <div class="htp-board-copy">SAME BOARD FOR EVERY PLAYER WORLDWIDE</div>
+        <div class="htp-sticks htp-sticks--hero">
+          <div class="htp-row"><div class="htp-stick" style="height:24px"></div></div>
+          <div class="htp-row">
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+          </div>
+          <div class="htp-row">
+            <div class="htp-stick" style="height:38px"></div>
+            <div class="htp-stick" style="height:38px"></div>
+            <div class="htp-stick" style="height:38px"></div>
+            <div class="htp-stick" style="height:38px"></div>
+            <div class="htp-stick" style="height:38px"></div>
+          </div>
+          <div class="htp-row">
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+            <div class="htp-stick" style="height:46px"></div>
+          </div>
         </div>
       </div>
+      <div class="htp-mini-rule">TAKE TURNS REMOVING STICKS. DON'T TAKE THE LAST ONE.</div>
+      <div class="htp-meta">3 ATTEMPTS &middot; RESETS AT 00:00 UTC</div>
+      <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">TAKE YOUR TURN</button>
+      <button class="htp-skip" type="button" onclick="dismissHtp()">SKIP</button>
     </div>
-
-    <div class="htp-mini-rule">TAKE TURNS REMOVING STICKS. DON’T TAKE THE LAST ONE.</div>
-
-    <div class="htp-meta">3 ATTEMPTS &middot; RESETS AT 00:00 UTC</div>
-
-    <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">TAKE YOUR TURN</button>
-
-    <button class="htp-skip" type="button" onclick="dismissHtp()">SKIP</button>
   </div>
-</div>
-  
+
   <div id="shareModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:8000;align-items:center;justify-content:center;padding:24px;">
     <div style="background:#06060F;border:1px solid #FFD70044;max-width:400px;width:100%;padding:28px 24px;">
       <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:#FFD700;letter-spacing:0.1em;margin-bottom:16px;">SHARE YOUR RESULT</div>
       <div id="shareText" style="font-family:'Orbitron', sans-serif;font-size:12px;color:#ddd;line-height:1.8;letter-spacing:0.05em;background:#000;border:1px solid #222;padding:14px;margin-bottom:16px;white-space:pre-wrap;word-break:break-word;"></div>
-
       <div style="display:flex;flex-direction:column;gap:10px;">
         <button type="button" class="share-platform-btn twitter" onclick="shareTo('twitter')">
-          <div class="share-platform-left">
-            <div class="share-platform-title">X / TWITTER</div>
-            <div class="share-platform-sub">TAP TO SHARE</div>
-          </div>
+          <div class="share-platform-left"><div class="share-platform-title">X / TWITTER</div><div class="share-platform-sub">TAP TO SHARE</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
-
         <button type="button" class="share-platform-btn whatsapp" onclick="shareTo('whatsapp')">
-          <div class="share-platform-left">
-            <div class="share-platform-title">WHATSAPP</div>
-            <div class="share-platform-sub">TAP TO SHARE</div>
-          </div>
+          <div class="share-platform-left"><div class="share-platform-title">WHATSAPP</div><div class="share-platform-sub">TAP TO SHARE</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
-
         <button type="button" class="share-platform-btn facebook" onclick="shareTo('facebook')">
-          <div class="share-platform-left">
-            <div class="share-platform-title">FACEBOOK</div>
-            <div class="share-platform-sub">TAP TO SHARE</div>
-          </div>
+          <div class="share-platform-left"><div class="share-platform-title">FACEBOOK</div><div class="share-platform-sub">TAP TO SHARE</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
-
         <button type="button" class="share-platform-btn telegram" onclick="shareTo('telegram')">
-          <div class="share-platform-left">
-            <div class="share-platform-title">TELEGRAM</div>
-            <div class="share-platform-sub">TAP TO SHARE</div>
-          </div>
+          <div class="share-platform-left"><div class="share-platform-title">TELEGRAM</div><div class="share-platform-sub">TAP TO SHARE</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
-
         <button type="button" class="share-platform-btn reddit" onclick="shareTo('reddit')">
-          <div class="share-platform-left">
-            <div class="share-platform-title">REDDIT</div>
-            <div class="share-platform-sub">TAP TO SHARE</div>
-          </div>
+          <div class="share-platform-left"><div class="share-platform-title">REDDIT</div><div class="share-platform-sub">TAP TO SHARE</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
-
         <button type="button" id="shareCopyBtn" class="share-platform-btn copy">
-          <div class="share-platform-left">
-            <div class="share-platform-title">COPY</div>
-            <div class="share-platform-sub">COPY TO CLIPBOARD</div>
-          </div>
+          <div class="share-platform-left"><div class="share-platform-title">COPY</div><div class="share-platform-sub">COPY TO CLIPBOARD</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
-
         <button type="button" id="shareNativeBtn" class="share-platform-btn copy" style="display:none;">
-          <div class="share-platform-left">
-            <div class="share-platform-title">SHARE VIA APPS</div>
-            <div class="share-platform-sub">USE PHONE SHARE SHEET</div>
-          </div>
+          <div class="share-platform-left"><div class="share-platform-title">SHARE VIA APPS</div><div class="share-platform-sub">USE PHONE SHARE SHEET</div></div>
           <div class="share-platform-arrow">&rarr;</div>
         </button>
-
         <button onclick="document.getElementById('shareModal').style.display='none';" style="font-family:'Orbitron', sans-serif;font-size:11px;font-weight:bold;letter-spacing:0.15em;padding:12px;cursor:pointer;outline:none;background:transparent;border:1px solid #222;color:#555;width:100%;">CLOSE</button>
       </div>
     </div>
   </div>
 
-    <div style="width:100%;max-width:380px;margin:6px auto 4px;animation:fadeUp 0.4s ease 0.05s both;">
-  <div class="counter-bar" style="margin-bottom:6px;">
-    <div class="counter-side humans">
-      <div class="counter-label humans">HUMANS</div>
-      <div class="counter-num humans" id="counterHumans">&mdash;</div>
-      <div class="counter-sub">WINS</div>
+  <div style="width:100%;max-width:380px;margin:6px auto 4px;animation:fadeUp 0.4s ease 0.05s both;">
+    <div class="counter-bar" style="margin-bottom:6px;">
+      <div class="counter-side humans">
+        <div class="counter-label humans">HUMANS</div>
+        <div class="counter-num humans" id="counterHumans">&mdash;</div>
+        <div class="counter-sub">WINS</div>
+      </div>
+      <div class="counter-vs"><div class="counter-vs-text">VS</div></div>
+      <div class="counter-side machine">
+        <div class="counter-label machine">MACHINE</div>
+        <div class="counter-num machine" id="counterMachine">&mdash;</div>
+        <div class="counter-sub">WINS</div>
+      </div>
     </div>
-
-    <div class="counter-vs">
-      <div class="counter-vs-text">VS</div>
+    <div class="counter-bar-track" style="height:4px;">
+      <div class="counter-bar-humans" id="barHumans" style="width:50%"></div>
+      <div class="counter-bar-machine" id="barMachine" style="width:50%"></div>
     </div>
-
-    <div class="counter-side machine">
-      <div class="counter-label machine">MACHINE</div>
-      <div class="counter-num machine" id="counterMachine">&mdash;</div>
-      <div class="counter-sub">WINS</div>
+    <div style="font-size:7px;color:#444;letter-spacing:0.12em;text-align:center;margin-top:3px;" id="counterScope">
+      YOUR STATS &middot; GLOBAL COMING IN APP
     </div>
   </div>
 
-  <div class="counter-bar-track" style="height:4px;">
-    <div class="counter-bar-humans" id="barHumans" style="width:50%"></div>
-    <div class="counter-bar-machine" id="barMachine" style="width:50%"></div>
-  </div>
-
-  <div style="font-size:7px;color:#444;letter-spacing:0.12em;text-align:center;margin-top:3px;" id="counterScope">
-    YOUR STATS &middot; GLOBAL COMING IN APP
-  </div>
-</div>
-  
   <div id="ruleReminderModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9000;align-items:center;justify-content:center;padding:24px;" onclick="document.getElementById('ruleReminderModal').style.display='none';">
     <div style="background:#06060F;border:1px solid #FF003C44;max-width:360px;width:100%;padding:28px 24px;" onclick="event.stopPropagation()">
       <div style="font-family:'Orbitron',monospace;font-size:16px;font-weight:900;color:var(--red);letter-spacing:0.1em;margin-bottom:16px;text-align:center;">THE RULE</div>
@@ -862,7 +483,7 @@ body {
     </div>
   </div>
 
-  <div class="info-bar" style="animation:fadeUp 0.4s ease 0.1s both;margin-top:6px;padding:6px 10px;">
+  <div class="info-bar" style="animation:fadeUp 0.4s ease 0.1s both;margin-top:6px;">
     <span class="date" id="dateLabel"></span>
     <span class="rule" onclick="document.getElementById('ruleReminderModal').style.display='flex';" style="cursor:pointer;" title="Tap for the rule">LAST TAKER LOSES &#9432;</span>
     <div class="utc-wrap">
@@ -873,44 +494,37 @@ body {
 
   <div class="pips" id="pips" style="margin:6px 0 8px;animation:fadeUp 0.4s ease 0.15s both;"></div>
 
-<div id="gameArea" style="
-  width:100%;
-  max-width:420px;
-  margin:4px auto 0;
-  transform-origin:top center;
-  animation:fadeUp 0.4s ease 0.2s both;
-">
+  <div id="gameArea" style="width:100%;max-width:420px;margin:4px auto 0;animation:fadeUp 0.4s ease 0.2s both;">
 
-  <div class="board-logo-wrap">
-  <img src="/outsmart_logo_final.png" alt="OUTSMART" class="board-logo-img">
-</div>
-
-<div class="taunt" id="taunt" style="opacity:0;margin:4px 0 4px 0;min-height:18px;"></div>
-
-  <div class="think-bar" id="thinkBar" style="margin-bottom:6px;">
-    <div class="think-bar-fill" id="thinkFill"></div>
-  </div>
-
-  <div class="turn-box" id="turnBox" style="color:#BC13FE;font-size:12px;margin-top:2px;margin-bottom:2px;">
-    YOUR TURN
-  </div>
-
-  <div class="board" id="board" style="margin-bottom:6px;"></div>
-
-  <div class="confirm-area" id="confirmArea" style="display:none;margin-top:6px;">
-    <div class="confirm-prompt" id="confirmPrompt" style="font-size:10px;margin-bottom:6px;"></div>
-
-    <div class="btn-row" style="gap:8px;">
-      <button class="btn btn-confirm" onclick="confirmMove()" style="padding:10px 12px;">CONFIRM</button>
-      <button class="btn btn-cancel" onclick="cancelMove()" style="padding:10px 12px;">CANCEL</button>
+    <div class="board-logo-wrap">
+      <img src="/outsmart_logo_final.png" alt="OUTSMART" class="board-logo-img">
     </div>
-  </div>
 
-  <div class="rule-reminder" id="ruleReminder" style="font-size:8px;margin-top:4px;opacity:0.6;">
-    LAST TAKER LOSES &mdash; FORCE THE AI TO TAKE THE FINAL STICK
-  </div>
+    <div class="taunt" id="taunt" style="opacity:0;margin:4px 0 4px 0;min-height:18px;"></div>
 
-</div>
+    <div class="think-bar" id="thinkBar" style="margin-bottom:6px;">
+      <div class="think-bar-fill" id="thinkFill"></div>
+    </div>
+
+    <div class="turn-box" id="turnBox" style="color:#BC13FE;font-size:12px;margin-top:2px;margin-bottom:2px;">
+      YOUR TURN
+    </div>
+
+    <div class="board" id="board" style="margin-bottom:6px;"></div>
+
+    <div class="confirm-area" id="confirmArea" style="display:none;margin-top:6px;">
+      <div class="confirm-prompt" id="confirmPrompt" style="font-size:10px;margin-bottom:6px;"></div>
+      <div class="btn-row" style="gap:8px;">
+        <button class="btn btn-confirm" onclick="confirmMove()" style="padding:10px 12px;">CONFIRM</button>
+        <button class="btn btn-cancel" onclick="cancelMove()" style="padding:10px 12px;">CANCEL</button>
+      </div>
+    </div>
+
+    <div class="rule-reminder" id="ruleReminder" style="font-size:8px;margin-top:4px;opacity:0.6;">
+      LAST TAKER LOSES &mdash; FORCE THE AI TO TAKE THE FINAL STICK
+    </div>
+
+  </div>
 
   <div id="resultArea" style="display:none;width:100%;"></div>
 
@@ -920,12 +534,12 @@ var APP_STORE_URL = "https://www.playoutsmart.com";
 var PLAY_STORE_URL = "https://www.playoutsmart.com";
 var CHALLENGE_URL = "https://www.playoutsmart.com/daily";
 var MAX_ATTEMPTS = 3;
+
 function scrollToGame() {
   var el = document.getElementById("gameArea");
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  if (el) { el.scrollIntoView({ behavior: "smooth", block: "start" }); }
 }
+
 var DAILY_BOARDS = [
   [1,3,5,7],[2,4,6],[1,2,3,4,5],[3,5,7],[1,4,6,8],[2,3,5,7],[1,3,7,9],[2,5,6,7],[1,2,6,8],[3,4,5,6],
   [1,2,4,8],[2,6,8],[1,5,7],[3,4,7],[1,2,3,6],[4,5,6],[1,3,4,6],[2,3,8],[1,6,7,8],[2,4,5,7],
@@ -950,9 +564,7 @@ var getOptimalMove = function(board) {
         var t = board[i] ^ ns;
         if (t < board[i]) candidates.push({ rowIndex:i, count:board[i]-t });
       }
-      if (candidates.length > 0) {
-        return candidates[Math.floor(Math.random() * candidates.length)];
-      }
+      if (candidates.length > 0) return candidates[Math.floor(Math.random() * candidates.length)];
     }
     var active = board.map(function(c,i){return {c:c,i:i};}).filter(function(r){return r.c>0;});
     var row = active[Math.floor(Math.random() * active.length)];
@@ -991,7 +603,6 @@ var dismissHtp = function() {
 };
 
 var COUNTER_KEY='outsmart_counter';
-var COUNTER_SEED={humans:312,machine:4847};
 window._liveCounter = {humans:312,machine:4847};
 
 var loadLocalCounter=function(){try{var s=localStorage.getItem(COUNTER_KEY);if(s)return JSON.parse(s);}catch(e){}return{humans:312,machine:4847};};
@@ -1085,16 +696,22 @@ var beep=function(type){
 };
 
 var renderBoard=function(){
-  var boardEl=document.getElementById("board");boardEl.innerHTML="";
+  var boardEl=document.getElementById("board");
+  if(!boardEl)return;
+  boardEl.innerHTML="";
   state.board.forEach(function(count,ri){
-    var maxCount=state.initialBoard[ri];var isSel=state.selectedRow===ri;
+    var maxCount=state.initialBoard[ri];
+    if(maxCount===undefined||maxCount===0)return;
+    var isSel=state.selectedRow===ri;
     var rowEl=document.createElement("div");
     rowEl.className="row"+(isSel?" selected":"");
     rowEl.onclick=(function(r){return function(){rowClick(r);};})(ri);
-    var sticksEl=document.createElement("div");sticksEl.className="sticks";
+    var sticksEl=document.createElement("div");
+    sticksEl.className="sticks";
     var h=Math.max(24,Math.min(52,52-ri*5));
     for(var si=0;si<maxCount;si++){
-      var alive=si<count;var pending=isSel&&si>=(count-state.pendingCount);
+      var alive=si<count;
+      var pending=isSel&&si>=(count-state.pendingCount);
       var s=document.createElement("div");
       s.className="stick "+(!alive?"dead":pending?"pending":"alive");
       s.style.height=h+"px";
@@ -1111,28 +728,37 @@ var renderBoard=function(){
 };
 
 var renderPips=function(){
-  var el=document.getElementById("pips");el.innerHTML="";
+  var el=document.getElementById("pips");if(!el)return;el.innerHTML="";
   for(var i=0;i<MAX_ATTEMPTS;i++){
     var pip=document.createElement("div");
     pip.className="pip "+(i<state.attempts?"used":"remaining");
     el.appendChild(pip);
   }
 };
-var setTaunt=function(text){var el=document.getElementById("taunt");el.textContent=text;el.style.opacity=text?"1":"0";};
-var setTurn=function(text,color){color=color||"#BC13FE";var el=document.getElementById("turnBox");el.textContent=text;el.style.color=color;};
+var setTaunt=function(text){var el=document.getElementById("taunt");if(el){el.textContent=text;el.style.opacity=text?"1":"0";}};
+var setTurn=function(text,color){color=color||"#BC13FE";var el=document.getElementById("turnBox");if(el){el.textContent=text;el.style.color=color;}};
 
 var stickClick=function(ri,cnt){
   if(!state.isPlayerTurn||state.winner)return;
   if(cnt<1)return;
   beep("stick");state.selectedRow=ri;state.pendingCount=cnt;renderBoard();
   var cp=document.getElementById("confirmArea");var pr=document.getElementById("confirmPrompt");
-  pr.textContent="REMOVE "+cnt+" STICK"+(cnt>1?"S":"")+"?";
-  cp.style.display="block";
-  document.getElementById("ruleReminder").style.display="none";
+  if(pr)pr.textContent="REMOVE "+cnt+" STICK"+(cnt>1?"S":"")+"?";
+  if(cp)cp.style.display="block";
+  var rr=document.getElementById("ruleReminder");if(rr)rr.style.display="none";
 };
 var rowClick=function(ri){if(!state.isPlayerTurn||state.winner)return;if(state.board[ri]===0)return;stickClick(ri,1);};
-var cancelMove=function(){state.selectedRow=null;state.pendingCount=0;renderBoard();document.getElementById("confirmArea").style.display="none";document.getElementById("ruleReminder").style.display="block";};
-var confirmMove=function(){if(state.selectedRow===null||state.pendingCount<1)return;beep("confirm");applyMove(true,state.selectedRow,state.pendingCount);document.getElementById("confirmArea").style.display="none";document.getElementById("ruleReminder").style.display="block";};
+var cancelMove=function(){
+  state.selectedRow=null;state.pendingCount=0;renderBoard();
+  var cp=document.getElementById("confirmArea");if(cp)cp.style.display="none";
+  var rr=document.getElementById("ruleReminder");if(rr)rr.style.display="block";
+};
+var confirmMove=function(){
+  if(state.selectedRow===null||state.pendingCount<1)return;
+  beep("confirm");applyMove(true,state.selectedRow,state.pendingCount);
+  var cp=document.getElementById("confirmArea");if(cp)cp.style.display="none";
+  var rr=document.getElementById("ruleReminder");if(rr)rr.style.display="block";
+};
 
 var applyMove=function(isPlayer,rowIndex,count){
   state.board=state.board.map(function(v,i){return i===rowIndex?v-count:v;});
@@ -1149,9 +775,10 @@ var applyMove=function(isPlayer,rowIndex,count){
     else{
       setTurn("THINKING...","#FF003C");setTaunt("");
       var bar=document.getElementById("thinkBar");var fill=document.getElementById("thinkFill");
-      bar.classList.add("active");fill.style.animation="none";void fill.offsetWidth;fill.style.animation="thinkProgress 2s linear forwards";
+      if(bar)bar.classList.add("active");
+      if(fill){fill.style.animation="none";void fill.offsetWidth;fill.style.animation="thinkProgress 2s linear forwards";}
       setTimeout(function(){
-        bar.classList.remove("active");
+        if(bar)bar.classList.remove("active");
         var move=getAIMove(state.board);
         applyMove(false,move.rowIndex,move.count);
         setTaunt(TAUNTS[Math.floor(Math.random()*TAUNTS.length)]);
@@ -1162,30 +789,14 @@ var applyMove=function(isPlayer,rowIndex,count){
 
 var getShareText = function(playerWon, attempts) {
   var suffix = attempts > 1 ? "s" : "";
-
-  var today = new Date().toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
-
-  var shareUrl = playerWon
-    ? "https://playoutsmart.com/daily/win"
-    : "https://playoutsmart.com/daily/lose";
-
+  var today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  var shareUrl = playerWon ? "https://playoutsmart.com/daily/win" : "https://playoutsmart.com/daily/lose";
   if (playerWon) {
-    return "OUTSMART DAILY\n\n🔥 Won in " + attempts + " attempt" + suffix +
-      "\n" + today +
-      "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nCan you beat it?\n\n" +
-      shareUrl;
+    return "OUTSMART DAILY\n\n🔥 Won in " + attempts + " attempt" + suffix + "\n" + today + "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nCan you beat it?\n\n" + shareUrl;
   }
-
-  return "OUTSMART DAILY\n\n💀 Lost in " + attempts + " attempt" + suffix +
-    "\n" + today +
-    "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nThink you're smarter?\n\n" +
-    shareUrl;
+  return "OUTSMART DAILY\n\n💀 Lost in " + attempts + " attempt" + suffix + "\n" + today + "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nThink you're smarter?\n\n" + shareUrl;
 };
-  
+
 var showResult=function(playerWon){
   document.getElementById("gameArea").style.display="none";
   document.getElementById("resultArea").style.display="block";
@@ -1194,13 +805,10 @@ var showResult=function(playerWon){
   var attemptsLeft=MAX_ATTEMPTS-state.attempts;
   var canRetry=!playerWon&&attemptsLeft>0;
   var dateStr=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
-
   window._shareText = getShareText(playerWon, state.attempts);
-
   var retryBtn = canRetry
     ? '<button class="btn btn-confirm" style="width:100%;margin-bottom:14px;font-size:13px;padding:14px;" onclick="startGame()">TRY AGAIN \u00B7 ATTEMPT ' + (state.attempts+1) + ' OF ' + MAX_ATTEMPTS + '</button>'
     : '';
-
   var resultColor = playerWon ? "#00F3FF" : "#FF003C";
   var resultTitle = playerWon ? "DAILY CONQUERED" : "PATHETIC";
   var resultSub = playerWon ? '"An anomaly. It won\'t happen again."' : '"AS EXPECTED, HUMAN."';
@@ -1209,7 +817,6 @@ var showResult=function(playerWon){
   var shareEmoji = playerWon ? "\u26A1 FLEX ON YOUR FRIENDS" : "\uD83D\uDCE3 CHALLENGE YOUR FRIENDS";
   var shareSub = playerWon ? "BRAG. YOU EARNED IT." : "DARE THEM TO DO BETTER.";
   var waitlistClass = playerWon ? "" : "loss";
-
   document.getElementById("resultArea").innerHTML =
     '<div class="result">' +
       '<div class="result-emoji">' + (playerWon ? "\u26A1" : "\uD83D\uDC80") + '</div>' +
@@ -1257,21 +864,18 @@ var shareResult=function(){
   var textEl=document.getElementById('shareText');
   var copyBtn=document.getElementById('shareCopyBtn');
   var nativeBtn=document.getElementById('shareNativeBtn');
-
   if(textEl)textEl.textContent=text;
-
   if(navigator.share && /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)){
     if(nativeBtn)nativeBtn.style.display='flex';
   } else {
     if(nativeBtn)nativeBtn.style.display='none';
   }
-
   if(copyBtn){
     copyBtn.onclick=function(){
       if(navigator.clipboard){
         navigator.clipboard.writeText(text).then(function(){
-          var titleEl = copyBtn.querySelector('.share-platform-title');
-          var subEl = copyBtn.querySelector('.share-platform-sub');
+          var titleEl=copyBtn.querySelector('.share-platform-title');
+          var subEl=copyBtn.querySelector('.share-platform-sub');
           if(titleEl)titleEl.textContent='COPIED';
           if(subEl)subEl.textContent='READY TO PASTE';
           setTimeout(function(){
@@ -1284,13 +888,11 @@ var shareResult=function(){
       }
     };
   }
-
   if(nativeBtn){
     nativeBtn.onclick=function(){
       navigator.share({title:"OUTSMART Daily Challenge",text:text,url:CHALLENGE_URL}).catch(function(){});
     };
   }
-
   if(modal)modal.style.display='flex';
 };
 
@@ -1309,9 +911,7 @@ var fallbackCopy=function(text,btn){
         if(subEl)subEl.textContent='COPY TO CLIPBOARD';
       },2000);
     }
-  }catch(e){
-    alert("Please copy the text manually.");
-  }
+  }catch(e){ alert("Please copy the text manually."); }
   document.body.removeChild(el);
 };
 
@@ -1320,15 +920,13 @@ var APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_URL";
 
 var joinWaitlist=async function(inputId,btn){
   var input=document.getElementById(inputId);var email=input?input.value.trim():"";
-  if(!email||!email.includes("@")){input.style.borderColor="#FF003C";setTimeout(function(){input.style.borderColor="";},1500);return;}
+  if(!email||!email.includes("@")){if(input)input.style.borderColor="#FF003C";setTimeout(function(){if(input)input.style.borderColor="";},1500);return;}
   if(btn){btn.textContent="...";btn.disabled=true;}
   track('waitlist_signup',{date:getDailyKey()});
-
   if(APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_APPS_SCRIPT_URL") {
     try {
       await fetch(APPS_SCRIPT_URL, {
-        method:"POST",
-        mode:"no-cors",
+        method:"POST", mode:"no-cors",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({ email:email, source:"outsmart_daily", date:getDailyKey() })
       });
@@ -1336,10 +934,9 @@ var joinWaitlist=async function(inputId,btn){
   } else {
     window.open(GOOGLE_FORM_URL,'_blank');
   }
-
   var confirmId=inputId.replace("email","confirm");
   var confirmEl=document.getElementById(confirmId);
-  if(input)input.parentElement.style.display="none";
+  if(input&&input.parentElement)input.parentElement.style.display="none";
   if(confirmEl)confirmEl.style.display="block";
 };
 
@@ -1347,29 +944,27 @@ var startGame=function(){
   if(state.won||state.attempts>=MAX_ATTEMPTS){showExhausted();return;}
   state.attempts++;saveState();
   track('game_started',{attempt_number:state.attempts,date:getDailyKey()});
-  state.board=getDailyBoard();state.initialBoard=state.board.slice();
+  state.board=getDailyBoard();
+  state.initialBoard=state.board.slice();
   state.isPlayerTurn=true;state.winner=null;state.selectedRow=null;state.pendingCount=0;
   document.getElementById("gameArea").style.display="block";
   document.getElementById("resultArea").style.display="none";
-  document.getElementById("confirmArea").style.display="none";
-  document.getElementById("ruleReminder").style.display="block";
-  document.getElementById("thinkBar").classList.remove("active");
+  var cp=document.getElementById("confirmArea");if(cp)cp.style.display="none";
+  var rr=document.getElementById("ruleReminder");if(rr)rr.style.display="block";
+  var tb=document.getElementById("thinkBar");if(tb)tb.classList.remove("active");
   setTurn("YOUR TURN","#BC13FE");setTaunt("");renderPips();renderBoard();
 };
 
 var showExhausted=function(){
   document.getElementById("gameArea").style.display="none";
   document.getElementById("resultArea").style.display="block";
-
   window._shareText = state.won
     ? getShareText(true, state.attempts || 1)
     : getShareText(false, MAX_ATTEMPTS);
-
   var ctaClass = state.won ? "" : "loss";
   var shareEmoji = state.won ? "\u26A1 FLEX ON YOUR FRIENDS" : "\uD83D\uDCE3 CHALLENGE YOUR FRIENDS";
   var shareSub = state.won ? "BRAG. YOU EARNED IT." : "DARE THEM TO DO BETTER.";
   var waitlistClass = state.won ? "" : "loss";
-
   document.getElementById("resultArea").innerHTML =
     '<div class="result">' +
       '<div class="result-emoji">' + (state.won ? "\u26A1" : "\uD83D\uDC80") + '</div>' +
@@ -1400,37 +995,23 @@ var init=function(){
     var rH=String(Math.floor(secsLeft/3600)).padStart(2,"0");
     var rM=String(Math.floor((secsLeft%3600)/60)).padStart(2,"0");
     var rS=String(secsLeft%60).padStart(2,"0");
-    var tEl=document.getElementById("utcTime");var rEl=document.getElementById("utcReset");
-    if (tEl) tEl.textContent = "UTC\n" + hh + ":" + mm + ":" + ss;
-if (rEl) rEl.textContent = "RESETS IN\n" + rH + ":" + rM + ":" + rS;
+    var tEl=document.getElementById("utcTime");
+    var rEl=document.getElementById("utcReset");
+    if(tEl)tEl.textContent="UTC\n"+hh+":"+mm+":"+ss;
+    if(rEl)rEl.textContent="RESETS IN\n"+rH+":"+rM+":"+rS;
   };
   tickClock();setInterval(tickClock,1000);
   renderCounter();
   try{
     var seen=localStorage.getItem('outsmart_htp_seen');
     if(seen){var el=document.getElementById('htpOverlay');if(el)el.remove();}
-  }catch(e){ /* localStorage unavailable, keep overlay visible */ }
+  }catch(e){}
   loadState();
   if(state.won||state.attempts>=MAX_ATTEMPTS){showExhausted();renderPips();}
   else{startGame();}
 };
 
 init();
-  function scaleGameArea() {
-  const gameArea = document.getElementById("gameArea");
-  if (!gameArea) return;
-
-  const screenHeight = window.innerHeight;
-  const targetHeight = 720;
-
-  const scale = Math.min(1, screenHeight / targetHeight);
-
-  gameArea.style.transform = `scale(${scale})`;
-}
-
-scaleGameArea();
-window.addEventListener("load", scaleGameArea);
-window.addEventListener("resize", scaleGameArea);
 </script>
 <div style="position:fixed;bottom:14px;right:14px;font-size:12px;z-index:9999;background:rgba(0,0,0,0.75);padding:6px 10px;border:1px solid rgba(0,240,255,0.35);border-radius:8px;box-shadow:0 0 10px rgba(0,240,255,0.12);">
   <a href="/privacy.html" style="margin-right:12px;color:#00f0ff;text-decoration:none;">Privacy</a>
