@@ -72,7 +72,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:flex-start;
-      padding:8px 16px 40px;
+      padding: 8px max(12px, env(safe-area-inset-left, 12px)) 40px max(12px, env(safe-area-inset-right, 12px));
       padding-bottom:max(60px,env(safe-area-inset-bottom,60px));
       overflow-x:hidden;
       user-select:none;
@@ -93,15 +93,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
+      gap: 6px;
+      padding: 8px 10px;
       border: 1px solid #1a1a1a;
       margin-bottom: 18px;
     }
-    .info-bar .date { flex: 0 0 120px; font-size:11px; color:#fff; letter-spacing:0.15em; font-weight:bold; }
-    .info-bar .rule { flex: 1 1 auto; text-align: center; white-space: nowrap; font-size:11px; color:var(--red); letter-spacing:0.15em; font-weight:bold; }
+    .info-bar .date { flex: 0 0 auto; min-width:0; font-size:10px; color:#fff; letter-spacing:0.1em; font-weight:bold; white-space:nowrap; }
+    .info-bar .rule { flex: 1 1 auto; text-align: center; font-size:10px; color:var(--red); letter-spacing:0.1em; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .info-bar .utc-wrap {
-      flex: 0 0 110px;
+      flex: 0 0 auto;
+      min-width:0;
       text-align: right;
       display: flex;
       flex-direction: column;
@@ -110,9 +111,9 @@
     }
     .info-bar .utc-time,
     .info-bar .utc-reset {
-      font-size: 11px;
+      font-size: 10px;
       color: #fff;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       font-weight: bold;
       display: block;
       white-space: pre-line;
@@ -309,7 +310,7 @@
   z-index: 2;
 }
     .board-logo-wrap { display:flex; justify-content:center; margin:6px 0 4px; }
-    .board-logo-img { width:400px; max-width:95%; height:auto; display:block; opacity:0.96; margin:6px 0 4px; }
+    .board-logo-img { width:min(400px, 92vw); height:auto; display:block; opacity:0.96; margin:6px 0 4px; }
 
     /* ===== COUNTER BAR ===== */
     .counter-bar { width:100%; display:flex; align-items:stretch; border:1px solid #111; margin-bottom:16px; overflow:hidden; }
@@ -360,22 +361,45 @@
       50%{ transform:scale(1.015); box-shadow: 0 0 18px rgba(0,243,255,0.48), 0 0 40px rgba(0,243,255,0.24); }
     }
 
-    /* ===== RESPONSIVE OVERRIDES (small screens only) ===== */
+    /* ===== RESPONSIVE: short screens ===== */
     @media (max-height: 820px) {
       body { padding-top:4px; padding-bottom:max(24px, env(safe-area-inset-bottom, 24px)); }
       .brand { font-size:26px; margin-bottom:2px; }
       .tagline, .daily-label { margin-bottom:4px; }
       .counter-bar { margin-bottom:8px; }
-      .info-bar { margin-bottom:8px; padding:6px 10px; }
+      .info-bar { margin-bottom:8px; }
       .pips { margin-bottom:8px; }
       .row { min-height:38px; padding:7px 10px; }
       .stick { width:9px; }
-      .info-bar .date { flex:0 0 105px; }
-      .info-bar .rule { font-size:10px; white-space:nowrap; }
-      .info-bar .utc-wrap { flex:0 0 96px; }
       .board-logo-img { width:140px; max-width:60%; }
     }
 
+    /* ===== RESPONSIVE: narrow screens (mobile) ===== */
+    @media (max-width: 420px) {
+      .wrap { width:100%; }
+      .counter-num { font-size:18px; }
+      .counter-side { padding:10px 8px; }
+      .info-bar { gap:4px; padding:7px 8px; }
+      .info-bar .date { font-size:9px; letter-spacing:0.06em; }
+      .info-bar .rule { font-size:9px; letter-spacing:0.06em; }
+      .info-bar .utc-time,
+      .info-bar .utc-reset { font-size:9px; letter-spacing:0.04em; }
+      .stick { width:9px; }
+      .row { padding:5px 6px; }
+      .board-logo-img { width:min(340px, 88vw); }
+      .result-title { font-size:28px; }
+    }
+
+    @media (max-width: 360px) {
+      .info-bar .date { font-size:8px; }
+      .info-bar .rule { font-size:8px; }
+      .info-bar .utc-time,
+      .info-bar .utc-reset { font-size:8px; }
+      .counter-num { font-size:16px; }
+      .stick { width:8px; }
+    }
+
+    /* ===== HTP overlay narrow ===== */
     @media (max-width: 480px) {
       .htp-box--new { width:min(100%, 390px); padding:24px 18px 18px; }
       .htp-title--hero { font-size:36px; }
@@ -492,8 +516,8 @@
       <div class="counter-bar-humans" id="barHumans" style="width:50%"></div>
       <div class="counter-bar-machine" id="barMachine" style="width:50%"></div>
     </div>
-    <div style="font-size:7px;color:#444;letter-spacing:0.12em;text-align:center;margin-top:3px;" id="counterScope">
-      YOUR STATS &middot; GLOBAL COMING IN APP
+    <div style="font-size:11px;color:#fff;letter-spacing:0.15em;text-align:center;margin-top:3px;font-weight:bold;" id="counterScope">
+      GLOBAL &middot; ALL PLAYERS WORLDWIDE
     </div>
   </div>
 
@@ -503,7 +527,7 @@
       <div style="background:rgba(255,0,60,0.08);border:1px solid #FF003C44;padding:18px;text-align:center;margin-bottom:20px;">
         <div style="font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:#FF003C;letter-spacing:0.08em;line-height:1.6;">THE PLAYER WHO TAKES<br/>THE LAST STICK &mdash; LOSES.</div>
       </div>
-      <div style="font-family:'Orbitron', sans-serif;font-size:11px;color:#fff;letter-spacing:0.08em;line-height:1.8;margin-bottom:20px;font-weight:bold;">Pick a row each turn. Remove any number of sticks from it. Force the AI to take the very last stick.</div>
+      <div style="font-family:'Orbitron', sans-serif;font-size:11px;color:#fff;letter-spacing:0.08em;line-height:1.8;margin-bottom:20px;font-weight:bold;">Pick a row each turn.<br>Remove any number of sticks from it.<br>Force the AI to take the very last stick.</div>
       <button onclick="document.getElementById('ruleReminderModal').style.display='none';" style="width:100%;font-family:'Orbitron',monospace;font-size:12px;font-weight:900;letter-spacing:0.15em;padding:14px;cursor:pointer;outline:none;background:var(--red);border:none;color:#fff;">GOT IT</button>
     </div>
   </div>
@@ -648,8 +672,8 @@ var updateCounterUI=function(c){
   if(bM)bM.style.width=machinePct+'%';
   if(scopeEl){
     var isLive=window.firebaseReady&&window.fbLoadCounter;
-    scopeEl.textContent=isLive?'GLOBAL \u00B7 ALL PLAYERS WORLDWIDE':'YOUR STATS \u00B7 GLOBAL COUNTER COMING WITH APP LAUNCH';
-    scopeEl.style.color=isLive?'#00F3FF':'#fff';
+    scopeEl.textContent='GLOBAL \u00B7 ALL PLAYERS WORLDWIDE';
+    scopeEl.style.color='#fff';
   }
 };
 window.renderCounterFromFirebase=async function(){
