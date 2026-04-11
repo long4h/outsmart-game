@@ -857,15 +857,8 @@ var showResult=function(playerWon){
       '<div class="stat-item"><div class="stat-label">DATE</div><div class="stat-value" style="color:#FFD700;font-size:10px;margin-top:4px">' + dateStr + '</div></div>' +
     '</div>' +
     retryBtn +
-    '<div class="cta-box ' + ctaClass + '">' +
-      '<div class="cta-eyebrow">THE FULL APP IS COMING</div>' +
-      '<div class="cta-headline">' + ctaHeadline + '</div>' +
-      '<div class="cta-body">Be first to know when OUTSMART launches on iOS and Android. Free to download.</div>' +
-      '<div class="waitlist-form">' +
-        '<input type="email" id="waitlist-email-result" placeholder="YOUR EMAIL" class="waitlist-input"/>' +
-        '<button onclick="joinWaitlist(\'waitlist-email-result\',this)" class="waitlist-btn ' + waitlistClass + '">NOTIFY ME</button>' +
-      '</div>' +
-      '<div id="waitlist-confirm-result" class="waitlist-confirm" style="display:none;">\u2713 YOU\'RE ON THE LIST</div>' +
+    '<div class="cta-box ' + ctaClass + '" style="padding:18px 20px;">' +
+      '<div class="cta-headline" style="margin-bottom:0;">iOS AND ANDROID APPS COMING SOON</div>' +
     '</div>' +
     '<button class="share-btn" onclick="shareResult()">' + shareEmoji + '<div class="share-sub">' + shareSub + '</div></button>';
 };
@@ -999,15 +992,8 @@ var showExhausted=function(){
       '<div class="result-title" style="color:' + (state.won ? "#FFD700" : "#FF003C") + '">' + (state.won ? "ALREADY CONQUERED" : "NO ATTEMPTS LEFT") + '</div>' +
       '<div class="result-sub" style="color:' + (state.won ? "#FFD700" : "#fff") + '">' + (state.won ? "You beat today's puzzle. Come back tomorrow." : "Today's challenge is over. A new board drops at 00:00 UTC.") + '</div>' +
     '</div>' +
-    '<div class="cta-box ' + ctaClass + '">' +
-      '<div class="cta-eyebrow">THE FULL APP IS COMING</div>' +
-      '<div class="cta-headline">TRACK YOUR STREAK.\nCLIMB THE LEADERBOARD.</div>' +
-      '<div class="cta-body">Be first to know when OUTSMART launches on iOS and Android. Free to download.</div>' +
-      '<div class="waitlist-form">' +
-        '<input type="email" id="waitlist-email-exhausted" placeholder="YOUR EMAIL" class="waitlist-input"/>' +
-        '<button onclick="joinWaitlist(\'waitlist-email-exhausted\',this)" class="waitlist-btn ' + waitlistClass + '">NOTIFY ME</button>' +
-      '</div>' +
-      '<div id="waitlist-confirm-exhausted" class="waitlist-confirm" style="display:none;">\u2713 YOU\'RE ON THE LIST</div>' +
+    '<div class="cta-box ' + ctaClass + '" style="padding:18px 20px;">' +
+      '<div class="cta-headline" style="margin-bottom:0;">iOS AND ANDROID APPS COMING SOON</div>' +
     '</div>' +
     '<button class="share-btn" onclick="shareResult()">' + shareEmoji + '<div class="share-sub">' + shareSub + '</div></button>';
 };
