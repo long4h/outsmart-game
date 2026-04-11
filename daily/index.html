@@ -277,20 +277,20 @@
     .htp-btn--hero {
       position:relative; display:block; width:100%; border:none; padding:16px 18px; cursor:pointer;
       background:linear-gradient(180deg, #3ef7ff 0%, #00F3FF 100%);
-      color:#00131a; font-size:16px; line-height:1; letter-spacing:0.16em; font-weight:900; text-transform:uppercase;
+      color:#00131a; font-family:'Orbitron',monospace; font-size:16px; line-height:1; letter-spacing:0.16em; font-weight:900; text-transform:uppercase;
       box-shadow: 0 0 14px rgba(0,243,255,0.35), 0 0 28px rgba(0,243,255,0.18);
       transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
       animation:htpPulse 1.8s ease-in-out infinite;
     }
     .htp-btn--hero:hover { transform:translateY(-1px); filter:brightness(1.04); box-shadow: 0 0 18px rgba(0,243,255,0.42), 0 0 36px rgba(0,243,255,0.22); }
-    .htp-skip { position:relative; margin-top:12px; border:none; background:transparent; color:rgba(255,255,255,0.52); font-size:10px; line-height:1; letter-spacing:0.16em; font-weight:800; text-transform:uppercase; cursor:pointer; }
+    .htp-skip { position:relative; margin-top:12px; border:none; background:transparent; color:rgba(255,255,255,0.52); font-family:'Orbitron',monospace; font-size:10px; line-height:1; letter-spacing:0.16em; font-weight:800; text-transform:uppercase; cursor:pointer; }
     .htp-skip:hover { color:rgba(255,255,255,0.78); }
 
     /* ===== LOGO STYLES ===== */
     .hero-logo { display:block; width:min(380px, 72vw); height:auto; margin:0 auto 4px auto; }
     .htp-logo { display:block; width:min(320px, 70vw); margin:0 auto 12px auto; }
     .board-logo-wrap { display:flex; justify-content:center; margin:6px 0 4px; }
-    .board-logo-img { width:200px; max-width:70%; height:auto; display:block; opacity:0.96; margin:6px 0 4px; }
+    .board-logo-img { width:400px; max-width:95%; height:auto; display:block; opacity:0.96; margin:6px 0 4px; }
 
     /* ===== COUNTER BAR ===== */
     .counter-bar { width:100%; display:flex; align-items:stretch; border:1px solid #111; margin-bottom:16px; overflow:hidden; }
@@ -520,7 +520,7 @@
       </div>
     </div>
 
-    <div class="rule-reminder" id="ruleReminder" style="font-size:8px;margin-top:4px;opacity:0.6;">
+    <div class="rule-reminder" id="ruleReminder" style="font-size:8px;margin-top:4px;opacity:1;color:#fff;">
       LAST TAKER LOSES &mdash; FORCE THE AI TO TAKE THE FINAL STICK
     </div>
 
@@ -718,6 +718,9 @@ var renderBoard=function(){
       s.onclick=(function(r,c){return function(e){e.stopPropagation();if(state.isPlayerTurn&&!state.winner)stickClick(r,c);};})(ri,count-si);
       sticksEl.appendChild(s);
     }
+    var spacer=document.createElement("div");
+    spacer.style.cssText="width:18px;flex-shrink:0;";
+    rowEl.appendChild(spacer);
     rowEl.appendChild(sticksEl);
     var cnt=document.createElement("div");
     cnt.className="row-count"+(count===0?" zero":"");
