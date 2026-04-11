@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,7 +71,30 @@
     .brand { font-family:'Orbitron',monospace; font-size:32px; font-weight:900; color:var(--cyan); letter-spacing:-1px; margin-bottom:2px; animation:glitch 5s infinite; }
     .tagline { font-size:11px; color:var(--purple); letter-spacing:0.2em; font-weight:bold; margin-bottom:4px; }
     .daily-label { font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-bottom:8px; }
-    .info-bar { width:100%; display:flex; justify-content:space-between; align-items:center; padding:10px 14px; border:1px solid #1a1a1a; margin-bottom:18px; }
+    .info-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid #1a1a1a;
+  margin-bottom: 18px;
+}
+    .info-bar .date {
+  flex: 0 0 120px;
+}
+
+.info-bar .rule {
+  flex: 1 1 auto;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.info-bar .utc-wrap {
+  flex: 0 0 110px;
+  text-align: right;
+}
     .info-bar .date { font-size:11px; color:#fff; letter-spacing:0.15em; font-weight:bold; }
     .info-bar .rule { font-size:11px; color:var(--red); letter-spacing:0.15em; font-weight:bold; }
     .info-bar .utc-wrap { text-align:right; }
@@ -558,6 +580,17 @@
   .stick {
     width: 9px;
   }
+.info-bar .date {
+  flex: 0 0 105px;
+}
+
+.info-bar .rule {
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.info-bar .utc-wrap {
+  flex: 0 0 96px;    
 }
     /* ===== GLOBAL ORBITRON FORCE ===== */
 * {
@@ -583,13 +616,13 @@
 .board-logo-wrap {
   display: flex;
   justify-content: center;
-  margin: 8px 0 4px 0;
+  margin: 10px 0 6px 0;
   line-height: 0;
 }
 
 .board-logo-img {
-  width: 110px;
-  max-width: 42%;
+  width: 150px;
+  max-width: 52%;
   height: auto;
   display: block;
   opacity: 0.96;
