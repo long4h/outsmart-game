@@ -417,6 +417,7 @@
   95% of players lose.<br/>
   <span class="will-you">Will you?</span>
 </div>
+      <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">TAKE YOUR TURN</button>
       <div class="htp-board-preview">
         <div class="htp-board-glow"></div>
         <div class="htp-board-copy">SAME BOARD FOR EVERY PLAYER WORLDWIDE</div>
@@ -447,7 +448,6 @@
       </div>
       <div class="htp-mini-rule">TAKE TURNS REMOVING STICKS.<br/>DON'T TAKE THE LAST ONE.</div>
       <div class="htp-meta">3 ATTEMPTS &middot; RESETS AT 00:00 UTC</div>
-      <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">TAKE YOUR TURN</button>
       <button class="htp-skip" type="button" onclick="dismissHtp()">SKIP</button>
     </div>
   </div>
@@ -555,6 +555,8 @@
     <div class="turn-box" id="turnBox" style="color:#BC13FE;font-size:12px;margin-top:2px;margin-bottom:2px;">
       YOUR TURN
     </div>
+
+    <div id="attemptLabel" style="text-align:center;font-family:'Orbitron',monospace;font-size:10px;font-weight:900;color:#FFD700;letter-spacing:0.2em;margin-bottom:6px;"></div>
 
     <div class="board" id="board" style="margin-bottom:6px;"></div>
 
@@ -1026,6 +1028,7 @@ var startGame=function(){
   var rr=document.getElementById("ruleReminder");if(rr)rr.style.display="block";
   var tb=document.getElementById("thinkBar");if(tb)tb.classList.remove("active");
   setTurn("YOUR TURN","#BC13FE");setTaunt("");renderPips();renderBoard();
+  var al=document.getElementById("attemptLabel");if(al)al.textContent="ATTEMPT "+state.attempts+" / "+MAX_ATTEMPTS;
 };
 
 var showExhausted=function(){
