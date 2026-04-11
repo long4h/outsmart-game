@@ -263,6 +263,19 @@
       background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 20%), repeating-linear-gradient(to bottom, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 4px);
       opacity:0.35;
     }
+    .htp-box--new::after {
+  content: "";
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(0,243,255,0.25) 0%, rgba(0,243,255,0.12) 40%, transparent 70%);
+  filter: blur(18px);
+  pointer-events: none;
+  z-index: 1;
+}
     .htp-hero-kicker { position:relative; font-size:15px; line-height:1.25; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.7); margin-bottom:16px; text-transform:uppercase; }
     .htp-title--hero { position:relative; margin:0 0 12px; font-size:44px; line-height:0.95; letter-spacing:0.08em; font-weight:900; color:#00F3FF; text-transform:uppercase; text-shadow: 0 0 8px rgba(0,243,255,0.35), 0 0 18px rgba(0,243,255,0.18); }
     .htp-hero-sub { position:relative; font-size:17px; line-height:1.45; letter-spacing:0.06em; font-weight:800; color:#ffffff; text-transform:uppercase; margin-bottom:20px; }
@@ -288,7 +301,13 @@
 
     /* ===== LOGO STYLES ===== */
     .hero-logo { display:block; width:min(380px, 72vw); height:auto; margin:0 auto 4px auto; }
-    .htp-logo { display:block; width:min(320px, 70vw); margin:0 auto 12px auto; }
+    .htp-logo { 
+  display:block; 
+  width:min(320px, 70vw); 
+  margin:0 auto 12px auto;
+  position: relative;
+  z-index: 2;
+}
     .board-logo-wrap { display:flex; justify-content:center; margin:6px 0 4px; }
     .board-logo-img { width:400px; max-width:95%; height:auto; display:block; opacity:0.96; margin:6px 0 4px; }
 
