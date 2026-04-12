@@ -685,7 +685,7 @@ var getAIMove = function(board) {
   return getOptimalMove(board) || getRandomMove(board);
 };
 
-var TAUNTS = ["PREDICTABLE.","ALREADY MAPPED YOUR MOVES.","THIS IS TOO EASY.","FEEL THAT? THAT'S PRESSURE.","THE TRAP IS SET.","YOU WALKED RIGHT INTO IT.","I SEE THE END.","NOWHERE LEFT TO HIDE.","RESISTANCE IS FUTILE.","THE MATH DOESN'T LIE.","I CONTROL THIS BOARD.","INEVITABLE.","YOU'RE FIGHTING MATH.","I'VE ALREADY WON. YOU JUST DON'T KNOW IT.","TICK. TOCK.","YOUR OPTIONS ARE NARROWING.","DO YOU SEE IT YET? I DO."];
+var TAUNTS = ["INTERESTING.","NOT BAD.","YOU'RE LEARNING.","CAREFUL.","THAT CHANGES THINGS.","FOCUS.","THINK CAREFULLY.","TAKE YOUR TIME.","YOU'RE GETTING BETTER.","THAT WAS SHARPER.","LOOK AGAIN.","THERE'S A BETTER MOVE.","SLOW DOWN.","NOW THIS MATTERS.","I NEED TO FOCUS.","YOU'RE IMPROVING.","ALMOST."];
 
 var dismissHtp = function() {
   var el=document.getElementById('htpOverlay');
@@ -904,8 +904,8 @@ var showResult=function(playerWon){
     ? '<button class="btn btn-confirm" style="width:100%;margin-bottom:10px;font-size:10px;padding:10px;" onclick="startGame()">TRY AGAIN \u00B7 ATTEMPT ' + (state.attempts+1) + ' OF ' + MAX_ATTEMPTS + '</button>'
     : '';
   var resultColor = playerWon ? "#00F3FF" : "#FF003C";
-  var resultTitle = playerWon ? "DAILY CONQUERED" : "PATHETIC";
-  var resultSub = playerWon ? '"An anomaly. It won\'t happen again."' : '"AS EXPECTED, HUMAN."';
+  var resultTitle = playerWon ? "DAILY CONQUERED" : "OUTSMARTED";
+  var resultSub = playerWon ? '"Impressive. Well played."' : '"Almost. You were close."';
   var ctaClass = playerWon ? "" : "loss";
   var ctaHeadline = playerWon ? "TRACK YOUR SCORE.\nCLIMB THE LEADERBOARD." : "PLAY DAILY.\nEARN POINTS. REACH LEGENDARY.";
   var shareEmoji = playerWon ? "\u26A1 FLEX ON YOUR FRIENDS" : "\uD83D\uDCE3 CHALLENGE YOUR FRIENDS";
@@ -924,7 +924,18 @@ var showResult=function(playerWon){
     '</div>' +
     retryBtn +
     '<div class="cta-box ' + ctaClass + '" style="padding:18px 20px;">' +
-      '<div class="cta-headline" style="margin-bottom:0;">iOS AND ANDROID APPS COMING SOON</div>' +
+      '<div class="cta-headline" style="margin-bottom:10px;color:#00F3FF;">WANT MORE DAILY ATTEMPTS?<br>DOWNLOAD APP. COMING SOON</div>' +
+      '<div style="display:flex;justify-content:center;gap:14px;align-items:center;margin-top:10px;">' +
+        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+          '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.12em;font-weight:900;">PLAY STORE</span>' +
+        '</div>' +
+        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+          '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.12em;font-weight:900;">APP STORE</span>' +
+        '</div>' +
+        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+          '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.1em;font-weight:900;">SAFARICOM</span>' +
+        '</div>' +
+      '</div>' +
     '</div>' +
     '<button class="share-btn" onclick="shareResult()">' + shareEmoji + '</button>';
 };
@@ -1060,7 +1071,18 @@ var showExhausted=function(){
       '<div class="result-sub" style="color:' + (state.won ? "#FFD700" : "#fff") + '">' + (state.won ? "You beat today's puzzle. Come back tomorrow." : "Today's challenge is over.<br>A new board drops at 00:00 UTC.") + '</div>' +
     '</div>' +
     '<div class="cta-box ' + ctaClass + '" style="padding:18px 20px;">' +
-      '<div class="cta-headline" style="margin-bottom:0;">iOS AND ANDROID APPS COMING SOON</div>' +
+      '<div class="cta-headline" style="margin-bottom:10px;color:#00F3FF;">WANT MORE DAILY ATTEMPTS?<br>DOWNLOAD APP. COMING SOON</div>' +
+      '<div style="display:flex;justify-content:center;gap:14px;align-items:center;margin-top:10px;">' +
+        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+          '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.12em;font-weight:900;">PLAY STORE</span>' +
+        '</div>' +
+        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+          '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.12em;font-weight:900;">APP STORE</span>' +
+        '</div>' +
+        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+          '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.1em;font-weight:900;">SAFARICOM</span>' +
+        '</div>' +
+      '</div>' +
     '</div>' +
     '<button class="share-btn" onclick="shareResult()">' + shareEmoji + '</button>';
 };
