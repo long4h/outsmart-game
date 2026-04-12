@@ -84,8 +84,8 @@
       flex-direction:column;
       align-items:center;
       justify-content:flex-start;
-      padding: 8px max(12px, env(safe-area-inset-left, 12px)) 40px max(12px, env(safe-area-inset-right, 12px));
-      padding-bottom:max(60px,env(safe-area-inset-bottom,60px));
+      padding: 6px max(12px, env(safe-area-inset-left, 12px)) 16px max(12px, env(safe-area-inset-right, 12px));
+      padding-bottom:max(16px,env(safe-area-inset-bottom,16px));
       overflow-x:hidden;
       user-select:none;
       -webkit-tap-highlight-color:transparent;
@@ -108,7 +108,7 @@
       gap: 6px;
       padding: 8px 10px;
       border: 1px solid rgba(255,255,255,0.07);
-      margin-bottom: 18px;
+      margin-bottom: 8px;
     }
     .info-bar .date { flex: 0 0 auto; min-width:0; font-size:10px; color:#fff; letter-spacing:0.1em; font-weight:bold; white-space:nowrap; }
     .info-bar .rule { flex: 1 1 auto; text-align: center; font-size:10px; color:var(--red); letter-spacing:0.1em; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -209,27 +209,27 @@
     .taunt { font-size:11px; color:var(--red); letter-spacing:0.12em; min-height:18px; text-align:center; font-weight:bold; margin-bottom:6px; transition:opacity 0.3s; }
 
     .result { text-align:center; width:100%; animation:zoomIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both; }
-    .result-emoji { font-size:64px; margin-bottom:10px; }
-    .result-title { font-family:'Orbitron',monospace; font-size:36px; font-weight:900; letter-spacing:0.05em; margin-bottom:12px; }
-    .result-sub { font-size:12px; letter-spacing:0.1em; color:#fff; margin-bottom:24px; font-weight:bold; }
+    .result-emoji { font-size:42px; margin-bottom:4px; }
+    .result-title { font-family:'Orbitron',monospace; font-size:30px; font-weight:900; letter-spacing:0.05em; margin-bottom:4px; }
+    .result-sub { font-size:11px; letter-spacing:0.1em; color:#fff; margin-bottom:8px; font-weight:bold; }
 
-    .cta-box { width:100%; border:2px solid var(--cyan); padding:12px 16px; text-align:center; margin:12px 0; background:rgba(0,243,255,0.04); animation:fadeUp 0.5s ease 0.3s both; }
+    .cta-box { width:100%; border:2px solid var(--cyan); padding:8px 12px; text-align:center; margin:6px 0; background:rgba(0,243,255,0.04); animation:fadeUp 0.5s ease 0.3s both; }
     .cta-box.loss { border-color:var(--cyan); background:rgba(0,243,255,0.04); }
     .cta-eyebrow { font-size:9px; color:#fff; letter-spacing:0.25em; margin-bottom:10px; font-weight:bold; }
     .cta-headline { font-family:'Orbitron',monospace; font-size:11px; font-weight:900; color:var(--cyan); letter-spacing:0.1em; margin-bottom:8px; line-height:1.3; white-space:pre-line; }
     .cta-box.loss .cta-headline { color:var(--cyan); }
     .cta-body { font-size:11px; color:#fff; letter-spacing:0.05em; line-height:1.7; margin-bottom:18px; font-weight:bold; }
 
-    .share-btn { width:100%; font-family:'Orbitron',monospace; font-size:10px; font-weight:900; letter-spacing:0.15em; padding:10px; cursor:pointer; outline:none; background:rgba(255,215,0,0.08); border:2px solid var(--gold); color:var(--gold); margin-top:8px; transition:all 0.2s; animation:fadeUp 0.5s ease 0.5s both; }
+    .share-btn { width:100%; font-family:'Orbitron',monospace; font-size:10px; font-weight:900; letter-spacing:0.15em; padding:8px; cursor:pointer; outline:none; background:rgba(255,215,0,0.08); border:2px solid var(--gold); color:var(--gold); margin-top:4px; transition:all 0.2s; animation:fadeUp 0.5s ease 0.5s both; }
     .share-btn:hover { background:rgba(255,215,0,0.18); }
     .share-sub { font-size:9px; opacity:0.7; letter-spacing:0.15em; margin-top:4px; }
 
-    .stats-bar { width:100%; display:flex; justify-content:space-around; padding:10px 0; border-top:1px solid rgba(255,255,255,0.07); border-bottom:1px solid rgba(255,255,255,0.07); margin:10px 0; animation:fadeUp 0.5s ease 0.4s both; }
+    .stats-bar { width:100%; display:flex; justify-content:space-around; padding:6px 0; border-top:1px solid rgba(255,255,255,0.07); border-bottom:1px solid rgba(255,255,255,0.07); margin:6px 0; animation:fadeUp 0.5s ease 0.4s both; }
     .stat-item { text-align:center; }
     .stat-label { font-size:8px; color:#fff; letter-spacing:0.15em; font-weight:bold; }
-    .stat-value { font-family:'Orbitron',monospace; font-size:18px; font-weight:900; }
+    .stat-value { font-family:'Orbitron',monospace; font-size:15px; font-weight:900; }
 
-    .pips { display:flex; gap:6px; justify-content:center; margin-bottom:14px; }
+    .pips { display:flex; gap:6px; justify-content:center; margin-bottom:6px; }
     .pip { width:28px; height:5px; border-radius:99px; transition:all 0.3s; }
     .pip.used { background:rgba(255,0,60,0.5); }
     .pip.remaining { background:var(--gold); }
@@ -317,15 +317,15 @@
     .board-logo-img { width:min(400px, 92vw); height:auto; display:block; opacity:0.96; margin:6px 0 4px; }
 
     /* ===== COUNTER BAR ===== */
-    .counter-bar { width:100%; display:flex; align-items:stretch; border:1px solid rgba(255,255,255,0.07); margin-bottom:16px; overflow:hidden; }
-    .counter-side { flex:1; padding:12px 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+    .counter-bar { width:100%; display:flex; align-items:stretch; border:1px solid rgba(255,255,255,0.07); margin-bottom:6px; overflow:hidden; }
+    .counter-side { flex:1; padding:7px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; }
     .counter-side.humans { background:rgba(0,243,255,0.04); border-right:1px solid rgba(255,255,255,0.07); }
     .counter-side.machine { background:rgba(255,0,60,0.04); border-left:1px solid rgba(255,255,255,0.07); }
     .counter-vs { padding:0 12px; display:flex; align-items:center; justify-content:center; background:#000; }
     .counter-label { font-size:8px; letter-spacing:0.2em; font-weight:bold; }
     .counter-label.humans { color:var(--cyan); }
     .counter-label.machine { color:var(--red); }
-    .counter-num { font-family:'Orbitron',monospace; font-size:22px; font-weight:900; line-height:1; }
+    .counter-num { font-family:'Orbitron',monospace; font-size:18px; font-weight:900; line-height:1; }
     .counter-num.humans { color:var(--cyan); }
     .counter-num.machine { color:var(--red); }
     .counter-sub { font-size:8px; color:#fff; letter-spacing:0.12em; font-weight:bold; }
@@ -366,16 +366,19 @@
     }
 
     /* ===== RESPONSIVE: short screens ===== */
-    @media (max-height: 820px) {
-      body { padding-top:4px; padding-bottom:max(24px, env(safe-area-inset-bottom, 24px)); }
-      .brand { font-size:26px; margin-bottom:2px; }
-      .tagline, .daily-label { margin-bottom:4px; }
-      .counter-bar { margin-bottom:8px; }
-      .info-bar { margin-bottom:8px; }
-      .pips { margin-bottom:8px; }
-      .row { min-height:38px; padding:7px 10px; }
+    @media (max-height: 900px) {
+      body { padding-top:4px; padding-bottom:max(12px, env(safe-area-inset-bottom, 12px)); }
+      .brand { font-size:24px; margin-bottom:1px; }
+      .tagline, .daily-label { margin-bottom:2px; }
+      .counter-bar { margin-bottom:4px; }
+      .info-bar { margin-bottom:6px; }
+      .pips { margin-bottom:4px; }
+      .row { min-height:34px; padding:5px 8px; }
       .stick { width:9px; }
-      .board-logo-img { width:140px; max-width:60%; }
+      .board-logo-img { width:120px; max-width:55%; }
+      .result-emoji { font-size:36px; margin-bottom:2px; }
+      .result-title { font-size:26px; margin-bottom:2px; }
+      .result-sub { margin-bottom:4px; }
     }
 
     /* ===== RESPONSIVE: narrow screens (mobile) ===== */
@@ -940,16 +943,16 @@ var showResult=function(playerWon){
       '<div class="stat-item"><div class="stat-label">DATE</div><div class="stat-value" style="color:#FFD700;font-size:10px;margin-top:4px">' + dateStr + '</div></div>' +
     '</div>' +
     retryBtn +
-    '<div class="cta-box ' + ctaClass + '" style="padding:18px 20px;">' +
-      '<div class="cta-headline" style="margin-bottom:10px;color:#00F3FF;">WANT MORE DAILY ATTEMPTS?<br>DOWNLOAD APP. COMING SOON</div>' +
-      '<div style="display:flex;justify-content:center;gap:14px;align-items:center;margin-top:10px;">' +
-        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+    '<div class="cta-box ' + ctaClass + '" style="padding:8px 12px;">' +
+      '<div class="cta-headline" style="margin-bottom:6px;color:#00F3FF;">WANT MORE DAILY ATTEMPTS?<br>DOWNLOAD APP. COMING SOON</div>' +
+      '<div style="display:flex;justify-content:center;gap:10px;align-items:center;margin-top:6px;">' +
+        '<div style="width:90px;height:28px;border:1px solid rgba(0,243,255,0.35);border-radius:5px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
           '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.12em;font-weight:900;">PLAY STORE</span>' +
         '</div>' +
-        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+        '<div style="width:90px;height:28px;border:1px solid rgba(0,243,255,0.35);border-radius:5px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
           '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.12em;font-weight:900;">APP STORE</span>' +
         '</div>' +
-        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+        '<div style="width:90px;height:28px;border:1px solid rgba(0,243,255,0.35);border-radius:5px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
           '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.1em;font-weight:900;">SAFARICOM</span>' +
         '</div>' +
       '</div>' +
@@ -1087,16 +1090,16 @@ var showExhausted=function(){
       '<div class="result-title" style="color:' + (state.won ? "#FFD700" : "#FF003C") + '">' + (state.won ? "ALREADY CONQUERED" : "NO ATTEMPTS LEFT") + '</div>' +
       '<div class="result-sub" style="color:' + (state.won ? "#FFD700" : "#fff") + '">' + (state.won ? "You beat today's puzzle. Come back tomorrow." : "Today's challenge is over.<br>A new board drops at 00:00 UTC.") + '</div>' +
     '</div>' +
-    '<div class="cta-box ' + ctaClass + '" style="padding:18px 20px;">' +
-      '<div class="cta-headline" style="margin-bottom:10px;color:#00F3FF;">WANT MORE DAILY ATTEMPTS?<br>DOWNLOAD APP. COMING SOON</div>' +
-      '<div style="display:flex;justify-content:center;gap:14px;align-items:center;margin-top:10px;">' +
-        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+    '<div class="cta-box ' + ctaClass + '" style="padding:8px 12px;">' +
+      '<div class="cta-headline" style="margin-bottom:6px;color:#00F3FF;">WANT MORE DAILY ATTEMPTS?<br>DOWNLOAD APP. COMING SOON</div>' +
+      '<div style="display:flex;justify-content:center;gap:10px;align-items:center;margin-top:6px;">' +
+        '<div style="width:90px;height:28px;border:1px solid rgba(0,243,255,0.35);border-radius:5px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
           '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.12em;font-weight:900;">PLAY STORE</span>' +
         '</div>' +
-        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+        '<div style="width:90px;height:28px;border:1px solid rgba(0,243,255,0.35);border-radius:5px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
           '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.12em;font-weight:900;">APP STORE</span>' +
         '</div>' +
-        '<div style="width:100px;height:34px;border:1px solid rgba(0,243,255,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
+        '<div style="width:90px;height:28px;border:1px solid rgba(0,243,255,0.35);border-radius:5px;display:flex;align-items:center;justify-content:center;opacity:0.55;">' +
           '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.1em;font-weight:900;">SAFARICOM</span>' +
         '</div>' +
       '</div>' +
