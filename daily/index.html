@@ -80,6 +80,7 @@
       font-family:'Orbitron', sans-serif;
       min-height:100vh;
       min-height:-webkit-fill-available;
+      min-height:100dvh;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -379,6 +380,19 @@
       .result-emoji { font-size:36px; margin-bottom:2px; }
       .result-title { font-size:26px; margin-bottom:2px; }
       .result-sub { margin-bottom:4px; }
+    }
+
+    /* ===== RESPONSIVE: very short screens (iPhone SE, small Android) ===== */
+    @media (max-height: 700px) {
+      .board-logo-wrap { display:none; }
+      .taunt { min-height:12px; margin:1px 0 2px; font-size:9px; }
+      .turn-box { font-size:11px; min-height:18px; margin-bottom:1px; }
+      .board { gap:1px; margin-bottom:2px; }
+      .row { min-height:26px; padding:3px 6px; }
+      .think-bar { margin-bottom:3px; }
+      .btn { min-height:36px; padding:7px 10px; }
+      .confirm-area { margin-bottom:1px; }
+      .confirm-prompt { margin-bottom:4px; }
     }
 
     /* ===== RESPONSIVE: narrow screens (mobile) ===== */
@@ -847,7 +861,15 @@ var renderBoard=function(){
     rowEl.onclick=(function(r){return function(){rowClick(r);};})(ri);
     var sticksEl=document.createElement("div");
     sticksEl.className="sticks";
-    var h=Math.max(24,Math.min(52,52-ri*5));
+    var h=(function(){
+      var base=Math.max(24,Math.min(52,52-ri*5));
+      var totalRows=state.board.filter(function(v,i){return state.initialBoard[i]>0;}).length;
+      // Budget = viewport minus estimated chrome above/below board (~370px)
+      // Shrink only when needed; on large screens the cap never triggers
+      var rowBudget=Math.floor((window.innerHeight-370)/Math.max(totalRows,1));
+      var capped=Math.max(18,Math.min(base,rowBudget-14));
+      return capped;
+    })();
     for(var si=0;si<maxCount;si++){
       var alive=si<count;
       var pending=isSel&&si>=(count-state.pendingCount);
@@ -886,7 +908,7 @@ var stickClick=function(ri,cnt){
   beep("stick");state.selectedRow=ri;state.pendingCount=cnt;renderBoard();
   var cp=document.getElementById("confirmArea");var pr=document.getElementById("confirmPrompt");
   if(pr)pr.textContent="REMOVE "+cnt+" STICK"+(cnt>1?"S":"")+"?";
-  if(cp)cp.style.display="block";
+  if(cp){cp.style.display="block";setTimeout(function(){cp.scrollIntoView({behavior:'smooth',block:'nearest'});},50);}
   var rr=document.getElementById("ruleReminder");if(rr)rr.style.display="none";
 };
 var rowClick=function(ri){if(!state.isPlayerTurn||state.winner)return;if(state.board[ri]===0)return;stickClick(ri,1);};
