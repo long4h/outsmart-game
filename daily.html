@@ -235,12 +235,7 @@
     .pip.used { background:rgba(255,0,60,0.5); }
     .pip.remaining { background:var(--gold); }
 
-    .waitlist-form { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; justify-content:center; }
-    .waitlist-input { flex:1; min-width:180px; background:#000; border:1px solid #00F3FF55; color:#fff; font-family:'Orbitron', sans-serif; font-size:12px; font-weight:bold; padding:10px 14px; outline:none; letter-spacing:0.1em; text-transform:uppercase; }
-    .cta-box.loss .waitlist-input { border-color:#BC13FE55; }
-    .waitlist-btn { font-family:'Orbitron',monospace; font-size:10px; font-weight:900; letter-spacing:0.15em; padding:10px 18px; cursor:pointer; outline:none; border:2px solid var(--cyan); color:var(--cyan); background:rgba(0,243,255,0.1); transition:all 0.2s; flex-shrink:0; white-space:nowrap; }
-    .waitlist-btn.loss { border-color:var(--purple); color:var(--purple); background:rgba(188,19,254,0.1); }
-    .waitlist-confirm { font-family:'Orbitron', sans-serif; font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-top:12px; text-align:center; }
+
 
     /* ===== HTP OVERLAY ===== */
     .htp-overlay {
@@ -781,15 +776,28 @@ var updateCounterUI=function(c){
   }
 };
 window.renderCounterFromFirebase=async function(){
-  if(window.fbLoadCounter){var data=await window.fbLoadCounter();if(data){updateCounterUI(data);return;}}
+  if(window.fbLoadCounter){
+    var data=await window.fbLoadCounter();
+    if(data){updateCounterUI(data);return;}
+  }
   updateCounterUI(loadLocalCounter());
 };
 var renderCounter=function(){
+  // Always show local counter immediately so UI is never blank
+  updateCounterUI(loadLocalCounter());
+  // Then upgrade to live Firebase data if ready — or wait for module to call back
   if(window.firebaseReady&&window.fbLoadCounter){window.renderCounterFromFirebase();}
-  else{updateCounterUI(loadLocalCounter());}
 };
 
+var _COUNTER_DEBOUNCE_KEY = 'outsmart_last_counter_write';
 var incrementCounter = async function(playerWon) {
+  // ── Debounce: skip if called twice within 30 seconds ──────────────
+  try {
+    var last = sessionStorage.getItem(_COUNTER_DEBOUNCE_KEY);
+    if (last && Date.now() - parseInt(last, 10) < 30000) return;
+    sessionStorage.setItem(_COUNTER_DEBOUNCE_KEY, String(Date.now()));
+  } catch(e) { /* sessionStorage unavailable — proceed anyway */ }
+  // ── Update local cache and UI ──────────────────────────────────────
   var local = loadLocalCounter();
   if (playerWon) local.humans++; else local.machine++;
   saveLocalCounter(local);
@@ -984,7 +992,6 @@ var showResult=function(playerWon){
   var ctaHeadline = playerWon ? "TRACK YOUR SCORE.\nCLIMB THE LEADERBOARD." : "PLAY DAILY.\nEARN POINTS. REACH LEGENDARY.";
   var shareEmoji = playerWon ? "\u26A1 FLEX ON YOUR FRIENDS" : "\uD83D\uDCE3 CHALLENGE YOUR FRIENDS";
   var shareSub = playerWon ? "BRAG. YOU EARNED IT." : "DARE THEM TO DO BETTER.";
-  var waitlistClass = playerWon ? "" : "loss";
   document.getElementById("resultArea").innerHTML =
     '<div class="result">' +
       '<div class="result-emoji">' + (playerWon ? "\u26A1" : "\uD83D\uDC80") + '</div>' +
@@ -1087,30 +1094,7 @@ var fallbackCopy=function(text,btn){
   document.body.removeChild(el);
 };
 
-var GOOGLE_FORM_URL="https://forms.gle/7HHtwg9VK5xPYoTh7";
-var APPS_SCRIPT_URL = "YOUR_APPS_SCRIPT_URL";
 
-var joinWaitlist=async function(inputId,btn){
-  var input=document.getElementById(inputId);var email=input?input.value.trim():"";
-  if(!email||!email.includes("@")){if(input)input.style.borderColor="#FF003C";setTimeout(function(){if(input)input.style.borderColor="";},1500);return;}
-  if(btn){btn.textContent="...";btn.disabled=true;}
-  track('waitlist_signup',{date:getDailyKey()});
-  if(APPS_SCRIPT_URL && APPS_SCRIPT_URL !== "YOUR_APPS_SCRIPT_URL") {
-    try {
-      await fetch(APPS_SCRIPT_URL, {
-        method:"POST", mode:"no-cors",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({ email:email, source:"outsmart_daily", date:getDailyKey() })
-      });
-    } catch(e) { console.warn("Apps Script submission failed:", e); }
-  } else {
-    window.open(GOOGLE_FORM_URL,'_blank');
-  }
-  var confirmId=inputId.replace("email","confirm");
-  var confirmEl=document.getElementById(confirmId);
-  if(input&&input.parentElement)input.parentElement.style.display="none";
-  if(confirmEl)confirmEl.style.display="block";
-};
 
 var startGame=function(){
   if(state.won||state.attempts>=MAX_ATTEMPTS){showExhausted();return;}
@@ -1137,7 +1121,6 @@ var showExhausted=function(){
   var ctaClass = state.won ? "" : "loss";
   var shareEmoji = state.won ? "\u26A1 FLEX ON YOUR FRIENDS" : "\uD83D\uDCE3 CHALLENGE YOUR FRIENDS";
   var shareSub = state.won ? "BRAG. YOU EARNED IT." : "DARE THEM TO DO BETTER.";
-  var waitlistClass = state.won ? "" : "loss";
   document.getElementById("resultArea").innerHTML =
     '<div class="result">' +
       '<div class="result-emoji">' + (state.won ? "\u26A1" : "\uD83D\uDC80") + '</div>' +
