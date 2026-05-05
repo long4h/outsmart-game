@@ -756,7 +756,7 @@ window._liveCounter = {humans:312,machine:4847};
 
 var loadLocalCounter=function(){try{var s=localStorage.getItem(COUNTER_KEY);if(s)return JSON.parse(s);}catch(e){}return{humans:312,machine:4847};};
 var saveLocalCounter=function(c){try{localStorage.setItem(COUNTER_KEY,JSON.stringify(c));}catch(e){}};
-var updateCounterUI=function(c){
+var updateCounterUI=function(c, isLive){
   var total=c.humans+c.machine;
   var humanPct=total>0?Math.round((c.humans/total)*100):50;
   var machinePct=100-humanPct;
@@ -766,26 +766,25 @@ var updateCounterUI=function(c){
   var bM=document.getElementById('barMachine');
   var scopeEl=document.getElementById('counterScope');
   window._liveCounter = { humans: c.humans, machine: c.machine };
-  if(hEl)hEl.textContent=c.humans.toLocaleString();
-  if(mEl)mEl.textContent=c.machine.toLocaleString();
+  if(hEl)hEl.textContent=isLive?c.humans.toLocaleString():'\u2014';
+  if(mEl)mEl.textContent=isLive?c.machine.toLocaleString():'\u2014';
   if(bH)bH.style.width=humanPct+'%';
   if(bM)bM.style.width=machinePct+'%';
   if(scopeEl){
-    var isLive=window.firebaseReady&&window.fbLoadCounter;
-    scopeEl.textContent='GLOBAL \u00B7 ALL PLAYERS WORLDWIDE';
-    scopeEl.style.color='#fff';
+    scopeEl.textContent=isLive?'GLOBAL \u00B7 ALL PLAYERS WORLDWIDE':'CONNECTING\u2026';
+    scopeEl.style.color=isLive?'#fff':'#666';
   }
 };
 window.renderCounterFromFirebase=async function(){
   if(window.fbLoadCounter){
     var data=await window.fbLoadCounter();
-    if(data){updateCounterUI(data);return;}
+    if(data){updateCounterUI(data, true);return;}
   }
-  updateCounterUI(loadLocalCounter());
+  updateCounterUI(loadLocalCounter(), false);
 };
 var renderCounter=function(){
-  // Always show local counter immediately so UI is never blank
-  updateCounterUI(loadLocalCounter());
+  // Always show dashes immediately — never show seed numbers as if live
+  updateCounterUI(loadLocalCounter(), false);
   // Then upgrade to live Firebase data if ready — or wait for module to call back
   if(window.firebaseReady&&window.fbLoadCounter){window.renderCounterFromFirebase();}
 };
@@ -804,9 +803,11 @@ var incrementCounter = async function(playerWon) {
   saveLocalCounter(local);
   if (window.fbIncrementCounter) {
     await window.fbIncrementCounter(playerWon);
-    window.renderCounterFromFirebase();
+    var refreshed = await window.fbLoadCounter();
+    if (refreshed) { updateCounterUI(refreshed, true); return; }
+    updateCounterUI(local, true);
   } else {
-    updateCounterUI(local);
+    updateCounterUI(local, false);
   }
 };
 
