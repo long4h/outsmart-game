@@ -137,7 +137,7 @@
     }
     .think-bar { width:100%; height:2px; background:#111; border-radius:99px; overflow:hidden; margin-bottom:14px; opacity:0; transition:opacity 0.2s; }
     .think-bar.active { opacity:1; }
-    .think-bar-fill { height:100%; background:linear-gradient(90deg,var(--purple),var(--purple)88); border-radius:99px; animation:thinkProgress 2s linear forwards; }
+    .think-bar-fill { height:100%; background:linear-gradient(90deg,var(--purple),var(--purple)88); border-radius:99px; animation:thinkProgress 3s linear forwards; }
 
     .board {
       width:100%;
@@ -950,7 +950,7 @@ var applyMove=function(isPlayer,rowIndex,count){
       setTurn("THINKING...","#FF003C");setTaunt("");
       var bar=document.getElementById("thinkBar");var fill=document.getElementById("thinkFill");
       if(bar)bar.classList.add("active");
-      if(fill){fill.style.animation="none";void fill.offsetWidth;fill.style.animation="thinkProgress 2s linear forwards";}
+      if(fill){fill.style.animation="none";void fill.offsetWidth;fill.style.animation="thinkProgress 3s linear forwards";}
       setTimeout(function(){
         if(bar)bar.classList.remove("active");
         var move=getAIMove(state.board);
@@ -960,7 +960,7 @@ var applyMove=function(isPlayer,rowIndex,count){
           var midPool = _sessionLosses >= 2 ? AI_STRUGGLE : AI_MID;
           setTaunt(pickNR(midPool));
         }
-      },2000+Math.random()*400);
+      },3000+Math.random()*400);
     }
   }
 };
