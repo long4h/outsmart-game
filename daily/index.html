@@ -179,6 +179,9 @@
     }
     .stick.alive { background:var(--purple); box-shadow:0 0 6px rgba(188,19,254,0.5); }
     .stick.pending { background:var(--gold)!important; box-shadow:0 0 10px rgba(255,215,0,0.6)!important; transform:scaleY(1.08); }
+    /* AI removing — red, no glow, scale up — matches app */
+    .stick.ai-removing { background:#FF6B6B !important; box-shadow:none !important; transform:scaleY(1.06); }
+    .row.ai-removing-row { border-color:rgba(255,107,107,0.35) !important; background:rgba(255,107,107,0.05) !important; }
     .stick.dead { background:#1a1a1a; box-shadow:none; cursor:default; }
     .row-count {
       font-family:'Orbitron',monospace;
@@ -816,7 +819,7 @@ var incrementCounter = async function(playerWon) {
 };
 
 var STORE_KEY="outsmart_daily_web";
-var state={board:[],initialBoard:[],isPlayerTurn:true,winner:null,selectedRow:null,pendingCount:0,attempts:0,attemptDate:null,won:false};
+var state={board:[],initialBoard:[],isPlayerTurn:true,winner:null,selectedRow:null,pendingCount:0,attempts:0,attemptDate:null,won:false,aiRemovingRow:null,aiRemovingCount:0};
 
 var loadState=function(){
   try{
@@ -870,8 +873,9 @@ var renderBoard=function(){
     var maxCount=state.initialBoard[ri];
     if(maxCount===undefined||maxCount===0)return;
     var isSel=state.selectedRow===ri;
+    var isAiRemoving=state.aiRemovingRow===ri;
     var rowEl=document.createElement("div");
-    rowEl.className="row"+(isSel?" selected":"");
+    rowEl.className="row"+(isSel?" selected":isAiRemoving?" ai-removing-row":"");
     rowEl.onclick=(function(r){return function(){rowClick(r);};})(ri);
     var sticksEl=document.createElement("div");
     sticksEl.className="sticks";
@@ -887,8 +891,9 @@ var renderBoard=function(){
     for(var si=0;si<maxCount;si++){
       var alive=si<count;
       var pending=isSel&&si>=(count-state.pendingCount);
+      var aiRemoving=isAiRemoving&&si>=(count-state.aiRemovingCount);
       var s=document.createElement("div");
-      s.className="stick "+(!alive?"dead":pending?"pending":"alive");
+      s.className="stick "+(!alive?"dead":pending?"pending":aiRemoving?"ai-removing":"alive");
       s.style.height=h+"px";
       s.onclick=(function(r,c){return function(e){e.stopPropagation();if(state.isPlayerTurn&&!state.winner)stickClick(r,c);};})(ri,count-si);
       sticksEl.appendChild(s);
@@ -955,16 +960,26 @@ var applyMove=function(isPlayer,rowIndex,count){
       var bar=document.getElementById("thinkBar");var fill=document.getElementById("thinkFill");
       if(bar)bar.classList.add("active");
       if(fill){fill.style.animation="none";void fill.offsetWidth;fill.style.animation="thinkProgress 3s linear forwards";}
+      // AI delay: 3000–3500ms — matches app daily range exactly
+      var aiDelay = 3000 + Math.floor(Math.random() * 500);
+      var aiMove = getAIMove(state.board);
+      // Red flash: sticks turn red 1000ms before they vanish — same timing as app
+      setTimeout(function(){
+        state.aiRemovingRow = aiMove.rowIndex;
+        state.aiRemovingCount = aiMove.count;
+        renderBoard();
+      }, aiDelay - 1000);
+      // Apply move: clear red state, remove sticks
       setTimeout(function(){
         if(bar)bar.classList.remove("active");
-        var move=getAIMove(state.board);
-        applyMove(false,move.rowIndex,move.count);
-        // Only 20% chance of mid-game taunt — matches JSX behaviour
+        state.aiRemovingRow = null;
+        state.aiRemovingCount = 0;
+        applyMove(false,aiMove.rowIndex,aiMove.count);
         if(Math.random() < 0.20){
           var midPool = _sessionLosses >= 2 ? AI_STRUGGLE : AI_MID;
           setTaunt(pickNR(midPool));
         }
-      },3000+Math.random()*400);
+      }, aiDelay);
     }
   }
 };
@@ -1108,7 +1123,7 @@ var startGame=function(){
   track('game_started',{attempt_number:state.attempts,date:getDailyKey()});
   state.board=getDailyBoard();
   state.initialBoard=state.board.slice();
-  state.isPlayerTurn=true;state.winner=null;state.selectedRow=null;state.pendingCount=0;
+  state.isPlayerTurn=true;state.winner=null;state.selectedRow=null;state.pendingCount=0;state.aiRemovingRow=null;state.aiRemovingCount=0;
   document.getElementById("gameArea").style.display="block";
   document.getElementById("resultArea").style.display="none";
   var cp=document.getElementById("confirmArea");if(cp)cp.style.display="none";
