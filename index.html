@@ -478,7 +478,7 @@
         </div>
       </div>
       <div class="htp-mini-rule">TAKE TURNS REMOVING STICKS.<br/>DON'T TAKE THE LAST ONE.</div>
-      <div class="htp-mechanic-hint" id="htpMechanicHint">TAP A STICK TO SELECT &nbsp;&middot;&nbsp; TAP LEFT FOR MORE STICKS</div>
+      <div class="htp-mechanic-hint" id="htpMechanicHint">TAP A STICK TO SELECT<br/>TAP FURTHER LEFT FOR MORE STICKS</div>
     </div>
   </div>
 
@@ -761,9 +761,9 @@ var dismissHtp = function() {
   var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
   var el = document.getElementById('htpMechanicHint');
   if (el) {
-    el.textContent = isTouch
-      ? 'TAP A STICK TO SELECT · TAP LEFT FOR MORE STICKS'
-      : 'CLICK A STICK TO SELECT · CLICK LEFT FOR MORE STICKS';
+    el.innerHTML = isTouch
+      ? 'TAP A STICK TO SELECT<br/>TAP FURTHER LEFT FOR MORE STICKS'
+      : 'CLICK A STICK TO SELECT<br/>CLICK FURTHER LEFT FOR MORE STICKS';
   }
 })();
 
