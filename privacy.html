@@ -6,7 +6,6 @@
   <title>Privacy Policy — OUTSMART</title>
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
-  <script src="https://www.google.com/recaptcha/api.js?render=6LdBH78sAAAAA0I5e5L69F4_rnNF08XuqMyDQFtu"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -127,21 +126,27 @@
     <div class="card">
 
       <h1>Privacy Policy</h1>
-      <div class="meta">Effective date: 15 April 2026</div>
+      <div class="meta">Effective date: 2 June 2026</div>
 
       <p>
-        OUTSMART is designed with a privacy-first approach — no accounts, no login, and minimal data collection.
+        OUTSMART is designed with a privacy-first approach — minimal data collection and no traditional sign-up.
         OUTSMART is a product of Towson International Limited.
       </p>
 
       <h2>1. Information We Collect</h2>
       <p>
-        OUTSMART is designed to be played without creating an account or providing personal information.
+        OUTSMART is designed to be played without creating a user account.
       </p>
       <p>
-        If you choose to join the leaderboard, you provide a display name (chosen by you). This name, along with
-        your game stats (points, wins, total games played), your subscription status, and your country code are
-        stored on our servers to power the leaderboard.
+        When you first open the app, we automatically create an anonymous identifier on your device (via Firebase
+        Authentication) so we can attribute your leaderboard entry and moderation actions to a single device without
+        ever asking for an email, name, or login. You are not asked to register and we cannot identify you personally
+        from this identifier alone.
+      </p>
+      <p>
+        If you choose to join the leaderboard, you additionally provide a display name (chosen by you). This name,
+        along with your game stats (points, wins, total games played), your subscription status, and your country code
+        are stored on our servers to power the leaderboard.
       </p>
       <p>
         Your country is detected automatically on first launch using your IP address via a third-party service
@@ -149,19 +154,32 @@
         retained by us.
       </p>
       <p>
+        If you report another player's leaderboard name as inappropriate, we store the reported name, your anonymous
+        identifier, the reason code, and a timestamp. We use this information only for moderation purposes.
+      </p>
+      <p>
         All other gameplay data (settings, streak, daily challenge progress, hint usage, ad history) is stored
         only on your device and is never sent to our servers.
       </p>
 
-      <h2>2. Advertising</h2>
+      <h2>2. Advertising and Consent</h2>
       <p>
         OUTSMART shows ads powered by Google AdMob. Google may collect and use data to serve personalised or
         non-personalised ads, including your device's advertising identifier (Advertising ID on Android,
         IDFA on iOS), device information, and coarse location.
       </p>
       <p>
-        On iOS, we do not request Apple's App Tracking Transparency permission, so ads are served without
-        cross-app tracking.
+        If you are in the European Economic Area, the United Kingdom, Switzerland, or another regulated region,
+        we show Google's User Messaging Platform (UMP) consent form on first launch. You may grant or refuse consent
+        for personalised advertising at that point. If you refuse, ads are still served but are not personalised.
+      </p>
+      <p>
+        You can change your ad consent choice at any time by opening Settings and tapping "Privacy Options".
+      </p>
+      <p>
+        On iOS, we request permission via Apple's App Tracking Transparency framework before any cross-app tracking
+        occurs. If you decline, your device's advertising identifier is not shared with Google for tracking purposes,
+        and ads remain non-personalised.
       </p>
       <p>
         To learn more about how Google uses data from apps that use its services, visit:
@@ -170,77 +188,104 @@
         </a>
       </p>
 
-      <h2>3. How We Use Information</h2>
+      <h2>3. Notifications</h2>
+      <p>
+        OUTSMART can send you local notifications (for example, to remind you about your daily challenge or unbroken
+        streak). All notifications are scheduled and delivered locally by your device — we do not send push
+        notifications from our servers.
+      </p>
+      <p>
+        We request notification permission only after you take an action that benefits from notifications, such as
+        joining the leaderboard. You can revoke this permission at any time from your device's system settings.
+      </p>
+
+      <h2>4. Name Moderation</h2>
+      <p>
+        To keep the leaderboard family-friendly, display names are screened against a multilingual blocklist
+        (covering English, Spanish, French, German, Italian, Portuguese, Hindi, Arabic, Swahili, Russian, and
+        impersonation terms) before being accepted. Names that match the blocklist are rejected on your device
+        and never reach our servers.
+      </p>
+
+      <h2>5. How We Use Information</h2>
       <p>We use the information described above to:</p>
       <ul>
         <li>operate and display the leaderboard;</li>
+        <li>attribute submissions and moderation reports to a single anonymous device;</li>
         <li>detect your country for country-based leaderboard filtering;</li>
-        <li>serve ads that support the free version of the app;</li>
+        <li>serve ads (personalised or not) that support the free version of the app;</li>
+        <li>moderate the leaderboard in response to user reports;</li>
         <li>respond to support requests if you contact us directly.</li>
       </ul>
       <p>We do not use your information for any other purpose.</p>
 
-      <h2>4. Data Sharing</h2>
+      <h2>6. Data Sharing</h2>
       <p>We do not sell your personal data.</p>
       <p>
         Leaderboard data (display name, points, wins, country, subscription status) is visible to other
         players in the app.
       </p>
       <p>
-        We share data with Google (AdMob and Firebase/Firestore) to operate advertising and leaderboard
-        services. Google's privacy policy applies to their handling of this data.
+        We share data with Google (AdMob, Firebase Authentication, and Firestore) and RevenueCat to operate
+        advertising, leaderboard, and subscription services. Their respective privacy policies apply to their
+        handling of this data.
       </p>
 
-      <h2>5. Data Retention</h2>
+      <h2>7. Data Retention</h2>
       <p>
-        Leaderboard entries remain until you delete your entry or request removal by contacting us.
+        Leaderboard entries remain until you delete your entry or request removal by contacting us. Moderation
+        report records are retained while the reported account remains active and may be reviewed by us at any time.
         Device-only data is cleared when you uninstall the app.
       </p>
 
-      <h2>6. Security</h2>
+      <h2>8. Security</h2>
       <p>
         We take reasonable measures to protect information. Leaderboard data is stored in Google Firestore
-        with standard security controls. No system can guarantee absolute security.
+        with standard security controls, server-side schema validation, and rate limits. No system can guarantee
+        absolute security.
       </p>
 
-      <h2>7. Children's Privacy</h2>
+      <h2>9. Children's Privacy</h2>
       <p>
         OUTSMART is not directed to children under 13 (or the applicable age in your region). We do not
         knowingly collect personal data from children. If you believe a child has provided information,
         contact us and we will remove it promptly.
       </p>
 
-      <h2>8. Your Rights and Choices</h2>
+      <h2>10. Your Rights and Choices</h2>
       <ul>
         <li>You may request deletion of your leaderboard entry at any time by contacting us.</li>
         <li>You can reset all local game data by uninstalling the app.</li>
+        <li>You may change your ad consent choice via Settings → Privacy Options (EEA/UK/regulated regions only).</li>
         <li>
           You may opt out of personalised ads through your device's advertising settings
           (Android: Google Settings → Ads; iOS: Settings → Privacy → Tracking).
         </li>
       </ul>
 
-      <h2>9. Third-Party Services</h2>
+      <h2>11. Third-Party Services</h2>
       <p>This app uses the following third-party services:</p>
       <ul>
         <li><strong>Google AdMob</strong> — advertising</li>
-        <li><strong>Google Firebase / Firestore</strong> — leaderboard storage</li>
+        <li><strong>Google User Messaging Platform (UMP)</strong> — ad consent management for regulated regions</li>
+        <li><strong>Google Firebase Authentication</strong> — anonymous device identifier</li>
+        <li><strong>Google Firebase / Firestore</strong> — leaderboard and moderation data storage</li>
         <li><strong>RevenueCat</strong> — subscription and in-app purchase management</li>
-        <li><strong>ipapi.co</strong> — country detection</li>
-        <li><strong>Capacitor Local Notifications</strong> — local push notifications (no data sent externally)</li>
+        <li><strong>ipapi.co</strong> — country detection (IP address used only at first launch, not stored)</li>
+        <li><strong>Capacitor Local Notifications</strong> — local reminders scheduled on-device</li>
       </ul>
       <p>
         We are not responsible for the privacy practices of these services. Please review their respective
         privacy policies.
       </p>
 
-      <h2>10. Changes to This Policy</h2>
+      <h2>12. Changes to This Policy</h2>
       <p>
         We may update this Privacy Policy from time to time. The effective date at the top of this policy
         will be updated. Continued use of the app after changes constitutes acceptance.
       </p>
 
-      <h2>11. Contact</h2>
+      <h2>13. Contact</h2>
       <p>
         For privacy questions or data deletion requests, contact:
         <br />
@@ -260,10 +305,5 @@
     </div>
 
   </div>
-<script>
-  grecaptcha.ready(function() {
-    grecaptcha.execute('6LdBH78sAAAAA0I5e5L69F4_rnNF08XuqMyDQFtu', {action: 'page_visit'});
-  });
-</script>
 </body>
 </html>
