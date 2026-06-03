@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delete Your Data — OUTSMART</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:#000;
+      --cyan:#00F3FF;
+      --text:#EAEAEA;
+      --muted:#9A9A9A;
+      --line:rgba(255,255,255,0.1);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Orbitron', sans-serif;
+      padding: 24px 16px 48px;
+      line-height: 1.7;
+    }
+
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--cyan);
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      padding: 22px 18px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 13px;
+      color: var(--cyan);
+      margin-top: 22px;
+      margin-bottom: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    p {
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    ul, ol {
+      margin: 0 0 12px 18px;
+    }
+
+    li {
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    a {
+      color: var(--cyan);
+      text-decoration: none;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 11px;
+      opacity: 0.75;
+    }
+
+    .footer a {
+      color: var(--muted);
+      margin: 0 8px;
+    }
+
+    .email {
+      color: var(--cyan);
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .owner {
+      color: #777;
+    }
+
+    .cta {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 10px 18px;
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .note {
+      border-left: 2px solid var(--cyan);
+      padding: 8px 12px;
+      margin: 14px 0;
+      background: rgba(0,243,255,0.04);
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="logo">OUTSMART</div>
+    <div class="sub">Delete Your Data</div>
+
+    <div class="card">
+
+      <h1>Request Deletion of Your Data</h1>
+      <div class="meta">Towson International Limited — Effective 2 June 2026</div>
+
+      <p>
+        OUTSMART respects your right to control your data. This page explains exactly how to request deletion of
+        any data we hold about you, what we will delete, and how long it takes.
+      </p>
+
+      <h2>1. How to Request Deletion</h2>
+      <p>
+        Email us from any address using the following format. We do not need you to verify your identity, because
+        deletion requests cause no harm if processed against the wrong account.
+      </p>
+      <ol>
+        <li>
+          Send an email to
+          <a href="mailto:support@playoutsmart.com?subject=Data%20Deletion%20Request">support@playoutsmart.com</a>
+        </li>
+        <li>Use the subject line: <strong>Data Deletion Request</strong></li>
+        <li>
+          In the body, include your leaderboard display name (e.g. <strong>KIBIRU</strong>) and, if known,
+          your country code (e.g. <strong>KE</strong>). If you do not remember your display name, tell us
+          the approximate date you joined the leaderboard.
+        </li>
+      </ol>
+
+      <p>
+        <a class="cta" href="mailto:support@playoutsmart.com?subject=Data%20Deletion%20Request">
+          Email Us Now
+        </a>
+      </p>
+
+      <h2>2. What We Will Delete</h2>
+      <p>On confirmation of your request, we will permanently delete:</p>
+      <ul>
+        <li>Your leaderboard entry (display name, points, wins, total games played, subscription status)</li>
+        <li>Your country code, if associated with your entry</li>
+        <li>Your anonymous Firebase Authentication identifier</li>
+        <li>Any moderation reports you submitted</li>
+        <li>Any moderation reports submitted against your display name</li>
+      </ul>
+
+      <h2>3. What We Cannot Delete</h2>
+      <p>
+        Some data is outside our control or required by law to retain:
+      </p>
+      <ul>
+        <li>
+          <strong>Purchase records</strong>: managed by Google Play or Apple, not by us. Use your store account
+          settings or contact those platforms to request purchase data deletion.
+        </li>
+        <li>
+          <strong>Aggregated analytics</strong>: Google AdMob's ad-serving logs and aggregate metrics are governed
+          by Google's policies. See
+          <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">
+            Google's partner site policy
+          </a>.
+        </li>
+        <li>
+          <strong>Tax and accounting records</strong>: subscription transaction history that we are required to
+          retain for legal and tax purposes is kept according to applicable law.
+        </li>
+      </ul>
+
+      <h2>4. How Long Deletion Takes</h2>
+      <p>
+        We will confirm your request and complete deletion within <strong>30 days</strong> of receipt. Most
+        requests are processed within 7 business days. Once deletion is complete, we will send you a confirmation
+        email.
+      </p>
+
+      <h2>5. Reinstalling the App</h2>
+      <p>
+        Uninstalling OUTSMART clears all on-device data immediately. If you want to also delete data we hold on
+        our servers (leaderboard entry, moderation records), follow the steps above. Reinstalling the app after
+        deletion will treat you as a brand new user.
+      </p>
+
+      <h2>6. Questions</h2>
+      <p>
+        If you have questions about this process, or need help recovering your display name to make a deletion
+        request, contact:
+        <br />
+        <a href="mailto:support@playoutsmart.com">support@playoutsmart.com</a>
+      </p>
+
+      <div class="note">
+        For our full data practices, see our <a href="/privacy.html">Privacy Policy</a>.
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div>
+        <a href="/daily">Daily</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+      <div class="email">support@playoutsmart.com</div>
+      <div class="owner">Outsmart is a product of Towson International Limited</div>
+    </div>
+
+  </div>
+</body>
+</html>
