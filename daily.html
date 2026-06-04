@@ -693,6 +693,9 @@ var getDailyBoard = function() {
   return board;
 };
 
+// Winnable day: 1 in 7 days, deterministic from the same date hash — matches JSX app exactly.
+var isWinnableDay = function() { return (hashDate(getDailyKey()) % 7) === 0; };
+
 var nimSum = function(b) { return b.reduce(function(a,v){return a^v;},0); };
 
 var getOptimalMove = function(board) {
@@ -731,7 +734,7 @@ var getRandomMove = function(board) {
 var getAIMove = function(board) {
   var totalSticks = board.reduce(function(a,v){return a+v;}, 0);
   if (totalSticks <= 3) return getOptimalMove(board);
-  if (Math.random() < 0.06) return getRandomMove(board);
+  if (Math.random() < (isWinnableDay() ? 0.30 : 0.06)) return getRandomMove(board);
   return getOptimalMove(board) || getRandomMove(board);
 };
 
