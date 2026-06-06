@@ -46,6 +46,24 @@
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
     const statsRef = doc(db, "stats", "global");
+
+    // ── Firebase App Check (bot/abuse protection for the counter) ─────────
+    // Paste your reCAPTCHA v3 site key below to enable. While it stays as the
+    // placeholder, nothing loads and nothing changes. IMPORTANT: do NOT turn on
+    // App Check *enforcement* in the Firebase console until the mobile app is
+    // also registered for App Check, or the app's Firestore access will break.
+    const APP_CHECK_SITE_KEY = "REPLACE_WITH_RECAPTCHA_V3_SITE_KEY";
+    if (APP_CHECK_SITE_KEY !== "REPLACE_WITH_RECAPTCHA_V3_SITE_KEY") {
+      try {
+        const { initializeAppCheck, ReCaptchaV3Provider } =
+          await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js");
+        initializeAppCheck(app, {
+          provider: new ReCaptchaV3Provider(APP_CHECK_SITE_KEY),
+          isTokenAutoRefreshEnabled: true
+        });
+      } catch (e) { console.warn("App Check init skipped:", e); }
+    }
+
     window.fbLoadCounter = async () => {
       try {
         const snap = await getDoc(statsRef);
@@ -1023,10 +1041,31 @@ var applyMove=function(isPlayer,rowIndex,count){
   }
 };
 
-var getShareText = function(playerWon, attempts, accuracy) {
+// Stable anonymous per-device id so we can count distinct sharers later.
+var getRefToken = function(){
+  try{
+    var t = localStorage.getItem("outsmart_ref");
+    if(!t){ t = (Date.now().toString(36) + Math.random().toString(36).slice(2,8)); localStorage.setItem("outsmart_ref", t); }
+    return t;
+  }catch(e){ return "anon"; }
+};
+
+// Canonical share URL: the win/lose OG landing page (so the card renders) with
+// UTM + ref attached. medium = the platform the link was shared to.
+var buildShareUrl = function(playerWon, medium){
+  var base = playerWon ? "https://playoutsmart.com/daily/win" : "https://playoutsmart.com/daily/lose";
+  var campaign = playerWon ? "daily_win" : "daily_lose";
+  return base
+    + "?utm_source=share"
+    + "&utm_medium=" + encodeURIComponent(medium || "share")
+    + "&utm_campaign=" + campaign
+    + "&ref=" + encodeURIComponent(getRefToken());
+};
+
+var getShareText = function(playerWon, attempts, accuracy, medium) {
   var suffix = attempts > 1 ? "s" : "";
   var today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-  var shareUrl = playerWon ? "https://playoutsmart.com/daily/win" : "https://playoutsmart.com/daily/lose";
+  var shareUrl = buildShareUrl(playerWon, medium);
   var hasAcc = (accuracy !== null && accuracy !== undefined);
   var accLine = hasAcc ? ("\n\uD83C\uDFAF " + accuracy + "% accuracy") : "";
   if (playerWon) {
@@ -1128,7 +1167,8 @@ var showResult=function(playerWon){
   var dateStr=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
   var ins = computeInsight();
   track('daily_insight_shown',{result:playerWon?'win':'loss',accuracy:(ins.accuracy===null?-1:ins.accuracy),turning_point:ins.turningPoint||0,was_winnable:state.wasWinnable,date:getDailyKey()});
-  window._shareText = getShareText(playerWon, state.attempts, ins.accuracy);
+  window._shareWon = playerWon; window._shareAttempts = state.attempts; window._shareAccuracy = ins.accuracy;
+  window._shareText = getShareText(playerWon, state.attempts, ins.accuracy, 'share');
   var retryBtn = canRetry
     ? '<button class="btn btn-confirm" style="width:100%;margin-bottom:10px;font-size:10px;padding:10px;" onclick="startGame()">TRY AGAIN \u00B7 ATTEMPT ' + (state.attempts+1) + ' OF ' + MAX_ATTEMPTS + '</button>'
     : '';
@@ -1156,9 +1196,13 @@ var showResult=function(playerWon){
 
 var shareTo = function(platform) {
   track('share_platform_clicked', { platform:platform, date:getDailyKey() });
-  var text = window._shareText || "Play today's OUTSMART Daily Challenge:\n\n" + CHALLENGE_URL;
+  var won = window._shareWon, att = window._shareAttempts, acc = window._shareAccuracy;
+  var text = (won === undefined)
+    ? ("Play today's OUTSMART Daily Challenge:\n\n" + buildShareUrl(false, platform))
+    : getShareText(won, att, acc, platform);
+  var landingUrl = (won === undefined) ? buildShareUrl(false, platform) : buildShareUrl(won, platform);
   var encodedText = encodeURIComponent(text);
-  var encodedUrl = encodeURIComponent(CHALLENGE_URL);
+  var encodedUrl = encodeURIComponent(landingUrl);
   var shareUrl = "";
   if(platform==="twitter") shareUrl = "https://twitter.com/intent/tweet?text="+encodedText;
   else if(platform==="whatsapp") shareUrl = "https://wa.me/?text="+encodedText;
@@ -1171,7 +1215,14 @@ var shareTo = function(platform) {
 
 var shareResult=function(){
   track('share_clicked',{date:getDailyKey()});
-  var text=window._shareText||"Play today's OUTSMART Daily Challenge:\n\n"+CHALLENGE_URL;
+  var won = window._shareWon, att = window._shareAttempts, acc = window._shareAccuracy;
+  var mediumText = function(m){
+    return (won === undefined)
+      ? ("Play today's OUTSMART Daily Challenge:\n\n" + buildShareUrl(false, m))
+      : getShareText(won, att, acc, m);
+  };
+  var text = window._shareText || mediumText('share');
+  var copyText = mediumText('copy');
   var modal=document.getElementById('shareModal');
   var textEl=document.getElementById('shareText');
   var copyBtn=document.getElementById('shareCopyBtn');
@@ -1185,7 +1236,7 @@ var shareResult=function(){
   if(copyBtn){
     copyBtn.onclick=function(){
       if(navigator.clipboard){
-        navigator.clipboard.writeText(text).then(function(){
+        navigator.clipboard.writeText(copyText).then(function(){
           var titleEl=copyBtn.querySelector('.share-platform-title');
           var subEl=copyBtn.querySelector('.share-platform-sub');
           if(titleEl)titleEl.textContent='COPIED';
@@ -1194,15 +1245,17 @@ var shareResult=function(){
             if(titleEl)titleEl.textContent='COPY';
             if(subEl)subEl.textContent='COPY TO CLIPBOARD';
           },2000);
-        }).catch(function(){fallbackCopy(text,copyBtn);});
+        }).catch(function(){fallbackCopy(copyText,copyBtn);});
       } else {
-        fallbackCopy(text,copyBtn);
+        fallbackCopy(copyText,copyBtn);
       }
     };
   }
   if(nativeBtn){
     nativeBtn.onclick=function(){
-      navigator.share({title:"OUTSMART Daily Challenge",text:text,url:CHALLENGE_URL}).catch(function(){});
+      var nText = mediumText('native');
+      var nUrl = (won === undefined) ? buildShareUrl(false,'native') : buildShareUrl(won,'native');
+      navigator.share({title:"OUTSMART Daily Challenge",text:nText,url:nUrl}).catch(function(){});
     };
   }
   if(modal)modal.style.display='flex';
@@ -1250,9 +1303,8 @@ var startGame=function(){
 var showExhausted=function(){
   document.getElementById("gameArea").style.display="none";
   document.getElementById("resultArea").style.display="block";
-  window._shareText = state.won
-    ? getShareText(true, state.attempts || 1)
-    : getShareText(false, MAX_ATTEMPTS);
+  window._shareWon = state.won; window._shareAttempts = state.won ? (state.attempts || 1) : MAX_ATTEMPTS; window._shareAccuracy = null;
+  window._shareText = getShareText(window._shareWon, window._shareAttempts, null, 'share');
   var shareEmoji = state.won ? "\u26A1 FLEX ON YOUR FRIENDS" : "\uD83D\uDCE3 CHALLENGE YOUR FRIENDS";
   var shareSub = state.won ? "BRAG. YOU EARNED IT." : "DARE THEM TO DO BETTER.";
   document.getElementById("resultArea").innerHTML =
@@ -1286,6 +1338,18 @@ var init=function(){
   };
   tickClock();setInterval(tickClock,1000);
   renderCounter();
+  try{
+    var qs=new URLSearchParams(window.location.search);
+    if(qs.get('utm_source')||qs.get('ref')){
+      track('referred_visit',{
+        utm_source: qs.get('utm_source')||'',
+        utm_medium: qs.get('utm_medium')||'',
+        utm_campaign: qs.get('utm_campaign')||'',
+        ref: qs.get('ref')||'',
+        date: getDailyKey()
+      });
+    }
+  }catch(e){}
   try{
     var seen=localStorage.getItem('outsmart_htp_seen');
     if(seen){var el=document.getElementById('htpOverlay');if(el)el.remove();}
