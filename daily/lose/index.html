@@ -1,49 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>OUTSMART Daily Challenge</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OUTSMART — OUTSMARTED</title>
 
-  <meta property="og:title" content="OUTSMART Daily Challenge" />
-  <meta property="og:description" content="💀 Lost the OUTSMART Daily. Most players fail. Can you beat it today?" />
-  <meta property="og:image" content="https://playoutsmart.com/lose-preview.png" />
-  <meta property="og:url" content="https://playoutsmart.com/daily/lose" />
+  <!-- Open Graph (Facebook, WhatsApp, LinkedIn, Telegram) -->
+  <meta property="og:title" content="OUTSMART DAILY — OUTSMARTED"/>
+  <meta property="og:description" content="The AI beat me today. It's nearly unbeatable. Think you're smarter?"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://playoutsmart.com/daily/lose"/>
+  <meta property="og:image" content="https://playoutsmart.com/lose-preview.png"/>
+  <meta property="og:image:width" content="3742"/>
+  <meta property="og:image:height" content="2504"/>
+  <meta property="og:image:alt" content="OUTSMART — OUTSMARTED"/>
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="OUTSMART Daily Challenge" />
-  <meta name="twitter:description" content="💀 Lost the OUTSMART Daily. Most players fail. Can you beat it today?" />
-  <meta name="twitter:image" content="https://playoutsmart.com/lose-preview.png" />
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="OUTSMART DAILY — OUTSMARTED"/>
+  <meta name="twitter:description" content="The AI beat me today. It's nearly unbeatable. Think you're smarter?"/>
+  <meta name="twitter:image" content="https://playoutsmart.com/lose-preview.png"/>
+  <meta name="twitter:url" content="https://playoutsmart.com/daily/lose"/>
 
-  <meta http-equiv="refresh" content="1; url=https://playoutsmart.com/daily" />
-
-  <script>
-    setTimeout(function () {
-      window.location.replace("https://playoutsmart.com/daily");
-    }, 800);
-  </script>
-
+  <!-- Redirect humans to the game via JS only. Crawlers don't run JS, so they
+       read the tags above and render the card; they never see a redirect. -->
+  <script>window.location.replace("https://playoutsmart.com/daily");</script>
   <style>
-    body {
-      margin: 0;
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 24px;
-    }
-    a {
-      color: #00F3FF;
-    }
+    html,body{margin:0;height:100%;background:#000;color:#FF003C;
+      font-family:system-ui,-apple-system,sans-serif;display:flex;
+      align-items:center;justify-content:center;text-align:center}
+    a{color:#FF003C}
   </style>
 </head>
 <body>
-  <div>
-    <p>Loading today’s challenge...</p>
-    <p><a href="https://playoutsmart.com/daily">Tap here if it doesn’t open</a></p>
-  </div>
+  <p>Taking you to today's challenge… <a href="https://playoutsmart.com/daily">Play OUTSMART Daily</a></p>
 </body>
 </html>
