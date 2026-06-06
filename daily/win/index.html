@@ -25,7 +25,7 @@
   <!-- Redirect humans to the game via JS only. Crawlers (X/Facebook/WhatsApp)
        don't run JS, so they read the tags above and render the card; they never
        see a redirect. -->
-  <script>window.location.replace("https://playoutsmart.com/daily");</script>
+  <script>window.location.replace("https://playoutsmart.com/daily" + window.location.search);</script>
   <style>
     html,body{margin:0;height:100%;background:#000;color:#00F3FF;
       font-family:system-ui,-apple-system,sans-serif;display:flex;
