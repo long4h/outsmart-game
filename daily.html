@@ -627,15 +627,18 @@
 </div>
 <script>
 var APP_STORE_URL = "https://www.playoutsmart.com";
-var PLAY_STORE_URL = "https://www.playoutsmart.com";
+var PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.outsmartstudios.outsmart&utm_source=webdaily&utm_medium=flex&utm_campaign=postgame";
 var SAFARICOM_URL = "https://www.playoutsmart.com";
 var CHALLENGE_URL = "https://www.playoutsmart.com/daily";
 var MAX_ATTEMPTS = 3;
-// Flip to true once the public store listings are live. While false the badges
-// render as "SOON" placeholders; while true they become real, clickable links
-// and fire the download_cta_click analytics event. Android can go live alone —
-// just point PLAY_STORE_URL at the real listing and set APPS_LIVE = true.
-var APPS_LIVE = false;
+// Per-store launch flags. Flip a store to true once its public listing is live;
+// that badge then becomes a real, clickable link and fires the
+// download_cta_click analytics event. Until then it stays a "SOON" placeholder.
+// Each store launches independently — Android is live, iOS is in review,
+// Safaricom (M-Pesa Mini App) is still in development.
+var PLAY_LIVE = true;
+var APP_LIVE = false;
+var SAFARICOM_LIVE = false;
 
 function scrollToGame() {
   var el = document.getElementById("gameArea");
@@ -1130,15 +1133,15 @@ var trackDownload = function(store, playerWon) {
 };
 
 // Single source of truth for the download CTA — used by showResult AND
-// showExhausted. Gated on APPS_LIVE: placeholder "SOON" badges until launch,
+// showExhausted. Gated per-store (PLAY_LIVE/APP_LIVE/SAFARICOM_LIVE):
 // real clickable links (with analytics) after.
 var buildDownloadCTA = function(playerWon) {
   var line = playerWon
     ? "You beat today's board. 95% don't. The app ranks you against the world and serves a fresh AI to beat every day."
     : "The AI beat you \u2014 see the exact line you missed, keep your daily streak, and climb from Rookie to Legendary.";
-  var badge = function(label, store, url) {
+  var badge = function(label, store, url, isLive) {
     var inner = '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.1em;font-weight:900;">' + label + '</span>';
-    if (APPS_LIVE && url) {
+    if (isLive && url) {
       return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" ' +
         'onclick="trackDownload(\'' + store + '\',' + (playerWon ? 'true' : 'false') + ')" ' +
         'style="text-decoration:none;width:90px;height:30px;border:1px solid rgba(0,243,255,0.85);border-radius:5px;display:flex;align-items:center;justify-content:center;">' + inner + '</a>';
@@ -1150,9 +1153,9 @@ var buildDownloadCTA = function(playerWon) {
     '<div class="cta-headline" style="margin-bottom:4px;color:#00F3FF;">DAILY IS THE TEST.<br>THE APP IS WHERE YOU TRAIN.</div>' +
     '<div style="font-family:\'Orbitron\',sans-serif;font-size:9px;color:#ccc;line-height:1.6;letter-spacing:0.03em;text-align:center;margin:6px 0 8px;">' + line + '</div>' +
     '<div style="display:flex;justify-content:center;gap:10px;align-items:center;">' +
-      badge('PLAY STORE', 'play', PLAY_STORE_URL) +
-      badge('APP STORE', 'app', APP_STORE_URL) +
-      badge('SAFARICOM', 'safaricom', SAFARICOM_URL) +
+      badge('PLAY STORE', 'play', PLAY_STORE_URL, PLAY_LIVE) +
+      badge('APP STORE', 'app', APP_STORE_URL, APP_LIVE) +
+      badge('SAFARICOM', 'safaricom', SAFARICOM_URL, SAFARICOM_LIVE) +
     '</div>' +
   '</div>';
 };
