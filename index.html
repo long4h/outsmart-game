@@ -626,7 +626,7 @@
 
 </div>
 <script>
-var APP_STORE_URL = "https://www.playoutsmart.com";
+var APP_STORE_URL = "https://apps.apple.com/app/id6768251747";
 var PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.outsmartstudios.outsmart&utm_source=webdaily&utm_medium=flex&utm_campaign=postgame";
 var SAFARICOM_URL = "https://www.playoutsmart.com";
 var CHALLENGE_URL = "https://www.playoutsmart.com/daily";
@@ -637,7 +637,7 @@ var MAX_ATTEMPTS = 3;
 // Each store launches independently — Android is live, iOS is in review,
 // Safaricom (M-Pesa Mini App) is still in development.
 var PLAY_LIVE = true;
-var APP_LIVE = false;
+var APP_LIVE = true;
 var SAFARICOM_LIVE = false;
 
 function scrollToGame() {
@@ -1140,13 +1140,13 @@ var buildDownloadCTA = function(playerWon) {
     ? "You beat today's board. 95% don't. The app ranks you against the world and serves a fresh AI to beat every day."
     : "The AI beat you \u2014 see the exact line you missed, keep your daily streak, and climb from Rookie to Legendary.";
   var badge = function(label, store, url, isLive) {
-    var inner = '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.1em;font-weight:900;">' + label + '</span>';
+    var inner = '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.1em;font-weight:900;white-space:nowrap;">' + label + '</span>';
     if (isLive && url) {
       return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" ' +
         'onclick="trackDownload(\'' + store + '\',' + (playerWon ? 'true' : 'false') + ')" ' +
-        'style="text-decoration:none;width:90px;height:30px;border:1px solid rgba(0,243,255,0.85);border-radius:5px;display:flex;align-items:center;justify-content:center;">' + inner + '</a>';
+        'style="text-decoration:none;flex:1;min-width:0;height:30px;padding:0 8px;box-sizing:border-box;border:1px solid rgba(0,243,255,0.85);border-radius:5px;display:flex;align-items:center;justify-content:center;">' + inner + '</a>';
     }
-    return '<div style="width:90px;height:30px;border:1px solid rgba(0,243,255,0.35);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;opacity:0.6;">' +
+    return '<div style="flex:1;min-width:0;height:30px;padding:0 8px;box-sizing:border-box;border:1px solid rgba(0,243,255,0.35);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;opacity:0.6;">' +
       inner + '<span style="font-size:6px;color:#FFD700;letter-spacing:0.12em;font-weight:900;">SOON</span></div>';
   };
   return '<div class="cta-box ' + (playerWon ? '' : 'loss') + '" style="padding:10px 12px;">' +
@@ -1155,7 +1155,7 @@ var buildDownloadCTA = function(playerWon) {
     '<div style="display:flex;justify-content:center;gap:10px;align-items:center;">' +
       badge('PLAY STORE', 'play', PLAY_STORE_URL, PLAY_LIVE) +
       badge('APP STORE', 'app', APP_STORE_URL, APP_LIVE) +
-      badge('SAFARICOM', 'safaricom', SAFARICOM_URL, SAFARICOM_LIVE) +
+      badge('PLAY ON M-PESA', 'safaricom', SAFARICOM_URL, SAFARICOM_LIVE) +
     '</div>' +
   '</div>';
 };
