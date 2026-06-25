@@ -68,7 +68,7 @@
       try {
         const snap = await getDoc(statsRef);
         if (snap.exists()) { return snap.data(); }
-        else { await setDoc(statsRef, { humans: 312, machine: 4847 }); return { humans: 312, machine: 4847 }; }
+        else { await setDoc(statsRef, { humans: 0, machine: 0 }); return { humans: 0, machine: 0 }; }
       } catch (e) { console.warn("Firebase read failed, using local counter:", e); return null; }
     };
     window.fbIncrementCounter = async (playerWon) => {
@@ -809,10 +809,12 @@ var dismissHtp = function() {
 })();
 
 var COUNTER_KEY='outsmart_counter';
-window._liveCounter = {humans:312,machine:4847};
+window._liveCounter = {humans:0,machine:0};
+// Wipe any previously-cached counter so the seed is never visible in DevTools > Storage
+try{localStorage.removeItem(COUNTER_KEY);}catch(e){}
 
-var loadLocalCounter=function(){try{var s=localStorage.getItem(COUNTER_KEY);if(s)return JSON.parse(s);}catch(e){}return{humans:312,machine:4847};};
-var saveLocalCounter=function(c){try{localStorage.setItem(COUNTER_KEY,JSON.stringify(c));}catch(e){}};
+var loadLocalCounter=function(){return{humans:0,machine:0};};
+var saveLocalCounter=function(c){};
 var updateCounterUI=function(c, isLive){
   var total=c.humans+c.machine;
   var humanPct=total>0?Math.round((c.humans/total)*100):50;
@@ -862,7 +864,7 @@ var incrementCounter = async function(playerWon) {
     await window.fbIncrementCounter(playerWon);
     var refreshed = await window.fbLoadCounter();
     if (refreshed) { updateCounterUI(refreshed, true); return; }
-    updateCounterUI(local, true);
+    window.renderCounterFromFirebase();
   } else {
     updateCounterUI(local, false);
   }
