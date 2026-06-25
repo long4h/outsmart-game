@@ -1009,7 +1009,7 @@ var applyMove=function(isPlayer,rowIndex,count){
   var allGone=state.board.every(function(v){return v===0;});
   if(allGone){
     var playerWon=!isPlayer;state.winner=playerWon?"PLAYER":"AI";
-    if(playerWon){state.won=true;_sessionLosses=0;}else{_sessionLosses++;}
+    if(playerWon){state.won=true;saveState();_sessionLosses=0;}else{_sessionLosses++;}
     setTimeout(function(){showResult(playerWon);},800);
     beep(playerWon?"win":"loss");
   }else{
