@@ -632,7 +632,7 @@ var CHALLENGE_URL = "https://www.playoutsmart.com/daily";
 var MAX_ATTEMPTS = 3;
 // Per-store launch flags. Flip a store to true once its public listing is live;
 // that badge then becomes a real, clickable link and fires the
-// download_cta_click analytics event. Until then it stays a "SOON" placeholder.
+// store_click analytics event. Until then it stays a "SOON" placeholder.
 // Each store launches independently — Android is live, iOS is in review,
 // Safaricom (M-Pesa Mini App) is still in development.
 var PLAY_LIVE = true;
@@ -1130,7 +1130,7 @@ var buildInsightPanel = function(playerWon, ins) {
 
 // var (not const) so the inline onclick can reach it; it wraps the const `track`.
 var trackDownload = function(store, playerWon) {
-  track('download_cta_click', { store: store, result: playerWon ? 'win' : 'loss', date: getDailyKey() });
+  track('store_click', { store: store, result: playerWon ? 'win' : 'loss', date: getDailyKey() });
 };
 
 // Single source of truth for the download CTA — used by showResult AND
@@ -1167,7 +1167,7 @@ var buildDownloadCTA = function(playerWon) {
 var showResult=function(playerWon){
   document.getElementById("gameArea").style.display="none";
   document.getElementById("resultArea").style.display="block";
-  track('game_completed',{result:playerWon?'win':'loss',attempt_number:state.attempts,date:getDailyKey()});
+  track('game_finish',{result:playerWon?'win':'loss',attempt_number:state.attempts,date:getDailyKey()});
   incrementCounter(playerWon);
   var attemptsLeft=MAX_ATTEMPTS-state.attempts;
   var canRetry=!playerWon&&attemptsLeft>0;
@@ -1292,7 +1292,7 @@ var fallbackCopy=function(text,btn){
 var startGame=function(){
   if(state.won||state.attempts>=MAX_ATTEMPTS){showExhausted();return;}
   state.attempts++;saveState();
-  track('game_started',{attempt_number:state.attempts,date:getDailyKey()});
+  track('game_start',{attempt_number:state.attempts,date:getDailyKey()});
   state.board=getDailyBoard();
   state.initialBoard=state.board.slice();
   state.moveLog=[];
