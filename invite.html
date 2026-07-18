@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OUTSMART — 1v1 Invite</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #0a0514;
+    color: #fff;
+    font-family: 'Orbitron', monospace, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  .card {
+    max-width: 420px;
+    width: 100%;
+  }
+  .badge {
+    font-size: 12px;
+    color: #22D3EE;
+    letter-spacing: 0.2em;
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 22px;
+    line-height: 1.5;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.02em;
+    margin: 0 0 12px;
+  }
+  h1 span {
+    color: #22D3EE;
+  }
+  p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    margin: 0 0 28px;
+  }
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  a.btn {
+    display: block;
+    padding: 14px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+  }
+  .play {
+    background: rgba(34,211,238,0.1);
+    border: 1px solid rgba(34,211,238,0.3);
+    color: #22D3EE;
+  }
+  .apple {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">⚡ 1V1 CHALLENGE</div>
+    <h1 id="headline">A friend invited you to play <span>OUTSMART</span>!</h1>
+    <p>Download the app, then tap the invite link again to connect and start your match.</p>
+    <div class="buttons">
+      <a class="btn play" href="https://play.google.com/store/apps/details?id=com.outsmartstudios.outsmart">GET IT ON GOOGLE PLAY</a>
+      <a class="btn apple" href="https://apps.apple.com/us/app/outsmart-challenge-the-ai/id6768251747">DOWNLOAD ON THE APP STORE</a>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const name = (params.get('name') || '').trim();
+    const headline = document.getElementById('headline');
+    if (name) {
+      headline.innerHTML = name.toUpperCase() + ' invited you to play <span>OUTSMART</span>!';
+    }
+  </script>
+</body>
+</html>
