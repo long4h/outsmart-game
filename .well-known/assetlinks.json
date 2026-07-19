@@ -1,0 +1,14 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.outsmartstudios.outsmart",
+      "sha256_cert_fingerprints": [
+        "9A:F6:70:1C:0A:AF:75:CE:3F:BF:DF:D9:91:19:A9:A5:F2:D7:D7:97:BA:61:24:AE:25:B6:65:6C:B8:8E:38:40",
+        "EE:73:85:C1:97:29:97:C7:D0:CC:F9:27:5F:01:AE:5E:15:15:A6:F9:21:9F:D0:66:E0:BD:4E:11:7F:F4:BD:B5",
+        "A5:1C:E0:2F:30:82:56:0E:44:D2:E3:D3:FF:1B:7D:CA:E8:E0:8F:24:88:90:F8:89:5B:36:1D:6B:E6:45:B9:D0"
+      ]
+    }
+  }
+]
