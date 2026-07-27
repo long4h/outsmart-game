@@ -464,7 +464,7 @@
       <div class="htp-hero-sub">
   95% of players lose.
 </div>
-      <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">TAKE YOUR TURN</button>
+      <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">TAKE YOUR MOVE</button>
       <div class="htp-board-preview">
         <div class="htp-board-glow"></div>
         <div class="htp-board-copy">ONE CHALLENGE. WORLDWIDE.</div>
@@ -600,7 +600,7 @@
     </div>
 
     <div class="turn-box" id="turnBox" style="color:#BC13FE;font-size:12px;margin-top:2px;margin-bottom:2px;">
-      YOUR TURN
+      YOUR MOVE
     </div>
 
     <div id="attemptLabel" style="text-align:center;font-family:'Orbitron',monospace;font-size:10px;font-weight:900;color:#FFD700;letter-spacing:0.2em;margin-bottom:6px;"></div>
@@ -1015,7 +1015,7 @@ var applyMove=function(isPlayer,rowIndex,count){
     beep(playerWon?"win":"loss");
   }else{
     state.isPlayerTurn=!isPlayer;
-    if(!isPlayer){setTurn("YOUR TURN","#BC13FE");setTaunt("");}
+    if(!isPlayer){setTurn("YOUR MOVE","#BC13FE");setTaunt("");}
     else{
       setTurn("THINKING...","#FF003C");setTaunt("");
       var bar=document.getElementById("thinkBar");var fill=document.getElementById("thinkFill");
@@ -1303,7 +1303,7 @@ var startGame=function(){
   var cp=document.getElementById("confirmArea");if(cp)cp.style.display="none";
   var rr=document.getElementById("ruleReminder");if(rr)rr.style.display="block";
   var tb=document.getElementById("thinkBar");if(tb)tb.classList.remove("active");
-  setTurn("YOUR TURN","#BC13FE");setTaunt("");renderPips();renderBoard();
+  setTurn("YOUR MOVE","#BC13FE");setTaunt("");renderPips();renderBoard();
   var al=document.getElementById("attemptLabel");if(al)al.textContent="ATTEMPT "+state.attempts+" / "+MAX_ATTEMPTS;
 };
 
