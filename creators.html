@@ -36,7 +36,7 @@
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -59,8 +59,7 @@
           },
           fontFamily: {
             orbitron: ['Orbitron', 'sans-serif'],
-            poppins: ['Poppins', 'sans-serif'],
-            mono: ['Share Tech Mono', 'monospace']
+            poppins: ['Poppins', 'sans-serif']
           },
           animation: {
             'glitch': 'glitch 5s infinite',
@@ -145,6 +144,61 @@
       transform: translateY(-2px);
       box-shadow: 0 0 25px rgba(0, 243, 255, 0.6);
     }
+
+    /* CSS Phone Mockup Styling */
+    .phone-mockup {
+      position: relative;
+      width: 290px;
+      height: 590px;
+      background: #000;
+      border-radius: 48px;
+      padding: 12px;
+      box-shadow: 0 25px 60px -15px rgba(0, 243, 255, 0.25),
+                  0 0 0 2px rgba(255, 255, 255, 0.1),
+                  0 0 0 6px #12131a;
+    }
+    .phone-notch {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 22px;
+      background: #000;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .phone-notch-camera {
+      width: 8px;
+      height: 8px;
+      background: #0a0b10;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .phone-notch-speaker {
+      width: 32px;
+      height: 4px;
+      background: #15161e;
+      border-radius: 4px;
+    }
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 36px;
+      overflow: hidden;
+      background: #000;
+    }
+    .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body class="scanlines relative min-h-screen flex flex-col justify-between">
@@ -157,7 +211,7 @@
       <img src="/outsmart_logo_final.png" alt="OUTSMART Logo" class="w-10 h-10 object-contain transition-transform group-hover:scale-105"/>
       <div>
         <span class="font-orbitron font-black text-2xl tracking-wider text-brand-cyan animate-glitch block leading-none">OUTSMART</span>
-        <span class="font-mono text-[9px] text-brand-purple tracking-widest font-bold block uppercase mt-0.5">Creator Partner Program</span>
+        <span class="font-poppins text-[10px] text-brand-purple tracking-widest font-semibold block uppercase mt-0.5">Creator Partner Program</span>
       </div>
     </a>
 
@@ -174,7 +228,7 @@
     <section class="pt-6 md:pt-12 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
       <div class="w-full lg:w-7/12 text-center lg:text-left space-y-6">
         
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple font-mono text-xs font-semibold tracking-wider uppercase">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple font-poppins text-xs font-medium tracking-wider uppercase">
           <span class="w-2 h-2 rounded-full bg-brand-cyan animate-ping"></span>
           CREATOR OPPORTUNITY
         </div>
@@ -207,16 +261,22 @@
           </a>
         </div>
 
-        <!-- Tagline text updated to white -->
-        <p class="text-xs font-mono text-white tracking-wider">
+        <!-- Tagline readable Poppins font -->
+        <p class="text-xs font-poppins text-white tracking-wide font-normal">
           ⚡ Takes &lt;2 minutes to complete today's challenge. No downloads required to test.
         </p>
       </div>
 
-      <!-- Hero App Showcase Image Container -->
+      <!-- Hero Phone Container Showcase -->
       <div class="w-full lg:w-5/12 flex justify-center">
-        <div class="relative w-full max-w-md animate-float flex justify-center items-center">
-          <img src="/app-showcase.png" alt="OUTSMART App Showcase" class="w-full h-auto object-contain drop-shadow-[0_0_35px_rgba(0,243,255,0.25)] rounded-2xl"/>
+        <div class="phone-mockup animate-float">
+          <div class="phone-notch">
+            <div class="phone-notch-speaker"></div>
+            <div class="phone-notch-camera"></div>
+          </div>
+          <div class="phone-screen">
+            <img src="/app-showcase.png" alt="OUTSMART Game Showcase" />
+          </div>
         </div>
       </div>
     </section>
@@ -287,17 +347,17 @@
           <p class="text-gray-300 text-sm leading-relaxed">
             We don't want standalone ads. We want OUTSMART to organically live inside the content you already make. Play a quick 2-minute round while waiting for coffee, boarding a flight, or resting between sets.
           </p>
-          <div class="pt-2 font-mono text-xs text-brand-accent font-semibold">
+          <div class="pt-2 font-poppins text-xs text-brand-accent font-medium">
             ✨ Keep your editing style. Keep your voice. Just show real gameplay moments.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4. CREATOR CONTENT IDEAS (TEXT UPDATED TO WHITE) -->
+    <!-- 4. CREATOR CONTENT IDEAS (UPDATED TYPOGRAPHY) -->
     <section class="space-y-12">
       <div class="text-center max-w-3xl mx-auto space-y-3">
-        <div class="inline-block px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan font-mono text-xs font-bold uppercase tracking-widest">
+        <div class="inline-block px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan font-poppins text-xs font-semibold uppercase tracking-wider">
           PLUG & PLAY INTEGRATION
         </div>
         <h2 class="font-orbitron font-extrabold text-2xl sm:text-4xl text-white">
@@ -317,16 +377,15 @@
               <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">TRAVEL CREATORS</span>
               <span class="text-xl">✈️</span>
             </div>
-            <!-- Scenarios text updated to white -->
-            <div class="text-xs font-mono text-white">
-              <strong class="text-white">Scenarios:</strong> Airport lounge, Plane seat, Hotel room, Beach, Café, Waiting for transport
+            <div class="text-xs font-poppins text-white leading-relaxed">
+              <strong class="text-white font-semibold">Scenarios:</strong> Airport lounge, Plane seat, Hotel room, Beach, Café, Waiting for transport
             </div>
             <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
-              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <span class="text-[10px] font-poppins text-brand-purple font-semibold block uppercase tracking-wider">EXAMPLE HOOK / CAPTION</span>
               <p class="text-xs text-gray-200 italic">"Let's see if I can beat today's challenge before boarding."</p>
             </div>
           </div>
-          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Beat today's challenge before your flight boards.</div>
+          <div class="text-xs font-poppins text-brand-accent font-medium">Integration idea: Beat today's challenge before your flight boards.</div>
         </div>
 
         <!-- Day in the Life -->
@@ -336,16 +395,15 @@
               <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">DAY IN THE LIFE</span>
               <span class="text-xl">☕</span>
             </div>
-            <!-- Scenarios text updated to white -->
-            <div class="text-xs font-mono text-white">
-              <strong class="text-white">Scenarios:</strong> Morning coffee, Lunch break, Evening wind-down, Pre-work routine
+            <div class="text-xs font-poppins text-white leading-relaxed">
+              <strong class="text-white font-semibold">Scenarios:</strong> Morning coffee, Lunch break, Evening wind-down, Pre-work routine
             </div>
             <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
-              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <span class="text-[10px] font-poppins text-brand-purple font-semibold block uppercase tracking-wider">EXAMPLE HOOK / CAPTION</span>
               <p class="text-xs text-gray-200 italic">"My daily challenge before starting the day."</p>
             </div>
           </div>
-          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Morning coffee + today's challenge.</div>
+          <div class="text-xs font-poppins text-brand-accent font-medium">Integration idea: Morning coffee + today's challenge.</div>
         </div>
 
         <!-- Fitness -->
@@ -355,16 +413,15 @@
               <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">FITNESS CREATORS</span>
               <span class="text-xl">🏋️‍♂️</span>
             </div>
-            <!-- Scenarios text updated to white -->
-            <div class="text-xs font-mono text-white">
-              <strong class="text-white">Scenarios:</strong> Pre-gym warmup, Between rest sets, Post-workout cooldown
+            <div class="text-xs font-poppins text-white leading-relaxed">
+              <strong class="text-white font-semibold">Scenarios:</strong> Pre-gym warmup, Between rest sets, Post-workout cooldown
             </div>
             <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
-              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <span class="text-[10px] font-poppins text-brand-purple font-semibold block uppercase tracking-wider">EXAMPLE HOOK / CAPTION</span>
               <p class="text-xs text-gray-200 italic">"Training physical strength and brain strategy on rest set 3."</p>
             </div>
           </div>
-          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Mental workout between workout sets.</div>
+          <div class="text-xs font-poppins text-brand-accent font-medium">Integration idea: Mental workout between workout sets.</div>
         </div>
 
         <!-- Students -->
@@ -374,16 +431,15 @@
               <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">STUDENTS & STUDY</span>
               <span class="text-xl">📚</span>
             </div>
-            <!-- Scenarios text updated to white -->
-            <div class="text-xs font-mono text-white">
-              <strong class="text-white">Scenarios:</strong> Library breaks, Between lectures, Study group downtime
+            <div class="text-xs font-poppins text-white leading-relaxed">
+              <strong class="text-white font-semibold">Scenarios:</strong> Library breaks, Between lectures, Study group downtime
             </div>
             <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
-              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <span class="text-[10px] font-poppins text-brand-purple font-semibold block uppercase tracking-wider">EXAMPLE HOOK / CAPTION</span>
               <p class="text-xs text-gray-200 italic">"Taking a 2-minute brain reset before studying finals."</p>
             </div>
           </div>
-          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Library study break reset.</div>
+          <div class="text-xs font-poppins text-brand-accent font-medium">Integration idea: Library study break reset.</div>
         </div>
 
         <!-- Productivity / Office -->
@@ -393,16 +449,15 @@
               <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">PRODUCTIVITY / OFFICE</span>
               <span class="text-xl">💻</span>
             </div>
-            <!-- Scenarios text updated to white -->
-            <div class="text-xs font-mono text-white">
-              <strong class="text-white">Scenarios:</strong> Desk setup, Coffee break, End-of-day routine, Desk warmup
+            <div class="text-xs font-poppins text-white leading-relaxed">
+              <strong class="text-white font-semibold">Scenarios:</strong> Desk setup, Coffee break, End-of-day routine, Desk warmup
             </div>
             <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
-              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <span class="text-[10px] font-poppins text-brand-purple font-semibold block uppercase tracking-wider">EXAMPLE HOOK / CAPTION</span>
               <p class="text-xs text-gray-200 italic">"Quick daily mental gym before answering emails."</p>
             </div>
           </div>
-          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Part of your desk morning routine.</div>
+          <div class="text-xs font-poppins text-brand-accent font-medium">Integration idea: Part of your desk morning routine.</div>
         </div>
 
         <!-- Gaming -->
@@ -412,16 +467,15 @@
               <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">GAMING CREATORS</span>
               <span class="text-xl">🎮</span>
             </div>
-            <!-- Scenarios text updated to white -->
-            <div class="text-xs font-mono text-white">
-              <strong class="text-white">Scenarios:</strong> Matchmaking queue, Stream startup, Pre-game brain warmup
+            <div class="text-xs font-poppins text-white leading-relaxed">
+              <strong class="text-white font-semibold">Scenarios:</strong> Matchmaking queue, Stream startup, Pre-game brain warmup
             </div>
             <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
-              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <span class="text-[10px] font-poppins text-brand-purple font-semibold block uppercase tracking-wider">EXAMPLE HOOK / CAPTION</span>
               <p class="text-xs text-gray-200 italic">"Warming up my brain before ranked matches today."</p>
             </div>
           </div>
-          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Warm up your brain before ranked matches.</div>
+          <div class="text-xs font-poppins text-brand-accent font-medium">Integration idea: Warm up your brain before ranked matches.</div>
         </div>
 
       </div>
@@ -485,7 +539,7 @@
 
     <!-- 6. WHY YOUR AUDIENCE WILL LIKE IT -->
     <section class="text-center max-w-3xl mx-auto space-y-6">
-      <div class="inline-block px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple font-mono text-xs font-bold uppercase tracking-widest">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple font-poppins text-xs font-semibold uppercase tracking-wider">
         COMMUNITY ENGINE
       </div>
       
@@ -517,7 +571,7 @@
       </div>
     </section>
 
-    <!-- 7. HOW COLLABORATION WORKS (CUSTOM ARENA LINKS REMOVED FROM STEP 03) -->
+    <!-- 7. HOW COLLABORATION WORKS -->
     <section class="space-y-10">
       <div class="text-center max-w-2xl mx-auto space-y-3">
         <h2 class="font-orbitron font-extrabold text-2xl sm:text-4xl text-white">
@@ -540,7 +594,6 @@
           <p class="text-xs text-gray-400">Submit your details below or email our team directly.</p>
         </div>
 
-        <!-- Step 03 Updated -->
         <div class="glass-card rounded-2xl p-5 relative space-y-2">
           <span class="font-orbitron text-3xl font-black text-brand-cyan/30">03</span>
           <h3 class="font-orbitron font-bold text-sm text-white">Agree on Details</h3>
@@ -588,7 +641,7 @@
       </div>
     </section>
 
-    <!-- 9. CONTACT SECTION (KIBIRU EMAIL REMOVED) -->
+    <!-- 9. CONTACT SECTION (READABLE FONT EMAIL BADGE) -->
     <section id="partner-form" class="scroll-mt-12 max-w-3xl mx-auto glass-card rounded-3xl p-8 sm:p-12 space-y-8">
       <div class="text-center space-y-2">
         <h2 class="font-orbitron font-black text-2xl sm:text-3xl text-white">
@@ -599,8 +652,8 @@
         </p>
       </div>
 
-      <!-- Single Email Badge -->
-      <div class="flex justify-center text-xs font-mono">
+      <!-- Email Badge updated to Poppins -->
+      <div class="flex justify-center text-xs font-poppins font-medium">
         <a href="mailto:creators@playoutsmart.com" class="px-5 py-2.5 rounded-lg bg-black/60 border border-brand-cyan/30 text-brand-cyan hover:border-brand-cyan transition-all flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           creators@playoutsmart.com
@@ -651,21 +704,17 @@
           <span>SUBMIT CREATOR APPLICATION</span>
         </button>
 
-        <p id="formStatus" class="hidden text-center font-mono text-xs text-brand-accent pt-2"></p>
+        <p id="formStatus" class="hidden text-center font-poppins text-xs text-brand-accent pt-2"></p>
       </form>
     </section>
 
   </main>
 
-  <!-- FOOTER (FOOTER LINKS UPDATED) -->
+  <!-- FOOTER (LINKS REMOVED) -->
   <footer class="relative z-10 w-full border-t border-white/10 bg-black/80 py-8">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-gray-500">
+    <div class="max-w-6xl mx-auto px-4 flex justify-center items-center text-xs font-poppins text-gray-500">
       <div>
         © 2026 OUTSMART. ALL RIGHTS RESERVED.
-      </div>
-      <div class="flex items-center gap-6">
-        <a href="/" class="hover:text-brand-cyan transition-colors">PLAY GAME</a>
-        <a href="mailto:creators@playoutsmart.com" class="hover:text-brand-cyan transition-colors">CONTACT</a>
       </div>
     </div>
   </footer>
