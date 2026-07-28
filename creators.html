@@ -1,1 +1,329 @@
-Coming Soon
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/outsmart_logo_final.png">
+  <title>OUTSMART — Creator Challenge</title>
+  <meta name="description" content="Can you beat the AI in this creator challenge? 95% of players lose. Take your turn now."/>
+  <meta property="og:title" content="OUTSMART — Creator Challenge"/>
+  <meta property="og:description" content="Can you beat the AI in this creator challenge? 95% of players lose. Take your turn now."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://playoutsmart.com/creator"/>
+  <meta property="og:image" content="https://playoutsmart.com/preview.png" />
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="OUTSMART Creator Challenge"/>
+  <meta name="twitter:description" content="Can you beat the AI in this creator challenge? 95% of players lose. Take your turn now."/>
+  <meta name="twitter:image" content="https://playoutsmart.com/preview.png" />
+  <meta name="twitter:url" content="https://playoutsmart.com/creator"/>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HP5RKJQMX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1HP5RKJQMX');
+    const track = (eventName, params) => {
+      if (typeof gtag !== 'undefined') { gtag('event', eventName, params || {}); }
+    };
+  </script>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey:            "AIzaSyBk0rUHbp-t7LVO9Wm9l4z0fWKZpxL-U3c",
+      authDomain:        "outsmart-412b7.firebaseapp.com",
+      projectId:         "outsmart-412b7",
+      storageBucket:     "outsmart-412b7.firebasestorage.app",
+      messagingSenderId: "360327829419",
+      appId:             "1:360327829419:web:d55c3e78208549040324ee"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+
+    // Get Creator ID from URL parameters (e.g., playoutsmart.com/creator?c=mrbeast)
+    const urlParams = new URLSearchParams(window.location.search);
+    const creatorId = urlParams.get('c') || "community";
+    const statsRef = doc(db, "creator_stats", creatorId);
+
+    const APP_CHECK_SITE_KEY = "REPLACE_WITH_RECAPTCHA_V3_SITE_KEY";
+    if (APP_CHECK_SITE_KEY !== "REPLACE_WITH_RECAPTCHA_V3_SITE_KEY") {
+      try {
+        const { initializeAppCheck, ReCaptchaV3Provider } =
+          await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js");
+        initializeAppCheck(app, {
+          provider: new ReCaptchaV3Provider(APP_CHECK_SITE_KEY),
+          isTokenAutoRefreshEnabled: true
+        });
+      } catch (e) { console.warn("App Check init skipped:", e); }
+    }
+
+    window.fbLoadCounter = async () => {
+      try {
+        const snap = await getDoc(statsRef);
+        if (snap.exists()) { return snap.data(); }
+        else { await setDoc(statsRef, { humans: 0, machine: 0 }); return { humans: 0, machine: 0 }; }
+      } catch (e) { console.warn("Firebase read failed, using local counter:", e); return null; }
+    };
+    
+    window.fbIncrementCounter = async (playerWon) => {
+      try { await updateDoc(statsRef, { [playerWon ? "humans" : "machine"]: increment(1) }); }
+      catch (e) { console.warn("Firebase write failed:", e); }
+    };
+    window.firebaseReady = true;
+    window.creatorId = creatorId;
+    if (window.renderCounterFromFirebase) window.renderCounterFromFirebase();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      color-scheme: dark;
+      --cyan:#00F3FF; --purple:#BC13FE; --red:#FF003C; --gold:#FFD700; --bg:#000; --surface:#07010A;
+    }
+    @media (color-gamut: p3) {
+      :root {
+        --cyan: color(display-p3 0 0.95 1);
+        --purple: color(display-p3 0.74 0.07 0.99);
+        --red: color(display-p3 1 0 0.24);
+        --gold: color(display-p3 1 0.84 0);
+      }
+    }
+
+    body {
+      background:var(--bg);
+      color:#fff;
+      font-family:'Orbitron', sans-serif;
+      min-height:100vh;
+      min-height:-webkit-fill-available;
+      min-height:100dvh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding: 6px max(12px, env(safe-area-inset-left, 12px)) 16px max(12px, env(safe-area-inset-right, 12px));
+      padding-bottom:max(16px,env(safe-area-inset-bottom,16px));
+      overflow-x:hidden;
+      user-select:none;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      letter-spacing: 0.04em;
+    }
+    body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px); pointer-events:none; z-index:9999; }
+    body::after { content:''; position:fixed; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(0,243,255,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 90%,rgba(188,19,254,0.03) 0%,transparent 50%); pointer-events:none; z-index:0; }
+
+    .wrap { position:relative; z-index:1; width:100%; max-width:420px; margin:0 auto; display:flex; flex-direction:column; align-items:center; }
+    .brand { font-family:'Orbitron',monospace; font-size:32px; font-weight:900; color:var(--cyan); letter-spacing:-1px; margin-bottom:2px; animation:glitch 5s infinite; }
+    .tagline { font-size:11px; color:var(--purple); letter-spacing:0.2em; font-weight:bold; margin-bottom:4px; }
+    .creator-label { font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-bottom:8px; text-transform:uppercase; }
+
+    .counter-bar { width:100%; display:flex; align-items:stretch; border:1px solid rgba(255,255,255,0.07); margin-bottom:6px; overflow:hidden; }
+    .counter-side { flex:1; padding:7px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; }
+    .counter-side.humans { background:rgba(0,243,255,0.04); border-right:1px solid rgba(255,255,255,0.07); }
+    .counter-side.machine { background:rgba(255,0,60,0.04); border-left:1px solid rgba(255,255,255,0.07); }
+    .counter-vs { padding:0 12px; display:flex; align-items:center; justify-content:center; background:#000; }
+    .counter-label { font-size:8px; letter-spacing:0.2em; font-weight:bold; }
+    .counter-label.humans { color:var(--cyan); }
+    .counter-label.machine { color:var(--red); }
+    .counter-num { font-family:'Orbitron',monospace; font-size:18px; font-weight:900; line-height:1; }
+    .counter-num.humans { color:var(--cyan); }
+    .counter-num.machine { color:var(--red); }
+    .counter-sub { font-size:8px; color:#fff; letter-spacing:0.12em; font-weight:bold; }
+    .counter-vs-text { font-family:'Orbitron',monospace; font-size:11px; font-weight:900; color:#fff; letter-spacing:0.1em; }
+    .counter-bar-track { height:3px; display:flex; width:100%; }
+    .counter-bar-humans { background:var(--cyan); transition:width 1s ease; }
+    .counter-bar-machine { background:var(--red); transition:width 1s ease; }
+
+    .info-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,0.07);
+      margin-bottom: 8px;
+    }
+    .info-bar .date { flex: 0 0 auto; min-width:0; font-size:10px; color:#fff; letter-spacing:0.1em; font-weight:bold; white-space:nowrap; }
+    .info-bar .rule { flex: 1 1 auto; text-align: center; font-size:10px; color:var(--red); letter-spacing:0.1em; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    .htp-overlay {
+      position:fixed; inset:0;
+      background:rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index:9000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .htp-box--new {
+      position:relative;
+      width:min(100%, 430px);
+      padding:28px 24px 22px;
+      border:1px solid rgba(0,243,255,0.35);
+      background:rgba(6,6,15,0.94);
+      box-shadow: 0 0 0 1px rgba(0,243,255,0.08) inset, 0 0 30px rgba(0,243,255,0.10), 0 0 50px rgba(179,0,255,0.08);
+      text-align:center;
+      overflow:hidden;
+    }
+    .htp-box--new::before {
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 20%), repeating-linear-gradient(to bottom, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 4px);
+      opacity:0.35;
+    }
+    .htp-hero-kicker { position:relative; font-size:15px; line-height:1.25; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.7); margin-bottom:16px; text-transform:uppercase; }
+    .htp-hero-sub { position:relative; font-size:17px; line-height:1.45; letter-spacing:0.06em; font-weight:800; color:#ffffff; text-transform:uppercase; margin-bottom:20px; }
+    .htp-btn--hero {
+      position:relative; display:block; width:100%; border:none; padding:16px 18px; cursor:pointer;
+      background:linear-gradient(180deg, #3ef7ff 0%, #00F3FF 100%);
+      color:#00131a; font-family:'Orbitron',monospace; font-size:16px; line-height:1; letter-spacing:0.16em; font-weight:900; text-transform:uppercase;
+      box-shadow: 0 0 14px rgba(0,243,255,0.35), 0 0 28px rgba(0,243,255,0.18);
+      transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      animation:htpPulse 1.8s ease-in-out infinite;
+    }
+    .htp-logo { display:block; width:min(320px, 70vw); margin:0 auto 12px auto; position: relative; z-index: 2; }
+
+    .btn-action {
+      width: 100%;
+      font-family: 'Orbitron', monospace;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      padding: 12px;
+      cursor: pointer;
+      background: transparent;
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 12px rgba(0, 243, 255, 0.2);
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+    .btn-action:hover {
+      background: rgba(0, 243, 255, 0.1);
+      box-shadow: 0 0 18px rgba(0, 243, 255, 0.4);
+    }
+
+    @keyframes glitch {
+      0%,94%,100% { text-shadow:3px 0 var(--cyan),-3px 0 var(--red); }
+      95% { text-shadow:-3px 0 var(--cyan),3px 0 var(--red); clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%); transform:translateX(3px); }
+      97% { text-shadow:3px 0 var(--cyan),-3px 0 var(--red); clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%); transform:translateX(-3px); }
+      98% { clip-path:none; transform:none; }
+    }
+    @keyframes htpPulse {
+      0%, 100%{ transform:scale(1); box-shadow: 0 0 14px rgba(0,243,255,0.35), 0 0 28px rgba(0,243,255,0.18); }
+      50%{ transform:scale(1.015); box-shadow: 0 0 18px rgba(0,243,255,0.48), 0 0 40px rgba(0,243,255,0.24); }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- How to Play Overlay -->
+  <div class="htp-overlay" id="htpOverlay">
+    <div class="htp-box htp-box--new">
+      <img src="/outsmart_logo_final.png" alt="OUTSMART" class="htp-logo">
+      <div class="htp-hero-kicker">CREATOR CHALLENGE</div>
+      <div class="htp-hero-sub" id="htpCreatorSub">CAN YOU OUTSMART THE AI?</div>
+      <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">ACCEPT CHALLENGE</button>
+    </div>
+  </div>
+
+  <div class="brand">OUTSMART</div>
+  <div class="tagline">HUMAN VS MACHINE</div>
+  <div class="creator-label" id="creatorLabelDisplay">CREATOR ARENA</div>
+
+  <!-- Counter Section -->
+  <div style="width:100%;max-width:380px;margin:6px auto 4px;">
+    <div class="counter-bar">
+      <div class="counter-side humans">
+        <div class="counter-label humans">COMMUNITY</div>
+        <div class="counter-num humans" id="counterHumans">&mdash;</div>
+        <div class="counter-sub">WINS</div>
+      </div>
+      <div class="counter-vs"><div class="counter-vs-text">VS</div></div>
+      <div class="counter-side machine">
+        <div class="counter-label machine">MACHINE</div>
+        <div class="counter-num machine" id="counterMachine">&mdash;</div>
+        <div class="counter-sub">WINS</div>
+      </div>
+    </div>
+    <div class="counter-bar-track">
+      <div class="counter-bar-humans" id="barHumans" style="width:50%"></div>
+      <div class="counter-bar-machine" id="barMachine" style="width:50%"></div>
+    </div>
+    <div style="font-size:10px;color:#fff;letter-spacing:0.15em;text-align:center;margin-top:6px;font-weight:bold;" id="counterScope">
+      CREATOR COMMUNITY ARENA
+    </div>
+  </div>
+
+  <!-- Info Bar -->
+  <div class="info-bar" style="margin-top:8px;">
+    <div class="date" id="arenaDate">ARENA ACTIVE</div>
+    <div class="rule">LAST STICK LOSES</div>
+  </div>
+
+  <button class="btn-action" onclick="shareCreatorArena()">SHARE THIS CREATOR ARENA</button>
+
+</div>
+
+<script>
+  function dismissHtp() {
+    document.getElementById('htpOverlay').style.display = 'none';
+  }
+
+  window.renderCounterFromFirebase = async () => {
+    if (window.fbLoadCounter) {
+      const stats = await window.fbLoadCounter();
+      if (stats) {
+        const humans = stats.humans || 0;
+        const machine = stats.machine || 0;
+        const total = humans + machine || 1;
+        
+        document.getElementById('counterHumans').innerText = humans;
+        document.getElementById('counterMachine').innerText = machine;
+        
+        const humanPct = Math.round((humans / total) * 100);
+        document.getElementById('barHumans').style.width = humanPct + '%';
+        document.getElementById('barMachine').style.width = (100 - humanPct) + '%';
+      }
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const creator = window.creatorId || "community";
+    if (creator !== "community") {
+      const formattedName = creator.toUpperCase();
+      document.getElementById('creatorLabelDisplay').innerText = formattedName + "'S ARENA";
+      document.getElementById('htpCreatorSub').innerText = "CAN YOU BEAT " + formattedName + "'S SCORE?";
+      document.getElementById('counterScope').innerText = formattedName + " COMMUNITY STATS";
+    }
+  });
+
+  function shareCreatorArena() {
+    const shareUrl = window.location.href;
+    if (navigator.share) {
+      navigator.share({
+        title: 'OUTSMART Creator Arena',
+        text: 'Can you beat the AI in this creator challenge?',
+        url: shareUrl
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(shareUrl);
+      alert("Creator Arena link copied to clipboard!");
+    }
+  }
+</script>
+</body>
+</html>
