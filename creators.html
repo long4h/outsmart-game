@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8"/>
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -9,19 +9,22 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="/outsmart_logo_final.png">
-  <title>OUTSMART — Creator Challenge</title>
-  <meta name="description" content="Can you beat the AI in this creator challenge? 95% of players lose. Take your turn now."/>
-  <meta property="og:title" content="OUTSMART — Creator Challenge"/>
-  <meta property="og:description" content="Can you beat the AI in this creator challenge? 95% of players lose. Take your turn now."/>
-  <meta property="og:type" content="website"/>
-  <meta property="og:url" content="https://playoutsmart.com/creator"/>
-  <meta property="og:image" content="https://playoutsmart.com/preview.png" />
-  <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="OUTSMART Creator Challenge"/>
-  <meta name="twitter:description" content="Can you beat the AI in this creator challenge? 95% of players lose. Take your turn now."/>
-  <meta name="twitter:image" content="https://playoutsmart.com/preview.png" />
-  <meta name="twitter:url" content="https://playoutsmart.com/creator"/>
   
+  <title>OUTSMART — Creator Program</title>
+  <meta name="description" content="Get paid to feature OUTSMART in your content. Don't make an ad—just keep creating the content you already love."/>
+  
+  <!-- OpenGraph / Twitter -->
+  <meta property="og:title" content="OUTSMART — Creator Program"/>
+  <meta property="og:description" content="Get paid to feature OUTSMART in your content. Natural integration over forced promotion."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://playoutsmart.com/creators"/>
+  <meta property="og:image" content="https://playoutsmart.com/preview.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="OUTSMART Creator Program"/>
+  <meta name="twitter:description" content="Get paid to feature OUTSMART in your content. Natural integration over forced promotion."/>
+  <meta name="twitter:image" content="https://playoutsmart.com/preview.png"/>
+
+  <!-- Google Tag Manager / Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HP5RKJQMX"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -32,298 +35,768 @@
       if (typeof gtag !== 'undefined') { gtag('event', eventName, params || {}); }
     };
   </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
   
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, updateDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-    
-    const firebaseConfig = {
-      apiKey:            "AIzaSyBk0rUHbp-t7LVO9Wm9l4z0fWKZpxL-U3c",
-      authDomain:        "outsmart-412b7.firebaseapp.com",
-      projectId:         "outsmart-412b7",
-      storageBucket:     "outsmart-412b7.firebasestorage.app",
-      messagingSenderId: "360327829419",
-      appId:             "1:360327829419:web:d55c3e78208549040324ee"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db  = getFirestore(app);
-
-    // Get Creator ID from URL parameters (e.g., playoutsmart.com/creator?c=mrbeast)
-    const urlParams = new URLSearchParams(window.location.search);
-    const creatorId = urlParams.get('c') || "community";
-    const statsRef = doc(db, "creator_stats", creatorId);
-
-    const APP_CHECK_SITE_KEY = "REPLACE_WITH_RECAPTCHA_V3_SITE_KEY";
-    if (APP_CHECK_SITE_KEY !== "REPLACE_WITH_RECAPTCHA_V3_SITE_KEY") {
-      try {
-        const { initializeAppCheck, ReCaptchaV3Provider } =
-          await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app-check.js");
-        initializeAppCheck(app, {
-          provider: new ReCaptchaV3Provider(APP_CHECK_SITE_KEY),
-          isTokenAutoRefreshEnabled: true
-        });
-      } catch (e) { console.warn("App Check init skipped:", e); }
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cyan: '#00F3FF',
+              purple: '#BC13FE',
+              red: '#FF003C',
+              gold: '#FFD700',
+              accent: '#6EE7B7',
+              darkBg: '#050308',
+              surface: '#0D0714',
+              surfaceBorder: 'rgba(0, 243, 255, 0.15)'
+            }
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif'],
+            mono: ['Share Tech Mono', 'monospace']
+          },
+          animation: {
+            'glitch': 'glitch 5s infinite',
+            'pulse-subtle': 'pulseSubtle 3s ease-in-out infinite',
+            'float': 'float 6s ease-in-out infinite'
+          },
+          keyframes: {
+            glitch: {
+              '0%, 94%, 100%': { textShadow: '2px 0 #00F3FF, -2px 0 #FF003C' },
+              '95%': { textShadow: '-2px 0 #00F3FF, 2px 0 #FF003C', transform: 'translateX(2px)' },
+              '97%': { textShadow: '2px 0 #00F3FF, -2px 0 #FF003C', transform: 'translateX(-2px)' },
+              '98%': { transform: 'none' }
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '1', boxShadow: '0 0 20px rgba(0, 243, 255, 0.2)' },
+              '50%': { opacity: '0.85', boxShadow: '0 0 35px rgba(0, 243, 255, 0.4)' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
     }
-
-    window.fbLoadCounter = async () => {
-      try {
-        const snap = await getDoc(statsRef);
-        if (snap.exists()) { return snap.data(); }
-        else { await setDoc(statsRef, { humans: 0, machine: 0 }); return { humans: 0, machine: 0 }; }
-      } catch (e) { console.warn("Firebase read failed, using local counter:", e); return null; }
-    };
-    
-    window.fbIncrementCounter = async (playerWon) => {
-      try { await updateDoc(statsRef, { [playerWon ? "humans" : "machine"]: increment(1) }); }
-      catch (e) { console.warn("Firebase write failed:", e); }
-    };
-    window.firebaseReady = true;
-    window.creatorId = creatorId;
-    if (window.renderCounterFromFirebase) window.renderCounterFromFirebase();
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
-  
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; }
+    
     :root {
       color-scheme: dark;
-      --cyan:#00F3FF; --purple:#BC13FE; --red:#FF003C; --gold:#FFD700; --bg:#000; --surface:#07010A;
-    }
-    @media (color-gamut: p3) {
-      :root {
-        --cyan: color(display-p3 0 0.95 1);
-        --purple: color(display-p3 0.74 0.07 0.99);
-        --red: color(display-p3 1 0 0.24);
-        --gold: color(display-p3 1 0.84 0);
-      }
+      --cyan: #00F3FF;
+      --purple: #BC13FE;
+      --red: #FF003C;
+      --accent: #6EE7B7;
     }
 
     body {
-      background:var(--bg);
-      color:#fff;
-      font-family:'Orbitron', sans-serif;
-      min-height:100vh;
-      min-height:-webkit-fill-available;
-      min-height:100dvh;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:flex-start;
-      padding: 6px max(12px, env(safe-area-inset-left, 12px)) 16px max(12px, env(safe-area-inset-right, 12px));
-      padding-bottom:max(16px,env(safe-area-inset-bottom,16px));
-      overflow-x:hidden;
-      user-select:none;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-      letter-spacing: 0.04em;
-    }
-    body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px); pointer-events:none; z-index:9999; }
-    body::after { content:''; position:fixed; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(0,243,255,0.04) 0%,transparent 60%),radial-gradient(ellipse at 80% 90%,rgba(188,19,254,0.03) 0%,transparent 50%); pointer-events:none; z-index:0; }
-
-    .wrap { position:relative; z-index:1; width:100%; max-width:420px; margin:0 auto; display:flex; flex-direction:column; align-items:center; }
-    .brand { font-family:'Orbitron',monospace; font-size:32px; font-weight:900; color:var(--cyan); letter-spacing:-1px; margin-bottom:2px; animation:glitch 5s infinite; }
-    .tagline { font-size:11px; color:var(--purple); letter-spacing:0.2em; font-weight:bold; margin-bottom:4px; }
-    .creator-label { font-size:11px; color:var(--gold); letter-spacing:0.2em; font-weight:bold; margin-bottom:8px; text-transform:uppercase; }
-
-    .counter-bar { width:100%; display:flex; align-items:stretch; border:1px solid rgba(255,255,255,0.07); margin-bottom:6px; overflow:hidden; }
-    .counter-side { flex:1; padding:7px 10px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; }
-    .counter-side.humans { background:rgba(0,243,255,0.04); border-right:1px solid rgba(255,255,255,0.07); }
-    .counter-side.machine { background:rgba(255,0,60,0.04); border-left:1px solid rgba(255,255,255,0.07); }
-    .counter-vs { padding:0 12px; display:flex; align-items:center; justify-content:center; background:#000; }
-    .counter-label { font-size:8px; letter-spacing:0.2em; font-weight:bold; }
-    .counter-label.humans { color:var(--cyan); }
-    .counter-label.machine { color:var(--red); }
-    .counter-num { font-family:'Orbitron',monospace; font-size:18px; font-weight:900; line-height:1; }
-    .counter-num.humans { color:var(--cyan); }
-    .counter-num.machine { color:var(--red); }
-    .counter-sub { font-size:8px; color:#fff; letter-spacing:0.12em; font-weight:bold; }
-    .counter-vs-text { font-family:'Orbitron',monospace; font-size:11px; font-weight:900; color:#fff; letter-spacing:0.1em; }
-    .counter-bar-track { height:3px; display:flex; width:100%; }
-    .counter-bar-humans { background:var(--cyan); transition:width 1s ease; }
-    .counter-bar-machine { background:var(--red); transition:width 1s ease; }
-
-    .info-bar {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 10px;
-      border: 1px solid rgba(255,255,255,0.07);
-      margin-bottom: 8px;
-    }
-    .info-bar .date { flex: 0 0 auto; min-width:0; font-size:10px; color:#fff; letter-spacing:0.1em; font-weight:bold; white-space:nowrap; }
-    .info-bar .rule { flex: 1 1 auto; text-align: center; font-size:10px; color:var(--red); letter-spacing:0.1em; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
-    .htp-overlay {
-      position:fixed; inset:0;
-      background:rgba(0,0,0,0.55);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index:9000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-    }
-    .htp-box--new {
-      position:relative;
-      width:min(100%, 430px);
-      padding:28px 24px 22px;
-      border:1px solid rgba(0,243,255,0.35);
-      background:rgba(6,6,15,0.94);
-      box-shadow: 0 0 0 1px rgba(0,243,255,0.08) inset, 0 0 30px rgba(0,243,255,0.10), 0 0 50px rgba(179,0,255,0.08);
-      text-align:center;
-      overflow:hidden;
-    }
-    .htp-box--new::before {
-      content:""; position:absolute; inset:0; pointer-events:none;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent 20%), repeating-linear-gradient(to bottom, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 4px);
-      opacity:0.35;
-    }
-    .htp-hero-kicker { position:relative; font-size:15px; line-height:1.25; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.7); margin-bottom:16px; text-transform:uppercase; }
-    .htp-hero-sub { position:relative; font-size:17px; line-height:1.45; letter-spacing:0.06em; font-weight:800; color:#ffffff; text-transform:uppercase; margin-bottom:20px; }
-    .htp-btn--hero {
-      position:relative; display:block; width:100%; border:none; padding:16px 18px; cursor:pointer;
-      background:linear-gradient(180deg, #3ef7ff 0%, #00F3FF 100%);
-      color:#00131a; font-family:'Orbitron',monospace; font-size:16px; line-height:1; letter-spacing:0.16em; font-weight:900; text-transform:uppercase;
-      box-shadow: 0 0 14px rgba(0,243,255,0.35), 0 0 28px rgba(0,243,255,0.18);
-      transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-      animation:htpPulse 1.8s ease-in-out infinite;
-    }
-    .htp-logo { display:block; width:min(320px, 70vw); margin:0 auto 12px auto; position: relative; z-index: 2; }
-
-    .btn-action {
-      width: 100%;
-      font-family: 'Orbitron', monospace;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 0.14em;
-      padding: 12px;
-      cursor: pointer;
-      background: transparent;
-      border: 2px solid var(--cyan);
-      color: var(--cyan);
-      box-shadow: 0 0 12px rgba(0, 243, 255, 0.2);
-      transition: all 0.2s;
-      margin-top: 10px;
-    }
-    .btn-action:hover {
-      background: rgba(0, 243, 255, 0.1);
-      box-shadow: 0 0 18px rgba(0, 243, 255, 0.4);
+      background-color: #030106;
+      color: #F3F4F6;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
-    @keyframes glitch {
-      0%,94%,100% { text-shadow:3px 0 var(--cyan),-3px 0 var(--red); }
-      95% { text-shadow:-3px 0 var(--cyan),3px 0 var(--red); clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%); transform:translateX(3px); }
-      97% { text-shadow:3px 0 var(--cyan),-3px 0 var(--red); clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%); transform:translateX(-3px); }
-      98% { clip-path:none; transform:none; }
+    /* CRT Scanline & Mesh Background Effects */
+    .scanlines::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.12) 2px, rgba(0, 0, 0, 0.12) 4px);
+      pointer-events: none;
+      z-index: 99;
     }
-    @keyframes htpPulse {
-      0%, 100%{ transform:scale(1); box-shadow: 0 0 14px rgba(0,243,255,0.35), 0 0 28px rgba(0,243,255,0.18); }
-      50%{ transform:scale(1.015); box-shadow: 0 0 18px rgba(0,243,255,0.48), 0 0 40px rgba(0,243,255,0.24); }
+
+    .ambient-glow {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 50%, rgba(188, 19, 254, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 15% 85%, rgba(110, 231, 183, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
     }
+
+    .glass-card {
+      background: rgba(13, 7, 20, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 243, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    .glass-card-hover {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover {
+      border-color: rgba(0, 243, 255, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px 0 rgba(0, 243, 255, 0.15);
+    }
+
+    .neon-text-cyan {
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.2);
+    }
+
+    .neon-border-btn {
+      position: relative;
+      background: linear-gradient(180deg, #00F3FF 0%, #00B8C4 100%);
+      color: #02090D;
+      transition: all 0.2s ease;
+    }
+    .neon-border-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.6);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #030106; }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.3); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(0, 243, 255, 0.6); }
   </style>
 </head>
-<body>
-<div class="wrap">
+<body class="scanlines relative min-h-screen flex flex-col justify-between">
+  
+  <div class="ambient-glow"></div>
 
-  <!-- How to Play Overlay -->
-  <div class="htp-overlay" id="htpOverlay">
-    <div class="htp-box htp-box--new">
-      <img src="/outsmart_logo_final.png" alt="OUTSMART" class="htp-logo">
-      <div class="htp-hero-kicker">CREATOR CHALLENGE</div>
-      <div class="htp-hero-sub" id="htpCreatorSub">CAN YOU OUTSMART THE AI?</div>
-      <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">ACCEPT CHALLENGE</button>
-    </div>
-  </div>
-
-  <div class="brand">OUTSMART</div>
-  <div class="tagline">HUMAN VS MACHINE</div>
-  <div class="creator-label" id="creatorLabelDisplay">CREATOR ARENA</div>
-
-  <!-- Counter Section -->
-  <div style="width:100%;max-width:380px;margin:6px auto 4px;">
-    <div class="counter-bar">
-      <div class="counter-side humans">
-        <div class="counter-label humans">COMMUNITY</div>
-        <div class="counter-num humans" id="counterHumans">&mdash;</div>
-        <div class="counter-sub">WINS</div>
+  <!-- NAVIGATION -->
+  <header class="relative z-50 w-full max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3 group" onclick="track('nav_click', {target: 'logo'})">
+      <img src="/outsmart_logo_final.png" alt="OUTSMART Logo" class="w-10 h-10 object-contain transition-transform group-hover:scale-105"/>
+      <div>
+        <span class="font-orbitron font-black text-2xl tracking-wider text-brand-cyan animate-glitch block leading-none">OUTSMART</span>
+        <span class="font-mono text-[9px] text-brand-purple tracking-widest font-bold block uppercase mt-0.5">Creator Partner Program</span>
       </div>
-      <div class="counter-vs"><div class="counter-vs-text">VS</div></div>
-      <div class="counter-side machine">
-        <div class="counter-label machine">MACHINE</div>
-        <div class="counter-num machine" id="counterMachine">&mdash;</div>
-        <div class="counter-sub">WINS</div>
+    </a>
+
+    <a href="#partner-form" 
+       onclick="track('nav_click', {target: 'cta_header'})"
+       class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-orbitron font-bold tracking-widest text-brand-cyan border border-brand-cyan/40 rounded-full hover:bg-brand-cyan/10 hover:border-brand-cyan transition-all">
+      JOIN PROGRAM
+    </a>
+  </header>
+
+  <main class="relative z-10 w-full max-w-6xl mx-auto px-4 space-y-24 md:space-y-32 pb-20">
+
+    <!-- 1. HERO SECTION -->
+    <section class="pt-6 md:pt-12 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
+      <div class="w-full lg:w-7/12 text-center lg:text-left space-y-6">
+        
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple font-mono text-xs font-semibold tracking-wider uppercase">
+          <span class="w-2 h-2 rounded-full bg-brand-cyan animate-ping"></span>
+          CREATOR OPPORTUNITY
+        </div>
+
+        <h1 class="font-orbitron font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight text-white">
+          Get Paid to Feature <span class="text-brand-cyan neon-text-cyan">OUTSMART</span> in Your Content
+        </h1>
+
+        <p class="font-orbitron text-lg sm:text-xl text-brand-accent font-semibold tracking-wide">
+          Don't make an ad. Just keep creating the content you already love.
+        </p>
+
+        <p class="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto lg:mx-0 font-poppins leading-relaxed">
+          We're looking for creators to naturally feature OUTSMART as part of their everyday content. Simple, seamless, and built for high audience engagement.
+        </p>
+
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+          <a href="/" 
+             target="_blank"
+             onclick="track('hero_cta_click', {type: 'primary_play'})"
+             class="neon-border-btn w-full sm:w-auto px-8 py-4 rounded-xl font-orbitron font-black text-sm tracking-widest uppercase flex items-center justify-center gap-3">
+            <span>TRY TODAY'S CHALLENGE</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+
+          <a href="#partner-form" 
+             onclick="track('hero_cta_click', {type: 'secondary_join'})"
+             class="w-full sm:w-auto px-8 py-4 rounded-xl font-orbitron font-bold text-sm tracking-widest text-white bg-brand-surface border border-brand-cyan/30 hover:border-brand-cyan hover:bg-brand-cyan/5 transition-all flex items-center justify-center">
+            JOIN CREATOR PROGRAM
+          </a>
+        </div>
+
+        <p class="text-xs font-mono text-gray-500 tracking-wider">
+          ⚡ Takes &lt;2 minutes to complete today's challenge. No downloads required to test.
+        </p>
+      </div>
+
+      <!-- Hero Visual / Mockup Card -->
+      <div class="w-full lg:w-5/12 flex justify-center">
+        <div class="relative w-full max-w-sm glass-card rounded-2xl p-6 border border-brand-cyan/20 animate-float">
+          <div class="absolute -top-3 -right-3 bg-brand-red text-white font-orbitron text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-lg">
+            DAILY CHALLENGE
+          </div>
+
+          <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-3 h-3 rounded-full bg-brand-cyan"></div>
+              <span class="font-orbitron text-xs font-bold tracking-wider text-gray-300">GLOBAL SESSION #842</span>
+            </div>
+            <span class="font-mono text-xs text-brand-accent">95% LOSS RATE</span>
+          </div>
+
+          <!-- Gameplay Preview Graphic -->
+          <div class="bg-black/60 rounded-xl p-4 border border-white/5 space-y-3 mb-4">
+            <div class="flex justify-between text-xs font-mono text-gray-400">
+              <span>HUMAN VS AI</span>
+              <span class="text-brand-cyan">STRENGTH: MAXIMUM</span>
+            </div>
+            
+            <!-- Stick Simulation Rows -->
+            <div class="py-4 flex justify-center items-center gap-2">
+              <div class="w-2 h-16 bg-brand-cyan rounded-full shadow-[0_0_8px_#00F3FF]"></div>
+              <div class="w-2 h-16 bg-brand-cyan rounded-full shadow-[0_0_8px_#00F3FF]"></div>
+              <div class="w-2 h-16 bg-brand-cyan rounded-full shadow-[0_0_8px_#00F3FF]"></div>
+              <div class="w-2 h-16 bg-brand-red/40 rounded-full"></div>
+              <div class="w-2 h-16 bg-brand-cyan rounded-full shadow-[0_0_8px_#00F3FF]"></div>
+              <div class="w-2 h-16 bg-brand-red/40 rounded-full"></div>
+              <div class="w-2 h-16 bg-brand-cyan rounded-full shadow-[0_0_8px_#00F3FF]"></div>
+            </div>
+
+            <div class="text-center font-orbitron text-xs text-brand-red font-bold uppercase tracking-wider">
+              RULE: FORCE THE AI TO TAKE THE LAST STICK
+            </div>
+          </div>
+
+          <div class="p-3 bg-brand-purple/10 rounded-lg border border-brand-purple/20 text-center">
+            <p class="font-mono text-xs text-brand-purple tracking-wide">"One daily turn. Everyone gets the same board."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. WHAT IS OUTSMART? -->
+    <section class="glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+      <div class="max-w-3xl mx-auto text-center space-y-6">
+        <h2 class="font-orbitron font-extrabold text-2xl sm:text-4xl text-white tracking-wide">
+          What is <span class="text-brand-cyan">OUTSMART</span>?
+        </h2>
+
+        <div class="space-y-4 text-gray-300 font-poppins text-base sm:text-lg leading-relaxed">
+          <p>
+            OUTSMART is a <strong class="text-white">daily AI strategy challenge</strong>. Every single day, everyone around the world receives the exact same mental showdown.
+          </p>
+          <p class="text-brand-accent font-semibold">
+            The objective is simple: Force the AI to take the last stick.
+          </p>
+          <p>
+            It only takes a few minutes. Think of it as a daily workout for your brain. Whether you're commuting, travelling, relaxing at home, or grabbing a coffee, there's always time for today's challenge.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/10 font-orbitron text-center">
+          <div class="p-3">
+            <span class="block text-xl font-black text-brand-cyan">1 DAILY</span>
+            <span class="text-[10px] text-gray-400 tracking-widest uppercase">SAME CHALLENGE WORLDWIDE</span>
+          </div>
+          <div class="p-3">
+            <span class="block text-xl font-black text-brand-purple">2 MINS</span>
+            <span class="text-[10px] text-gray-400 tracking-widest uppercase">PERFECT FIT FOR REELS/TIKTOK</span>
+          </div>
+          <div class="p-3">
+            <span class="block text-xl font-black text-brand-accent">100% AI</span>
+            <span class="text-[10px] text-gray-400 tracking-widest uppercase">ADAPTIVE OPPONENT</span>
+          </div>
+          <div class="p-3">
+            <span class="block text-xl font-black text-brand-red">GLOBAL</span>
+            <span class="text-[10px] text-gray-400 tracking-widest uppercase">COMMUNITY LEADERBOARD</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. WHY WE'RE DIFFERENT -->
+    <section class="space-y-8">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <h2 class="font-orbitron font-extrabold text-2xl sm:text-4xl text-white">
+          Not Another Sponsored Post
+        </h2>
+        <p class="text-gray-400 text-sm sm:text-base">
+          We respect your content, your brand, and your audience.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8 items-stretch">
+        <div class="glass-card rounded-2xl p-8 space-y-4 border-l-4 border-l-brand-red">
+          <div class="font-orbitron text-brand-red font-bold text-sm tracking-widest uppercase">THE OLD WAY (THAT AUDIENCES HATE)</div>
+          <h3 class="font-orbitron font-bold text-xl text-white">Forced Advertisements</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Stopping your content abruptly to read a 60-second robotic script about a product you barely use. It ruins your pacing, kills viewer retention, and feels inorganic.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 space-y-4 border-l-4 border-l-brand-cyan relative overflow-hidden bg-brand-cyan/5">
+          <div class="font-orbitron text-brand-cyan font-bold text-sm tracking-widest uppercase">THE OUTSMART WAY</div>
+          <h3 class="font-orbitron font-bold text-xl text-white">Natural Integration Over Forced Promotion</h3>
+          <p class="text-gray-300 text-sm leading-relaxed">
+            We don't want standalone ads. We want OUTSMART to organically live inside the content you already make. Play a quick 2-minute round while waiting for coffee, boarding a flight, or resting between sets.
+          </p>
+          <div class="pt-2 font-mono text-xs text-brand-accent font-semibold">
+            ✨ Keep your editing style. Keep your voice. Just show real gameplay moments.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. CREATOR CONTENT IDEAS (INTEGRATION MATRICES) -->
+    <section class="space-y-12">
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <div class="inline-block px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 text-brand-cyan font-mono text-xs font-bold uppercase tracking-widest">
+          PLUG & PLAY INTEGRATION
+        </div>
+        <h2 class="font-orbitron font-extrabold text-2xl sm:text-4xl text-white">
+          How OUTSMART Fits Into Your Content
+        </h2>
+        <p class="text-gray-400 text-sm sm:text-base">
+          Select your niche to see how naturally OUTSMART drops into your regular upload schedule.
+        </p>
+      </div>
+
+      <!-- Main Featured Creator Cards -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Travel -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">TRAVEL CREATORS</span>
+              <span class="text-xl">✈️</span>
+            </div>
+            <div class="text-xs font-mono text-gray-400">
+              <strong class="text-gray-200">Scenarios:</strong> Airport lounge, Plane seat, Hotel room, Beach, Café, Waiting for transport
+            </div>
+            <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
+              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <p class="text-xs text-gray-200 italic">"Let's see if I can beat today's challenge before boarding."</p>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Beat today's challenge before your flight boards.</div>
+        </div>
+
+        <!-- Day in the Life -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">DAY IN THE LIFE</span>
+              <span class="text-xl">☕</span>
+            </div>
+            <div class="text-xs font-mono text-gray-400">
+              <strong class="text-gray-200">Scenarios:</strong> Morning coffee, Lunch break, Evening wind-down, Pre-work routine
+            </div>
+            <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
+              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <p class="text-xs text-gray-200 italic">"My daily challenge before starting the day."</p>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Morning coffee + today's challenge.</div>
+        </div>
+
+        <!-- Fitness -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">FITNESS CREATORS</span>
+              <span class="text-xl">🏋️‍♂️</span>
+            </div>
+            <div class="text-xs font-mono text-gray-400">
+              <strong class="text-gray-200">Scenarios:</strong> Pre-gym warmup, Between rest sets, Post-workout cooldown
+            </div>
+            <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
+              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <p class="text-xs text-gray-200 italic">"Training physical strength and brain strategy on rest set 3."</p>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Mental workout between workout sets.</div>
+        </div>
+
+        <!-- Students -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">STUDENTS & STUDY</span>
+              <span class="text-xl">📚</span>
+            </div>
+            <div class="text-xs font-mono text-gray-400">
+              <strong class="text-gray-200">Scenarios:</strong> Library breaks, Between lectures, Study group downtime
+            </div>
+            <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
+              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <p class="text-xs text-gray-200 italic">"Taking a 2-minute brain reset before studying finals."</p>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Library study break reset.</div>
+        </div>
+
+        <!-- Office / Productivity -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">PRODUCTIVITY / OFFICE</span>
+              <span class="text-xl">💻</span>
+            </div>
+            <div class="text-xs font-mono text-gray-400">
+              <strong class="text-gray-200">Scenarios:</strong> Desk setup, Coffee break, End-of-day routine, Desk warmup
+            </div>
+            <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
+              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <p class="text-xs text-gray-200 italic">"Quick daily mental gym before answering emails."</p>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Part of your desk morning routine.</div>
+        </div>
+
+        <!-- Gaming -->
+        <div class="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-orbitron text-xs font-bold text-brand-cyan tracking-wider uppercase">GAMING CREATORS</span>
+              <span class="text-xl">🎮</span>
+            </div>
+            <div class="text-xs font-mono text-gray-400">
+              <strong class="text-gray-200">Scenarios:</strong> Matchmaking queue, Stream startup, Pre-game brain warmup
+            </div>
+            <div class="p-3 bg-black/50 rounded-xl border border-white/5 space-y-1">
+              <span class="text-[10px] font-mono text-brand-purple font-bold block uppercase">EXAMPLE HOOK / CAPTION</span>
+              <p class="text-xs text-gray-200 italic">"Warming up my brain before ranked matches today."</p>
+            </div>
+          </div>
+          <div class="text-[11px] font-mono text-brand-accent">Integration idea: Warm up your brain before ranked matches.</div>
+        </div>
+
+      </div>
+
+      <!-- Smaller Creator Niche Matrix Table -->
+      <div class="glass-card rounded-2xl p-6 sm:p-8 space-y-4">
+        <h3 class="font-orbitron text-base text-white font-bold tracking-wide">More Niche Ideas That Convert</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+          
+          <div class="p-4 bg-black/40 rounded-xl border border-white/5">
+            <span class="font-orbitron text-xs text-brand-cyan font-bold block mb-1">TECH CREATORS</span>
+            <p class="text-xs text-gray-400">Review your daily essential mobile apps + test AI strategy skill.</p>
+          </div>
+
+          <div class="p-4 bg-black/40 rounded-xl border border-white/5">
+            <span class="font-orbitron text-xs text-brand-purple font-bold block mb-1">PARENTS</span>
+            <p class="text-xs text-gray-400">Quiet five minutes of mental focus while the kids nap.</p>
+          </div>
+
+          <div class="p-4 bg-black/40 rounded-xl border border-white/5">
+            <span class="font-orbitron text-xs text-brand-accent font-bold block mb-1">COUPLES & FEUDS</span>
+            <p class="text-xs text-gray-400">Head-to-head battle: See who beats today's AI challenge first.</p>
+          </div>
+
+          <div class="p-4 bg-black/40 rounded-xl border border-white/5">
+            <span class="font-orbitron text-xs text-brand-gold font-bold block mb-1">DIGITAL NOMADS</span>
+            <p class="text-xs text-gray-400">Play from a different country/location every single day.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. WHAT WE'RE LOOKING FOR (CHECKLIST) -->
+    <section class="glass-card rounded-3xl p-8 sm:p-12 space-y-8">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <h2 class="font-orbitron font-extrabold text-2xl sm:text-4xl text-white">
+          Who We're Looking For
+        </h2>
+        <p class="text-gray-400 text-sm">
+          We keep guidelines minimal so your creative vision stays intact.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        
+        <!-- POSITIVES -->
+        <div class="bg-brand-accent/5 border border-brand-accent/20 rounded-2xl p-6 space-y-4">
+          <div class="flex items-center gap-2 font-orbitron font-bold text-brand-accent text-sm tracking-wider uppercase">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            <span>WHAT WE LOVE</span>
+          </div>
+          <ul class="space-y-3 font-poppins text-sm text-gray-200">
+            <li class="flex items-start gap-3">
+              <span class="text-brand-accent font-bold">✓</span>
+              <span><strong>Natural Integration:</strong> Fits into your regular vlog, short-form, or lifestyle content.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-brand-accent font-bold">✓</span>
+              <span><strong>Genuine Reactions:</strong> Real excitement when winning or frustration when outsmarted.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-brand-accent font-bold">✓</span>
+              <span><strong>Short Moments:</strong> Takes under 20 seconds of screen time to show the round.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-brand-accent font-bold">✓</span>
+              <span><strong>Authentic Content:</strong> Feels like something you naturally recommended to a friend.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- NEGATIVES -->
+        <div class="bg-brand-red/5 border border-brand-red/20 rounded-2xl p-6 space-y-4">
+          <div class="flex items-center gap-2 font-orbitron font-bold text-brand-red text-sm tracking-wider uppercase">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span>WHAT WE AVOID</span>
+          </div>
+          <ul class="space-y-3 font-poppins text-sm text-gray-300">
+            <li class="flex items-start gap-3">
+              <span class="text-brand-red font-bold">✕</span>
+              <span><strong>Standalone Advertisements:</strong> Videos that exist solely as a product pitch.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-brand-red font-bold">✕</span>
+              <span><strong>Over-scripted Promotions:</strong> Reading bullet points off a corporate script.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-brand-red font-bold">✕</span>
+              <span><strong>Forced Sponsorships:</strong> Disrupted video pacing that drives viewers to skip.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6. WHY YOUR AUDIENCE WILL LIKE IT -->
+    <section class="text-center max-w-3xl mx-auto space-y-6">
+      <div class="inline-block px-3 py-1 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple font-mono text-xs font-bold uppercase tracking-widest">
+        COMMUNITY ENGINE
+      </div>
+      
+      <h2 class="font-orbitron font-extrabold text-2xl sm:text-4xl text-white">
+        A Challenge Your Audience Can Join
+      </h2>
+
+      <p class="font-orbitron text-xl text-brand-cyan font-bold tracking-wide">
+        Every day. Everyone. Plays the same challenge.
+      </p>
+
+      <p class="text-gray-300 text-base leading-relaxed font-poppins">
+        Your audience doesn't just watch you play—they can immediately open OUTSMART and compare how they performed against your exact board. You aren't pitching an app; you're launching a daily competitive ritual with your followers.
+      </p>
+
+      <div class="grid sm:grid-cols-3 gap-4 pt-4">
+        <div class="p-4 glass-card rounded-xl">
+          <span class="block font-orbitron font-black text-brand-cyan text-lg">CONVERSATIONS</span>
+          <span class="text-xs text-gray-400">Sparks comment section rivalries and strategies.</span>
+        </div>
+        <div class="p-4 glass-card rounded-xl">
+          <span class="block font-orbitron font-black text-brand-purple text-lg">COMPETITION</span>
+          <span class="text-xs text-gray-400">Viewers test if they can beat the AI faster than you.</span>
+        </div>
+        <div class="p-4 glass-card rounded-xl">
+          <span class="block font-orbitron font-black text-brand-accent text-lg">REPEAT VIEWS</span>
+          <span class="text-xs text-gray-400">Daily synchronous drops drive continuous engagement.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. HOW COLLABORATION WORKS -->
+    <section class="space-y-10">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <h2 class="font-orbitron font-extrabold text-2xl sm:text-4xl text-white">
+          How Collaboration Works
+        </h2>
+        <p class="text-gray-400 text-sm">Five simple steps from discovery to payout.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        
+        <div class="glass-card rounded-2xl p-5 relative space-y-2">
+          <span class="font-orbitron text-3xl font-black text-brand-cyan/30">01</span>
+          <h3 class="font-orbitron font-bold text-sm text-white">Try Today's Challenge</h3>
+          <p class="text-xs text-gray-400">Play one session on playoutsmart.com to get the feel.</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 relative space-y-2">
+          <span class="font-orbitron text-3xl font-black text-brand-cyan/30">02</span>
+          <h3 class="font-orbitron font-bold text-sm text-white">Get in Touch</h3>
+          <p class="text-xs text-gray-400">Submit your details below or email our team directly.</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 relative space-y-2">
+          <span class="font-orbitron text-3xl font-black text-brand-cyan/30">03</span>
+          <h3 class="font-orbitron font-bold text-sm text-white">Agree on Details</h3>
+          <p class="text-xs text-gray-400">We confirm rates, custom arena links, and timeline.</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 relative space-y-2">
+          <span class="font-orbitron text-3xl font-black text-brand-cyan/30">04</span>
+          <h3 class="font-orbitron font-bold text-sm text-white">Create Naturally</h3>
+          <p class="text-xs text-gray-400">Include OUTSMART seamlessly in your regular content.</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 relative space-y-2 bg-brand-cyan/5 border-brand-cyan/40">
+          <span class="font-orbitron text-3xl font-black text-brand-cyan">05</span>
+          <h3 class="font-orbitron font-bold text-sm text-brand-cyan">Get Paid</h3>
+          <p class="text-xs text-gray-300">Fast, hassle-free payouts upon content publishing.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 8. FINAL CTA -->
+    <section class="glass-card rounded-3xl p-8 sm:p-14 text-center space-y-8 relative overflow-hidden border-2 border-brand-cyan/30">
+      <div class="max-w-2xl mx-auto space-y-4">
+        <h2 class="font-orbitron font-black text-3xl sm:text-5xl text-white tracking-tight">
+          Ready to <span class="text-brand-cyan neon-text-cyan">OUTSMART</span> the AI?
+        </h2>
+        <p class="text-gray-300 text-base sm:text-lg font-poppins">
+          Try today's challenge now and see why creators are organically sharing it with their communities.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+        <a href="/" 
+           target="_blank"
+           onclick="track('final_cta_click', {type: 'primary_play'})"
+           class="neon-border-btn w-full sm:w-auto px-8 py-4 rounded-xl font-orbitron font-black text-sm tracking-widest uppercase flex items-center justify-center gap-2">
+          PLAY TODAY'S CHALLENGE
+        </a>
+        <a href="#partner-form" 
+           onclick="track('final_cta_click', {type: 'secondary_join'})"
+           class="w-full sm:w-auto px-8 py-4 rounded-xl font-orbitron font-bold text-sm tracking-widest text-white bg-black border border-white/20 hover:border-brand-cyan transition-all flex items-center justify-center">
+          JOIN CREATOR PROGRAM
+        </a>
+      </div>
+    </section>
+
+    <!-- 9. CONTACT / APPLICATION FORM SECTION -->
+    <section id="partner-form" class="scroll-mt-12 max-w-3xl mx-auto glass-card rounded-3xl p-8 sm:p-12 space-y-8">
+      <div class="text-center space-y-2">
+        <h2 class="font-orbitron font-black text-2xl sm:text-3xl text-white">
+          Interested in Collaborating?
+        </h2>
+        <p class="text-gray-400 text-sm">
+          Send us your details and let's build something authentic together.
+        </p>
+      </div>
+
+      <!-- Quick Email Badges -->
+      <div class="flex flex-wrap justify-center gap-4 text-xs font-mono">
+        <a href="mailto:creators@playoutsmart.com" class="px-4 py-2 rounded-lg bg-black/60 border border-brand-cyan/30 text-brand-cyan hover:border-brand-cyan transition-all flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 002-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          creators@playoutsmart.com
+        </a>
+        <a href="mailto:kibiru@playoutsmart.com" class="px-4 py-2 rounded-lg bg-black/60 border border-brand-purple/30 text-brand-purple hover:border-brand-purple transition-all flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          kibiru@playoutsmart.com
+        </a>
+      </div>
+
+      <form id="creatorContactForm" onsubmit="handleFormSubmit(event)" class="space-y-5 text-left">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="block font-orbitron text-xs font-bold text-gray-300">YOUR NAME / CREATOR NAME</label>
+            <input type="text" required placeholder="e.g. Alex River" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm"/>
+          </div>
+          <div class="space-y-1">
+            <label class="block font-orbitron text-xs font-bold text-gray-300">EMAIL ADDRESS</label>
+            <input type="email" required placeholder="alex@creator.com" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm"/>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="space-y-1">
+            <label class="block font-orbitron text-xs font-bold text-gray-300">MAIN SOCIAL LINK / HANDLE</label>
+            <input type="text" required placeholder="tiktok.com/@alex or @alex_vlogs" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm"/>
+          </div>
+          <div class="space-y-1">
+            <label class="block font-orbitron text-xs font-bold text-gray-300">PRIMARY CONTENT NICHE</label>
+            <select required class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-brand-cyan text-sm">
+              <option value="" disabled selected>Select your style</option>
+              <option value="travel">Travel & Lifestyle</option>
+              <option value="day_in_life">Day in the Life / Daily Vlogs</option>
+              <option value="fitness">Fitness & Health</option>
+              <option value="student">Student & Study</option>
+              <option value="office">Productivity & Office</option>
+              <option value="gaming">Gaming & Esports</option>
+              <option value="tech">Tech & Apps</option>
+              <option value="other">Other Unique Niche</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="block font-orbitron text-xs font-bold text-gray-300">PROPOSAL / RATES / AUDIENCE DEMOGRAPHICS (OPTIONAL)</label>
+          <textarea rows="3" placeholder="Attach media kit link, standard rates, or how you envision integrating OUTSMART..." class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm resize-none"></textarea>
+        </div>
+
+        <button type="submit" 
+                id="submitBtn"
+                class="neon-border-btn w-full py-4 rounded-xl font-orbitron font-black text-sm tracking-widest uppercase flex items-center justify-center gap-2">
+          <span>SUBMIT CREATOR APPLICATION</span>
+        </button>
+
+        <p id="formStatus" class="hidden text-center font-mono text-xs text-brand-accent pt-2"></p>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="relative z-10 w-full border-t border-white/10 bg-black/80 py-8">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-gray-500">
+      <div>
+        © 2026 OUTSMART. ALL RIGHTS RESERVED.
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/" class="hover:text-brand-cyan transition-colors">PLAY GAME</a>
+        <a href="mailto:creators@playoutsmart.com" class="hover:text-brand-cyan transition-colors">CONTACT</a>
+        <a href="https://playoutsmart.com/creator?c=community" class="hover:text-brand-cyan transition-colors">CREATOR ARENA</a>
       </div>
     </div>
-    <div class="counter-bar-track">
-      <div class="counter-bar-humans" id="barHumans" style="width:50%"></div>
-      <div class="counter-bar-machine" id="barMachine" style="width:50%"></div>
-    </div>
-    <div style="font-size:10px;color:#fff;letter-spacing:0.15em;text-align:center;margin-top:6px;font-weight:bold;" id="counterScope">
-      CREATOR COMMUNITY ARENA
-    </div>
-  </div>
+  </footer>
 
-  <!-- Info Bar -->
-  <div class="info-bar" style="margin-top:8px;">
-    <div class="date" id="arenaDate">ARENA ACTIVE</div>
-    <div class="rule">LAST STICK LOSES</div>
-  </div>
+  <script>
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const status = document.getElementById('formStatus');
 
-  <button class="btn-action" onclick="shareCreatorArena()">SHARE THIS CREATOR ARENA</button>
+      btn.disabled = true;
+      btn.innerHTML = '<span>SENDING...</span>';
 
-</div>
+      track('creator_form_submit', { timestamp: new Date().toISOString() });
 
-<script>
-  function dismissHtp() {
-    document.getElementById('htpOverlay').style.display = 'none';
-  }
-
-  window.renderCounterFromFirebase = async () => {
-    if (window.fbLoadCounter) {
-      const stats = await window.fbLoadCounter();
-      if (stats) {
-        const humans = stats.humans || 0;
-        const machine = stats.machine || 0;
-        const total = humans + machine || 1;
+      setTimeout(() => {
+        btn.innerHTML = '<span>APPLICATION SENT ✓</span>';
+        btn.classList.remove('neon-border-btn');
+        btn.classList.add('bg-brand-accent', 'text-black');
         
-        document.getElementById('counterHumans').innerText = humans;
-        document.getElementById('counterMachine').innerText = machine;
-        
-        const humanPct = Math.round((humans / total) * 100);
-        document.getElementById('barHumans').style.width = humanPct + '%';
-        document.getElementById('barMachine').style.width = (100 - humanPct) + '%';
-      }
+        status.innerText = "Application received! Our team will reach out within 24-48 hours.";
+        status.classList.remove('hidden');
+      }, 1200);
     }
-  };
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const creator = window.creatorId || "community";
-    if (creator !== "community") {
-      const formattedName = creator.toUpperCase();
-      document.getElementById('creatorLabelDisplay').innerText = formattedName + "'S ARENA";
-      document.getElementById('htpCreatorSub').innerText = "CAN YOU BEAT " + formattedName + "'S SCORE?";
-      document.getElementById('counterScope').innerText = formattedName + " COMMUNITY STATS";
-    }
-  });
-
-  function shareCreatorArena() {
-    const shareUrl = window.location.href;
-    if (navigator.share) {
-      navigator.share({
-        title: 'OUTSMART Creator Arena',
-        text: 'Can you beat the AI in this creator challenge?',
-        url: shareUrl
-      }).catch(console.error);
-    } else {
-      navigator.clipboard.writeText(shareUrl);
-      alert("Creator Arena link copied to clipboard!");
-    }
-  }
-</script>
+    // Smooth Scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
