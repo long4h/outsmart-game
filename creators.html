@@ -1,283 +1,284 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OUTSMART — Creator Program</title>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="/outsmart_logo_final.png">
   
-  <!-- Font import for Poppins & Space Grotesk -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <title>OUTSMART — Creator Program</title>
+  <meta name="description" content="Get paid to feature OUTSMART in your content. Don't make an ad—just keep creating the content you already love."/>
+  
+  <!-- OpenGraph / Twitter -->
+  <meta property="og:title" content="OUTSMART — Creator Program"/>
+  <meta property="og:description" content="Get paid to feature OUTSMART in your content. Natural integration over forced promotion."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://playoutsmart.com/creators"/>
+  <meta property="og:image" content="https://playoutsmart.com/preview.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+
+  <!-- Google Tag Manager / Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HP5RKJQMX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1HP5RKJQMX');
+    const track = (eventName, params) => {
+      if (typeof gtag !== 'undefined') { gtag('event', eventName, params || {}); }
+    };
+  </script>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cyan: '#00F3FF',
+              purple: '#BC13FE',
+              red: '#FF003C',
+              gold: '#FFD700',
+              accent: '#6EE7B7',
+              darkBg: '#050308',
+              surface: '#0D0714',
+              surfaceBorder: 'rgba(0, 243, 255, 0.15)'
+            }
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif']
+          },
+          animation: {
+            'glitch': 'glitch 5s infinite',
+            'float': 'float 6s ease-in-out infinite'
+          },
+          keyframes: {
+            glitch: {
+              '0%, 94%, 100%': { textShadow: '2px 0 #00F3FF, -2px 0 #FF003C' },
+              '95%': { textShadow: '-2px 0 #00F3FF, 2px 0 #FF003C', transform: 'translateX(2px)' },
+              '97%': { textShadow: '2px 0 #00F3FF, -2px 0 #FF003C', transform: 'translateX(-2px)' },
+              '98%': { transform: 'none' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
 
   <style>
-    /* Global Reset & Dark Theme */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    *, *::before, *::after { box-sizing: border-box; }
+    
     body {
-      background-color: #06080c;
-      color: #ffffff;
+      background-color: #030106;
+      color: #F3F4F6;
       font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
       overflow-x: hidden;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* Main Container Grid */
-    .hero-container {
-      max-width: 1200px;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
+    .scanlines::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.12) 2px, rgba(0, 0, 0, 0.12) 4px);
+      pointer-events: none;
+      z-index: 99;
     }
 
-    /* Left Content Column */
-    .content-col {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+    .ambient-glow {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 0%, rgba(0, 243, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 50%, rgba(188, 19, 254, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 15% 85%, rgba(110, 231, 183, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
     }
 
-    .tag {
-      align-self: flex-start;
-      background: rgba(110, 231, 183, 0.08);
-      border: 1px solid rgba(110, 231, 183, 0.2);
-      color: #6EE7B7;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 6px 16px;
-      border-radius: 20px;
+    .glass-card {
+      background: rgba(13, 7, 20, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 243, 255, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
 
-    .hero-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 52px;
-      line-height: 1.1;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: -1px;
+    .glass-card-hover {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card-hover:hover {
+      border-color: rgba(0, 243, 255, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px 0 rgba(0, 243, 255, 0.15);
     }
 
-    .hero-title span {
-      color: #6EE7B7;
-      text-shadow: 0 0 20px rgba(110, 231, 183, 0.3);
+    .neon-text-cyan {
+      text-shadow: 0 0 10px rgba(0, 243, 255, 0.5), 0 0 20px rgba(0, 243, 255, 0.2);
     }
 
-    .hero-description {
-      color: #6EE7B7;
-      font-size: 18px;
-      line-height: 1.5;
-      font-weight: 500;
-    }
-
-    .hero-subtext {
-      color: #9CA3AF;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    /* Action Buttons */
-    .cta-group {
-      display: flex;
-      gap: 16px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      background: #6EE7B7;
-      color: #06080c;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-      padding: 16px 28px;
-      border-radius: 12px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
+    .neon-border-btn {
+      background: linear-gradient(180deg, #00F3FF 0%, #00B8C4 100%);
+      color: #02090D;
       transition: all 0.2s ease;
-      text-transform: uppercase;
     }
-
-    .btn-primary:hover {
-      background: #a7f3d0;
-      box-shadow: 0 0 20px rgba(110, 231, 183, 0.4);
+    .neon-border-btn:hover {
       transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(0, 243, 255, 0.6);
     }
 
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.03);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-      padding: 16px 28px;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      text-transform: uppercase;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .footer-note {
-      font-size: 13px;
-      color: #6B7280;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .footer-note span {
-      color: #F59E0B;
-    }
-
-    /* Right Column: Phone Mockup Container */
-    .mockup-col {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Phone Shell with Glow */
-    .phone-container {
+    /* CSS Phone Mockup Styling */
+    .phone-mockup {
       position: relative;
-      width: 320px;
-      height: 650px;
-      background: #000000;
+      width: 290px;
+      height: 590px;
+      background: #000;
       border-radius: 48px;
       padding: 12px;
-      border: 2px solid rgba(110, 231, 183, 0.4);
-      box-shadow: 
-        0 0 35px rgba(110, 231, 183, 0.25),
-        0 20px 40px rgba(0, 0, 0, 0.8);
-      box-sizing: border-box;
+      box-shadow: 0 25px 60px -15px rgba(0, 243, 255, 0.25),
+                  0 0 0 2px rgba(255, 255, 255, 0.1),
+                  0 0 0 6px #12131a;
     }
-
-    /* Speaker Notch at Top */
     .phone-notch {
       position: absolute;
-      top: 22px;
+      top: 18px;
       left: 50%;
       transform: translateX(-50%);
-      width: 90px;
-      height: 18px;
-      background: #000000;
-      border-radius: 10px;
-      z-index: 10;
+      width: 100px;
+      height: 22px;
+      background: #000;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-
-    /* Inner Screen Frame */
+    .phone-notch-camera {
+      width: 8px;
+      height: 8px;
+      background: #0a0b10;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .phone-notch-speaker {
+      width: 32px;
+      height: 4px;
+      background: #15161e;
+      border-radius: 4px;
+    }
     .phone-screen {
+      position: relative;
       width: 100%;
       height: 100%;
-      border-radius: 38px;
+      border-radius: 36px;
       overflow: hidden;
-      position: relative;
-      background-color: #0b0f17;
+      background: #000;
     }
-
-    /* Gameplay Image inside Phone */
-    .app-gameplay {
+    .phone-screen img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 900px) {
-      .hero-container {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 40px;
-      }
-
-      .tag {
-        align-self: center;
-      }
-
-      .cta-group {
-        justify-content: center;
-      }
-
-      .footer-note {
-        justify-content: center;
-      }
-      
-      .hero-title {
-        font-size: 38px;
-      }
     }
   </style>
 </head>
-<body>
+<body class="scanlines relative min-h-screen flex flex-col justify-between">
+  
+  <div class="ambient-glow"></div>
 
-  <div class="hero-container">
-    
-    <!-- Left Column: Copy & CTAs -->
-    <div class="content-col">
-      <div class="tag">Creator Opportunity</div>
-      
-      <h1 class="hero-title">
-        Get Paid to Feature <span>OUTSMART</span> in Your Content
-      </h1>
+  <!-- NAVIGATION -->
+  <header class="relative z-50 w-full max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3 group" onclick="track('nav_click', {target: 'logo'})">
+      <img src="/outsmart_logo_final.png" alt="OUTSMART Logo" class="w-10 h-10 object-contain transition-transform group-hover:scale-105"/>
+      <div>
+        <span class="font-orbitron font-black text-2xl tracking-wider text-brand-cyan animate-glitch block leading-none">OUTSMART</span>
+        <span class="font-poppins text-[10px] text-brand-purple tracking-widest font-semibold block uppercase mt-0.5">Creator Partner Program</span>
+      </div>
+    </a>
 
-      <p class="hero-description">
-        Don't make an ad. Just keep creating the content you already love.
-      </p>
+    <a href="#partner-form" 
+       onclick="track('nav_click', {target: 'cta_header'})"
+       class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-orbitron font-bold tracking-widest text-brand-cyan border border-brand-cyan/40 rounded-full hover:bg-brand-cyan/10 hover:border-brand-cyan transition-all">
+      JOIN PROGRAM
+    </a>
+  </header>
 
-      <p class="hero-subtext">
-        We're looking for creators to naturally feature OUTSMART as part of their everyday content. Simple, seamless, and built for high audience engagement.
-      </p>
+  <main class="relative z-10 w-full max-w-6xl mx-auto px-4 space-y-24 md:space-y-32 pb-20">
 
-      <div class="cta-group">
-        <a href="#" class="btn-primary">
-          Try Today's Challenge &rarr;
-        </a>
-        <a href="#" class="btn-secondary">
-          Join Creator Program
-        </a>
+    <!-- 1. HERO SECTION -->
+    <section class="pt-6 md:pt-12 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
+      <div class="w-full lg:w-7/12 text-center lg:text-left space-y-6">
+        
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple font-poppins text-xs font-medium tracking-wider uppercase">
+          <span class="w-2 h-2 rounded-full bg-brand-cyan animate-ping"></span>
+          CREATOR OPPORTUNITY
+        </div>
+
+        <h1 class="font-orbitron font-black text-3xl sm:text-5xl lg:text-6xl tracking-tight leading-tight text-white">
+          Get Paid to Feature <span class="text-brand-cyan neon-text-cyan">OUTSMART</span> in Your Content
+        </h1>
+
+        <p class="font-orbitron text-lg sm:text-xl text-brand-accent font-semibold tracking-wide">
+          Don't make an ad. Just keep creating the content you already love.
+        </p>
+
+        <p class="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto lg:mx-0 font-poppins leading-relaxed">
+          We're looking for creators to naturally feature OUTSMART as part of their everyday content. Simple, seamless, and built for high audience engagement.
+        </p>
+
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+          <a href="/" 
+             target="_blank"
+             onclick="track('hero_cta_click', {type: 'primary_play'})"
+             class="neon-border-btn w-full sm:w-auto px-8 py-4 rounded-xl font-orbitron font-black text-sm tracking-widest uppercase flex items-center justify-center gap-3">
+            <span>TRY TODAY'S CHALLENGE</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </a>
+
+          <a href="#partner-form" 
+             onclick="track('hero_cta_click', {type: 'secondary_join'})"
+             class="w-full sm:w-auto px-8 py-4 rounded-xl font-orbitron font-bold text-sm tracking-widest text-white bg-brand-surface border border-brand-cyan/30 hover:border-brand-cyan hover:bg-brand-cyan/5 transition-all flex items-center justify-center">
+            JOIN CREATOR PROGRAM
+          </a>
+        </div>
+
+        <!-- Tagline readable Poppins font -->
+        <p class="text-xs font-poppins text-white tracking-wide font-normal">
+          ⚡ Takes &lt;2 minutes to complete today's challenge. No downloads required to test.
+        </p>
       </div>
 
-      <div class="footer-note">
-        <span>⚡</span> Takes &lt;2 minutes to complete today's challenge. No downloads required to test.
-      </div>
-    </div>
-
-    <!-- Right Column: Phone Mockup with Gameplay Screenshot -->
-    <div class="mockup-col">
-      <div class="phone-container">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-          <img 
-            src="outsmart-gameplay.png" 
-            alt="Outsmart Gameplay UI" 
-            class="app-gameplay" 
-          />
+      <!-- Hero Phone Container Showcase -->
+      <div class="w-full lg:w-5/12 flex justify-center">
+        <div class="phone-mockup animate-float">
+          <div class="phone-notch">
+            <div class="phone-notch-speaker"></div>
+            <div class="phone-notch-camera"></div>
+          </div>
+          <div class="phone-screen">
+            <img src="/app-showcase.png" alt="OUTSMART Game Showcase" />
+          </div>
         </div>
       </div>
-    </div>
-
     </section>
 
     <!-- 2. WHAT IS OUTSMART? -->
