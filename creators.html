@@ -663,23 +663,22 @@
       <form id="creatorContactForm" onsubmit="handleFormSubmit(event)" class="space-y-5 text-left">
         <div class="grid sm:grid-cols-2 gap-4">
           <div class="space-y-1">
-            <label class="block font-orbitron text-xs font-bold text-gray-300">YOUR NAME / CREATOR NAME</label>
-            <input type="text" required placeholder="e.g. Alex River" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm"/>
-          </div>
-          <div class="space-y-1">
-            <label class="block font-orbitron text-xs font-bold text-gray-300">EMAIL ADDRESS</label>
-            <input type="email" required placeholder="alex@creator.com" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm"/>
-          </div>
+  <label class="block font-orbitron text-xs font-bold text-gray-300">YOUR NAME / CREATOR NAME</label>
+  <input type="text" name="creator_name" required placeholder="e.g. Alex River" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm"/>
+</div>
+<div class="space-y-1">
+  <label class="block font-orbitron text-xs font-bold text-gray-300">EMAIL ADDRESS</label>
+  <input type="email" name="email" required placeholder="alex@creator.com" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm"/>
+</div>
         </div>
 
-        <div class="grid sm:grid-cols-2 gap-4">
-          <div class="space-y-1">
-            <label class="block font-orbitron text-xs font-bold text-gray-300">MAIN SOCIAL LINK / HANDLE</label>
-            <input type="text" required placeholder="tiktok.com/@alex or @alex_vlogs" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm"/>
-          </div>
-          <div class="space-y-1">
-            <label class="block font-orbitron text-xs font-bold text-gray-300">PRIMARY CONTENT NICHE</label>
-            <select required class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-brand-cyan text-sm">
+        <div class="space-y-1">
+  <label class="block font-orbitron text-xs font-bold text-gray-300">MAIN SOCIAL LINK / HANDLE</label>
+  <input type="text" name="social_link" required placeholder="tiktok.com/@alex or @alex_vlogs" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm"/>
+</div>
+<div class="space-y-1">
+  <label class="block font-orbitron text-xs font-bold text-gray-300">PRIMARY CONTENT NICHE</label>
+  <select name="niche" required class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-brand-cyan text-sm">
               <option value="" disabled selected>Select your style</option>
               <option value="travel">Travel & Lifestyle</option>
               <option value="day_in_life">Day in the Life / Daily Vlogs</option>
@@ -694,9 +693,9 @@
         </div>
 
         <div class="space-y-1">
-          <label class="block font-orbitron text-xs font-bold text-gray-300">PROPOSAL / RATES / AUDIENCE DEMOGRAPHICS (OPTIONAL)</label>
-          <textarea rows="3" placeholder="Attach media kit link, standard rates, or how you envision integrating OUTSMART..." class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm resize-none"></textarea>
-        </div>
+  <label class="block font-orbitron text-xs font-bold text-gray-300">PROPOSAL / RATES / AUDIENCE DEMOGRAPHICS (OPTIONAL)</label>
+  <textarea name="proposal" rows="3" placeholder="Attach media kit link, standard rates, or how you envision integrating OUTSMART..." class="w-full px-4 py-3 rounded-xl bg-black/60 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-brand-cyan text-sm resize-none"></textarea>
+</div>
 
         <button type="submit" 
                 id="submitBtn"
