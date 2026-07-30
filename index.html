@@ -308,9 +308,9 @@
   pointer-events: none;
   z-index: 1;
 }
-    .htp-hero-kicker { position:relative; font-size:15px; line-height:1.25; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.84); margin-bottom:16px; text-transform:uppercase; }
+    .htp-hero-kicker { position:relative; font-size:15px; line-height:1.25; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.94); margin-bottom:16px; text-transform:uppercase; }
     .htp-title--hero { position:relative; margin:0 0 12px; font-size:44px; line-height:0.95; letter-spacing:0.08em; font-weight:900; color:#00F3FF; text-transform:uppercase; text-shadow: 0 0 8px rgba(0,243,255,0.35), 0 0 18px rgba(0,243,255,0.18); }
-    .htp-hero-sub { position:relative; font-size:19px; line-height:1.45; letter-spacing:0.06em; font-weight:800; color:#ffffff; text-transform:uppercase; margin-bottom:20px; }
+    .htp-hero-sub { position:relative; font-size:19px; line-height:1.45; letter-spacing:0.06em; font-weight:800; color:#ffffff; text-transform:uppercase; margin-bottom:28px; }
     .htp-badge {
       position:relative;
       display:inline-flex;
@@ -318,16 +318,16 @@
       align-items:center;
       gap:3px;
       padding:10px 22px;
-      margin:0 0 16px;
+      margin:24px 0 16px;
       border-radius:14px;
       background:linear-gradient(180deg, rgba(0,243,255,0.12) 0%, rgba(179,0,255,0.08) 100%);
       box-shadow: 0 0 14px rgba(0,243,255,0.20);
     }
     .htp-badge-line { font-size:12px; line-height:1.5; letter-spacing:0.03em; font-weight:800; color:#ffffff; }
-    .htp-badge-sub { font-size:10px; letter-spacing:0.03em; font-weight:700; color:rgba(255,255,255,0.6); text-transform:none; }
+    .htp-badge-sub { font-size:10px; letter-spacing:0.03em; font-weight:700; color:rgba(255,255,255,0.88); text-transform:none; }
     .htp-board-preview { position:relative; margin:0 auto 18px; padding:16px 14px 14px; border:1px solid rgba(255,255,255,0.10); background:linear-gradient(180deg, rgba(5,8,25,0.92) 0%, rgba(0,0,0,0.88) 100%); overflow:hidden; flex:1 1 auto; min-height:0; display:flex; flex-direction:column; justify-content:center; }
     .htp-board-glow { position:absolute; inset:auto 50% 10px 50%; width:180px; height:180px; transform:translateX(-50%); border-radius:50%; background:radial-gradient(circle, rgba(179,0,255,0.22) 0%, rgba(0,243,255,0.08) 35%, transparent 70%); filter:blur(10px); pointer-events:none; }
-    .htp-globe { opacity:1; filter: saturate(1.5) brightness(1.2) drop-shadow(0 0 3px rgba(0,243,255,0.5)); font-size:1.15em; vertical-align:-1px; }
+    .htp-globe { opacity:1; filter: saturate(1.5) brightness(1.2) drop-shadow(0 0 3px rgba(0,243,255,0.5)); font-size:1.5em; vertical-align:-3px; }
     .htp-sticks--hero { position:relative; display:flex; flex-direction:column; align-items:center; gap:8px; }
     .htp-row { display:flex; justify-content:center; gap:8px; }
     .htp-stick { width:10px; border-radius:3px; background:linear-gradient(180deg, #ff4dff 0%, #b300ff 100%); box-shadow: 0 0 8px rgba(179,0,255,0.45), 0 0 18px rgba(179,0,255,0.22); }
@@ -338,12 +338,11 @@
       position:relative; display:block; width:100%; border:none; padding:16px 18px; cursor:pointer;
       background:linear-gradient(180deg, #3ef7ff 0%, #00F3FF 100%);
       color:#00131a; font-family:'Orbitron',monospace; font-size:16px; line-height:1; letter-spacing:0.16em; font-weight:900; text-transform:uppercase;
-      box-shadow: 0 0 14px rgba(0,243,255,0.35), 0 0 28px rgba(0,243,255,0.18);
+      box-shadow: 0 0 8px rgba(0,243,255,0.22), 0 0 16px rgba(0,243,255,0.10);
       transition:transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
       animation:htpPulse 1.8s ease-in-out infinite;
     }
-    .htp-btn--hero:hover { transform:translateY(-1px); filter:brightness(1.04); box-shadow: 0 0 18px rgba(0,243,255,0.42), 0 0 36px rgba(0,243,255,0.22); }
-
+    .htp-btn--hero:hover { transform:translateY(-1px); filter:brightness(1.04); box-shadow: 0 0 10px rgba(0,243,255,0.28), 0 0 20px rgba(0,243,255,0.14); }
     /* ===== LOGO STYLES ===== */
     .hero-logo { display:block; width:min(380px, 72vw); height:auto; margin:0 auto 4px auto; }
     .htp-logo { 
@@ -401,8 +400,8 @@
     @keyframes thinkProgress { from{width:0} to{width:100%} }
     @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
     @keyframes htpPulse {
-      0%, 100%{ transform:scale(1); box-shadow: 0 0 14px rgba(0,243,255,0.35), 0 0 28px rgba(0,243,255,0.18); }
-      50%{ transform:scale(1.015); box-shadow: 0 0 18px rgba(0,243,255,0.48), 0 0 40px rgba(0,243,255,0.24); }
+      0%, 100%{ transform:scale(1); box-shadow: 0 0 8px rgba(0,243,255,0.22), 0 0 16px rgba(0,243,255,0.10); }
+      50%{ transform:scale(1.008); box-shadow: 0 0 10px rgba(0,243,255,0.30), 0 0 20px rgba(0,243,255,0.14); }
     }
 
     /* ===== RESPONSIVE: short screens ===== */
