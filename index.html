@@ -461,15 +461,15 @@
   <div class="htp-overlay" id="htpOverlay">
     <div class="htp-box htp-box--new">
       <img src="/outsmart_logo_final.png" alt="OUTSMART" class="htp-logo">
-      <div class="htp-hero-kicker">CAN YOU BEAT THE AI?</div>
+      <div class="htp-hero-kicker">TODAY'S GLOBAL AI CHALLENGE</div>
       <div class="htp-hero-sub">
   95% of players lose.
 </div>
-      <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">TAKE YOUR TURN</button>
+      <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">PLAY TODAY'S CHALLENGE</button>
       <div class="htp-board-preview">
         <div class="htp-board-glow"></div>
-        <div class="htp-board-copy">ONE CHALLENGE. WORLDWIDE.</div>
-        <div class="htp-meta" style="margin-bottom:10px;">3 ATTEMPTS &middot; RESETS AT MIDNIGHT UTC</div>
+        <div class="htp-board-copy">🌍 Everyone plays the same challenge.</div>
+        <div class="htp-meta" style="margin-bottom:10px;">New challenge every 24 hours.</div>
         <div class="htp-sticks htp-sticks--hero">
           <div class="htp-row"><div class="htp-stick" style="height:24px"></div></div>
           <div class="htp-row">
@@ -495,11 +495,11 @@
           </div>
         </div>
       </div>
-      <div class="htp-mini-rule">TAKE TURNS REMOVING STICKS.<br/>FORCE THE AI TO TAKE THE LAST STICK.</div>
-      <div class="htp-mechanic-hint" id="htpMechanicHint">TAP A STICK TO SELECT<br/>TAP FURTHER LEFT FOR MORE STICKS</div>
+      <div class="htp-mini-rule">GOAL<br/>Force the AI to take the last stick.</div>
+      <div class="htp-mechanic-hint" id="htpMechanicHint">Tap a stick.<br/>Tap further left to remove more sticks.</div>
     </div>
   </div>
-
+  
   <div id="shareModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:8000;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto;" onclick="document.getElementById('shareModal').style.display='none';">
     <div style="background:#06060F;border:1px solid #FFD70044;max-width:400px;width:100%;padding:20px 18px 18px;margin:auto;position:relative;" onclick="event.stopPropagation()">
 
@@ -803,11 +803,11 @@ var dismissHtp = function() {
   var el = document.getElementById('htpMechanicHint');
   if (el) {
     el.innerHTML = isTouch
-      ? 'TAP A STICK TO SELECT<br/>TAP FURTHER LEFT FOR MORE STICKS'
-      : 'CLICK A STICK TO SELECT<br/>CLICK FURTHER LEFT FOR MORE STICKS';
+      ? 'Tap any stick.<br/>Tap further left to remove more sticks.'
+      : 'Click any stick.<br/>Click further left to remove more sticks.';
   }
 })();
-
+  
 var COUNTER_KEY='outsmart_counter';
 window._liveCounter = {humans:0,machine:0};
 // Wipe any previously-cached counter so the seed is never visible in DevTools > Storage
