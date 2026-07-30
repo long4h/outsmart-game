@@ -495,7 +495,7 @@
         </div>
       </div>
       <div class="htp-mini-rule"><span class="will-you">GOAL</span><br/>Force the AI to take the last stick.</div>
-      <div class="htp-mechanic-hint" id="htpMechanicHint">Tap a stick.<br/>Tap further left to remove multiple sticks.</div>
+      <div class="htp-mechanic-hint" id="htpMechanicHint">Tap a stick.<br/>Tap further left to remove more sticks.</div>
     </div>
   </div>
   
@@ -802,8 +802,8 @@ var dismissHtp = function() {
   var el = document.getElementById('htpMechanicHint');
   if (el) {
     el.innerHTML = isTouch
-      ? 'Tap any stick.<br/>Tap further left to remove multiple sticks.'
-      : 'Click any stick.<br/>Click further left to remove multiple sticks.';
+      ? 'Tap any stick.<br/>Tap further left to remove more sticks.'
+      : 'Click any stick.<br/>Click further left to remove more sticks.';
   }
 })();
   
