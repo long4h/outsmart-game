@@ -847,11 +847,12 @@ var pickNR = function(arr) {
 };
 
 var dismissHtp = function() {
+  if(window.BoardAnimation) BoardAnimation.stop();
   var el=document.getElementById('htpOverlay');
   if(el){el.style.opacity='0';el.style.transition='opacity 0.3s';setTimeout(function(){el.remove();},300);}
   try{localStorage.setItem('outsmart_htp_seen','1');}catch(e){}
 };
-
+  
 // Set correct mechanic hint wording based on input type
 (function() {
   var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
@@ -1419,6 +1420,10 @@ var init=function(){
   loadState();
   if(state.won||state.attempts>=MAX_ATTEMPTS){showExhausted();renderPips();}
   else{startGame();}
+  if(window.BoardAnimation){
+    var animEl=document.getElementById('htpAnimBoard');
+    if(animEl) BoardAnimation.init(animEl);
+  }
 };
 
 init();
