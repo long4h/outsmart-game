@@ -1,27 +1,31 @@
 var TUTORIAL_STEPS = [
-  { board: [5,2,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1000 },
-  { board: [5,2,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: 0, pendingCount: 2, aiRow: null, aiCount: 0, duration: 1400 },
-  { board: [3,2,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 600 },
+  { board: [5,2,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1200 },
+
+  { board: [5,2,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: 0, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1100 },
+  { board: [5,2,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: 0, pendingCount: 2, aiRow: null, aiCount: 0, duration: 700 },
+  { board: [3,2,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 700 },
 
   { board: [3,2,3], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1000 },
-  { board: [3,2,3], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: 1, aiCount: 2, duration: 1400 },
-  { board: [3,0,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 600 },
+  { board: [3,2,3], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: 1, aiCount: 2, duration: 700 },
+  { board: [3,0,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 700 },
 
-  { board: [3,0,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: 2, pendingCount: 2, aiRow: null, aiCount: 0, duration: 1400 },
-  { board: [3,0,1], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 600 },
+  { board: [3,0,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: 2, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1100 },
+  { board: [3,0,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: 2, pendingCount: 2, aiRow: null, aiCount: 0, duration: 700 },
+  { board: [3,0,1], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 700 },
 
   { board: [3,0,1], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1000 },
-  { board: [3,0,1], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: 0, aiCount: 2, duration: 1400 },
-  { board: [1,0,1], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 600 },
+  { board: [3,0,1], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: 0, aiCount: 2, duration: 700 },
+  { board: [1,0,1], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 700 },
 
-  { board: [1,0,1], badge: 'YOUR MOVE', badgeType: 'player', selRow: 2, pendingCount: 1, aiRow: null, aiCount: 0, duration: 1400 },
-  { board: [1,0,0], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 600 },
+  { board: [1,0,1], badge: 'YOUR MOVE', badgeType: 'player', selRow: 2, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1100 },
+  { board: [1,0,1], badge: 'YOUR MOVE', badgeType: 'player', selRow: 2, pendingCount: 1, aiRow: null, aiCount: 0, duration: 700 },
+  { board: [1,0,0], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 900 },
 
-  { board: [1,0,0], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1000 },
-  { board: [1,0,0], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: 0, aiCount: 1, duration: 1600 },
-  { board: [0,0,0], badge: '\u26A1 DAILY CONQUERED', badgeType: 'win', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 2000 },
+  { board: [1,0,0], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1200 },
+  { board: [1,0,0], badge: 'AI THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: 0, aiCount: 1, duration: 900 },
+  { board: [0,0,0], badge: 'LAST TAKER LOSES', badgeType: 'win', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1400 },
+  { board: [0,0,0], badge: '\u26A1 DAILY CONQUERED', badgeType: 'win', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1800 },
 ];
-
 var MAX_STICKS = [5, 2, 3];
 
 window.BoardAnimation = (function () {
