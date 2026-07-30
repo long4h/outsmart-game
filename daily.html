@@ -326,12 +326,77 @@
     }
     .htp-badge-line { font-size:12px; line-height:1.5; letter-spacing:0.03em; font-weight:800; color:#ffffff; }
     .htp-badge-sub { font-size:10px; letter-spacing:0.03em; font-weight:700; color:rgba(255,255,255,0.88); text-transform:none; }
-    .htp-board-preview { position:relative; margin:0 auto 18px; padding:16px 14px 14px; border:1px solid rgba(255,255,255,0.10); background:linear-gradient(180deg, rgba(5,8,25,0.92) 0%, rgba(0,0,0,0.88) 100%); overflow:hidden; flex:1 1 auto; min-height:0; display:flex; flex-direction:column; justify-content:center; }
-    .htp-board-glow { position:absolute; inset:auto 50% 10px 50%; width:180px; height:180px; transform:translateX(-50%); border-radius:50%; background:radial-gradient(circle, rgba(179,0,255,0.22) 0%, rgba(0,243,255,0.08) 35%, transparent 70%); filter:blur(10px); pointer-events:none; }
+    /* Container occupies 100% of available tutorial space */
+    .htp-board-preview {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 240px;
+      margin: 0 auto;
+      padding: 16px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: linear-gradient(180deg, rgba(5, 8, 25, 0.95) 0%, rgba(0, 0, 0, 0.92) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+    }
     .htp-globe { opacity:1; filter: saturate(1.5) brightness(1.2) drop-shadow(0 0 3px rgba(0,243,255,0.5)); font-size:1.5em; vertical-align:-3px; }
-    .htp-sticks--hero { position:relative; display:flex; flex-direction:column; align-items:center; gap:8px; }
-    .htp-row { display:flex; justify-content:center; gap:8px; }
-    .htp-stick { width:10px; border-radius:3px; background:linear-gradient(180deg, #ff4dff 0%, #b300ff 100%); box-shadow: 0 0 8px rgba(179,0,255,0.45), 0 0 18px rgba(179,0,255,0.22); }
+    /* Micro Turn Badge inside Tutorial Stage */
+    .tutorial-turn-badge {
+      font-family: 'Orbitron', monospace;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      margin-bottom: 8px;
+    }
+    .tutorial-turn-badge.player {
+      color: var(--cyan);
+      background: rgba(0, 243, 255, 0.1);
+      border: 1px solid rgba(0, 243, 255, 0.3);
+    }
+    .tutorial-turn-badge.ai {
+      color: var(--red);
+      background: rgba(255, 0, 60, 0.1);
+      border: 1px solid rgba(255, 0, 60, 0.3);
+    }
+    /* Row & Stick Flex layout matching exact gameplay */
+    .tutorial-board-rows {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+      justify-content: center;
+    }
+    .tutorial-stick {
+      width: 8px;
+      border-radius: 5px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tutorial-stick.alive {
+      background: linear-gradient(180deg, #e0a8ff 0%, var(--purple) 55%, #7a0ecf 100%);
+      box-shadow: 0 0 6px rgba(188, 19, 254, 0.5);
+    }
+    .tutorial-stick.pending {
+      background: linear-gradient(180deg, #fff3b0 0%, var(--gold) 55%, #d4b100 100%) !important;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.6) !important;
+      transform: scaleY(1.08);
+    }
+    .tutorial-stick.ai-removing {
+      background: linear-gradient(180deg, #ffb3b3 0%, #FF6B6B 55%, #cc3333 100%) !important;
+      box-shadow: 0 0 10px rgba(255, 107, 107, 0.6) !important;
+      transform: scaleY(1.06);
+    }
+    .tutorial-stick.dead {
+      opacity: 0;
+      transform: scaleY(0);
+    }
     .htp-mini-rule { position:relative; margin:0 0 14px; font-size:12px; line-height:1.6; letter-spacing:0.14em; font-weight:800; color:rgba(255,255,255,0.85); text-transform:uppercase; }
     .htp-meta { position:relative; font-size:10px; line-height:1.5; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom:18px; }
     .htp-mechanic-hint { position:relative; font-size:10px; line-height:1.5; letter-spacing:0.14em; font-weight:800; color:var(--gold); text-transform:uppercase; margin:0 0 12px; opacity:0.85; }    
