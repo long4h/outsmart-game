@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-
-const TUTORIAL_STEPS = [
+var TUTORIAL_STEPS = [
   // Step 0: Initial Board
   {
     board: [1, 3, 5, 2],
     badge: 'YOUR MOVE',
     badgeType: 'player',
     selRow: null,
-    pendingRow: null,
     pendingCount: 0,
     aiRow: null,
     aiCount: 0,
@@ -20,7 +16,6 @@ const TUTORIAL_STEPS = [
     badge: 'YOUR MOVE',
     badgeType: 'player',
     selRow: 1,
-    pendingRow: 1,
     pendingCount: 1,
     aiRow: null,
     aiCount: 0,
@@ -31,7 +26,6 @@ const TUTORIAL_STEPS = [
     badge: 'YOUR MOVE',
     badgeType: 'player',
     selRow: null,
-    pendingRow: null,
     pendingCount: 0,
     aiRow: null,
     aiCount: 0,
@@ -43,7 +37,6 @@ const TUTORIAL_STEPS = [
     badge: 'YOUR MOVE',
     badgeType: 'player',
     selRow: 2,
-    pendingRow: 2,
     pendingCount: 3,
     aiRow: null,
     aiCount: 0,
@@ -54,7 +47,6 @@ const TUTORIAL_STEPS = [
     badge: 'YOUR MOVE',
     badgeType: 'player',
     selRow: null,
-    pendingRow: null,
     pendingCount: 0,
     aiRow: null,
     aiCount: 0,
@@ -66,7 +58,6 @@ const TUTORIAL_STEPS = [
     badge: 'AI THINKING...',
     badgeType: 'ai',
     selRow: null,
-    pendingRow: null,
     pendingCount: 0,
     aiRow: 3,
     aiCount: 2,
@@ -77,19 +68,17 @@ const TUTORIAL_STEPS = [
     badge: 'AI MOVED',
     badgeType: 'ai',
     selRow: null,
-    pendingRow: null,
     pendingCount: 0,
     aiRow: null,
     aiCount: 0,
     duration: 800,
   },
-  // Step 4: Strategic Endgame Setup - Player clears Row 1 & 2 down to 1 stick total
+  // Step 4: Strategic Endgame Setup
   {
     board: [1, 0, 0, 0],
     badge: 'YOUR MOVE',
     badgeType: 'player',
     selRow: null,
-    pendingRow: null,
     pendingCount: 0,
     aiRow: null,
     aiCount: 0,
@@ -101,7 +90,6 @@ const TUTORIAL_STEPS = [
     badge: 'AI FORCED TO TAKE LAST STICK',
     badgeType: 'ai',
     selRow: null,
-    pendingRow: null,
     pendingCount: 0,
     aiRow: 0,
     aiCount: 1,
@@ -110,10 +98,9 @@ const TUTORIAL_STEPS = [
   // Step 6: Victory Resolution
   {
     board: [0, 0, 0, 0],
-    badge: 'LAST TAKER LOSES — YOU WIN!',
+    badge: 'LAST TAKER LOSES \u2014 YOU WIN!',
     badgeType: 'player',
     selRow: null,
-    pendingRow: null,
     pendingCount: 0,
     aiRow: null,
     aiCount: 0,
@@ -121,79 +108,98 @@ const TUTORIAL_STEPS = [
   },
 ];
 
-export const TutorialBoardRedesign = ({ onStartGame }) => {
-  const [stepIndex, setStepIndex] = useState(0);
+var MAX_STICKS = [1, 3, 5, 2];
 
-  useEffect(() => {
-    const currentStep = TUTORIAL_STEPS[stepIndex];
-    const timer = setTimeout(() => {
-      setStepIndex((prev) => (prev + 1) % TUTORIAL_STEPS.length);
-    }, currentStep.duration);
+window.BoardAnimation = (function () {
+  var containerEl = null;
+  var badgeEl = null;
+  var rowsEl = null;
+  var timer = null;
+  var stepIndex = 0;
 
-    return () => clearTimeout(timer);
-  }, [stepIndex]);
+  function buildSkeleton() {
+    containerEl.innerHTML = '';
 
-  const step = TUTORIAL_STEPS[stepIndex];
+    badgeEl = document.createElement('div');
+    badgeEl.className = 'tutorial-turn-badge player';
+    containerEl.appendChild(badgeEl);
 
-  return (
-    <div className="htp-board-preview">
-      {/* Micro Turn Badge */}
-      <motion.div
-        key={step.badge}
-        initial={{ opacity: 0, y: -4 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        className={`tutorial-turn-badge ${step.badgeType}`}
-      >
-        {step.badge}
-      </motion.div>
+    rowsEl = document.createElement('div');
+    rowsEl.className = 'tutorial-board-rows';
+    containerEl.appendChild(rowsEl);
 
-      {/* Dynamic Board Rows */}
-      <div className="tutorial-board-rows">
-        {step.board.map((count, rIdx) => {
-          const isSelected = step.selRow === rIdx;
-          const isAiRemoving = step.aiRow === rIdx;
-          const maxSticks = [1, 3, 5, 2][rIdx];
+    MAX_STICKS.forEach(function (maxCount, rIdx) {
+      var rowEl = document.createElement('div');
+      rowEl.className = 'row';
+      rowEl.dataset.row = rIdx;
 
-          return (
-            <motion.div
-              key={rIdx}
-              className={`row ${isSelected ? 'selected' : ''} ${isAiRemoving ? 'ai-removing-row' : ''}`}
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '6px 8px',
-                minHeight: '44px',
-              }}
-            >
-              <div className="sticks" style={{ display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
-                {Array.from({ length: maxSticks }).map((_, sIdx) => {
-                  const isAlive = sIdx < count;
-                  const isPending = isSelected && sIdx >= count - step.pendingCount && sIdx < count;
-                  const isAiRem = isAiRemoving && sIdx >= count - step.aiCount && sIdx < count;
+      var sticksEl = document.createElement('div');
+      sticksEl.className = 'sticks';
 
-                  let stickClass = 'dead';
-                  if (isPending) stickClass = 'pending';
-                  else if (isAiRem) stickClass = 'ai-removing';
-                  else if (isAlive) stickClass = 'alive';
+      for (var s = 0; s < maxCount; s++) {
+        var stickEl = document.createElement('div');
+        stickEl.className = 'tutorial-stick alive';
+        sticksEl.appendChild(stickEl);
+      }
 
-                  return (
-                    <motion.div
-                      key={sIdx}
-                      layout
-                      className={`tutorial-stick ${stickClass}`}
-                      style={{ height: '44px' }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                    />
-                  );
-                })}
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+      rowEl.appendChild(sticksEl);
+      rowsEl.appendChild(rowEl);
+    });
+  }
+
+  function renderStep(step) {
+    badgeEl.textContent = step.badge;
+    badgeEl.className = 'tutorial-turn-badge ' + step.badgeType;
+
+    var rowEls = rowsEl.children;
+    for (var rIdx = 0; rIdx < rowEls.length; rIdx++) {
+      var rowEl = rowEls[rIdx];
+      var count = step.board[rIdx];
+      var isSelected = step.selRow === rIdx;
+      var isAiRemoving = step.aiRow === rIdx;
+
+      rowEl.className = 'row' +
+        (isSelected ? ' selected' : '') +
+        (isAiRemoving ? ' ai-removing-row' : '');
+
+      var stickEls = rowEl.querySelectorAll('.tutorial-stick');
+      for (var sIdx = 0; sIdx < stickEls.length; sIdx++) {
+        var isAlive = sIdx < count;
+        var isPending = isSelected && sIdx >= (count - step.pendingCount) && sIdx < count;
+        var isAiRem = isAiRemoving && sIdx >= (count - step.aiCount) && sIdx < count;
+
+        var stickClass = 'dead';
+        if (isPending) stickClass = 'pending';
+        else if (isAiRem) stickClass = 'ai-removing';
+        else if (isAlive) stickClass = 'alive';
+
+        stickEls[sIdx].className = 'tutorial-stick ' + stickClass;
+      }
+    }
+  }
+
+  function scheduleNext() {
+    var step = TUTORIAL_STEPS[stepIndex];
+    renderStep(step);
+    timer = setTimeout(function () {
+      stepIndex = (stepIndex + 1) % TUTORIAL_STEPS.length;
+      scheduleNext();
+    }, step.duration);
+  }
+
+  return {
+    init: function (el) {
+      if (!el) return;
+      containerEl = el;
+      stepIndex = 0;
+      buildSkeleton();
+      scheduleNext();
+    },
+    stop: function () {
+      if (timer) { clearTimeout(timer); timer = null; }
+      containerEl = null;
+      badgeEl = null;
+      rowsEl = null;
+    }
+  };
+})();
