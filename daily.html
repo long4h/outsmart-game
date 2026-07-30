@@ -187,11 +187,11 @@
       align-items:flex-end;
       flex:1;
       justify-content:center;
-      gap:4px;
+      gap:9px;
     }
     .stick {
       position:relative;
-      width:10px;
+      width:7px;
       border-radius:5px;
       transition:all 0.25s;
       cursor:pointer;
@@ -200,7 +200,20 @@
     .stick.pending { background:linear-gradient(180deg,#fff3b0 0%, var(--gold) 55%, #d4b100 100%)!important; box-shadow:0 0 10px rgba(255,215,0,0.6)!important; transform:scaleY(1.08); }
     /* AI removing — red, no glow, scale up — matches app */
     .stick.ai-removing { background:linear-gradient(180deg,#ffb3b3 0%, #FF6B6B 55%, #cc3333 100%)!important; box-shadow:none !important; transform:scaleY(1.06); }
+    .row.ai-removing-row { border-color:rgba(255,107,107,0.35) !important; background:rgba(255,107,107,0.05) !important; }
     .stick.dead { background:#1a1a1a; box-shadow:none; cursor:default; }
+    .stick.alive::before, .stick.pending::before, .stick.ai-removing::before {
+      content:"";
+      position:absolute;
+      top:-6px;
+      left:50%;
+      transform:translateX(-50%);
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 0 5px rgba(255,255,255,0.65);
+    }
     .stick.alive::before, .stick.pending::before, .stick.ai-removing::before {
       content:"";
       position:absolute;
@@ -426,7 +439,7 @@
       .info-bar { margin-bottom:6px; }
       .pips { margin-bottom:4px; }
       .row { min-height:34px; padding:5px 8px; }
-      .stick { width:9px; }
+      .stick { width:8px; }
       .board-logo-img { width:120px; max-width:55%; }
       .result-emoji { font-size:36px; margin-bottom:2px; }
       .result-title { font-size:26px; margin-bottom:2px; }
@@ -456,7 +469,7 @@
       .info-bar .rule { font-size:9px; letter-spacing:0.06em; }
       .info-bar .utc-time,
       .info-bar .utc-reset { font-size:9px; letter-spacing:0.04em; }
-      .stick { width:9px; }
+      .stick { width:8px; }
       .row { padding:5px 6px; }
       .board-logo-img { width:min(340px, 88vw); }
       .result-title { font-size:28px; }
