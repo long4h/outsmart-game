@@ -72,6 +72,7 @@ window.BoardAnimation = (function () {
       badgeEl.textContent = step.badge;
     }
     badgeEl.className = 'tutorial-turn-badge ' + step.badgeType;
+    rowsEl.style.display = (step.badgeType === 'win') ? 'none' : '';
 
     var rowEls = rowsEl.children;
     for (var rIdx = 0; rIdx < rowEls.length; rIdx++) {
