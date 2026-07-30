@@ -279,9 +279,8 @@
       position:relative;
       width:min(100%, 430px);
       padding:28px 24px 22px;
-      border:1px solid rgba(0,243,255,0.35);
       background:rgba(6,6,15,0.94);
-      box-shadow: 0 0 0 1px rgba(0,243,255,0.08) inset, 0 0 30px rgba(0,243,255,0.10), 0 0 50px rgba(179,0,255,0.08);
+      box-shadow: 0 0 30px rgba(0,243,255,0.10), 0 0 50px rgba(179,0,255,0.08);
       text-align:center;
       overflow:hidden;
     }
@@ -306,12 +305,13 @@
     .htp-hero-kicker { position:relative; font-size:15px; line-height:1.25; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.7); margin-bottom:16px; text-transform:uppercase; }
     .htp-title--hero { position:relative; margin:0 0 12px; font-size:44px; line-height:0.95; letter-spacing:0.08em; font-weight:900; color:#00F3FF; text-transform:uppercase; text-shadow: 0 0 8px rgba(0,243,255,0.35), 0 0 18px rgba(0,243,255,0.18); }
     .htp-hero-sub { position:relative; font-size:17px; line-height:1.45; letter-spacing:0.06em; font-weight:800; color:#ffffff; text-transform:uppercase; margin-bottom:20px; }
-    .htp-board-preview { position:relative; margin:0 auto 18px; padding:16px 14px 14px; border:1px solid rgba(255,255,255,0.10); background:linear-gradient(180deg, rgba(5,8,25,0.92) 0%, rgba(0,0,0,0.88) 100%); overflow:hidden; }
+    .htp-board-preview { position:relative; margin:14px auto 18px; padding:16px 14px 14px; border:1px solid rgba(255,255,255,0.10); background:linear-gradient(180deg, rgba(5,8,25,0.92) 0%, rgba(0,0,0,0.88) 100%); overflow:hidden; }
     .htp-board-glow { position:absolute; inset:auto 50% 10px 50%; width:180px; height:180px; transform:translateX(-50%); border-radius:50%; background:radial-gradient(circle, rgba(179,0,255,0.22) 0%, rgba(0,243,255,0.08) 35%, transparent 70%); filter:blur(10px); pointer-events:none; }
-    .htp-board-copy { position:relative; font-size:10px; line-height:1.4; letter-spacing:0.18em; font-weight:800; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom:14px; }
-    .htp-sticks--hero { position:relative; display:flex; flex-direction:column; align-items:center; gap:6px; }
-    .htp-row { display:flex; justify-content:center; gap:6px; }
-    .htp-stick { width:8px; border-radius:3px; background:linear-gradient(180deg, #ff4dff 0%, #b300ff 100%); box-shadow: 0 0 8px rgba(179,0,255,0.45), 0 0 18px rgba(179,0,255,0.22); }
+    .htp-board-copy { position:relative; font-size:11px; line-height:1.6; letter-spacing:0.03em; font-weight:700; color:rgba(255,255,255,0.65); margin-bottom:16px; }
+    .htp-globe { opacity:1; filter:none; }
+    .htp-sticks--hero { position:relative; display:flex; flex-direction:column; align-items:center; gap:8px; }
+    .htp-row { display:flex; justify-content:center; gap:8px; }
+    .htp-stick { width:10px; border-radius:3px; background:linear-gradient(180deg, #ff4dff 0%, #b300ff 100%); box-shadow: 0 0 8px rgba(179,0,255,0.45), 0 0 18px rgba(179,0,255,0.22); }
     .htp-mini-rule { position:relative; margin:0 0 14px; font-size:12px; line-height:1.6; letter-spacing:0.14em; font-weight:800; color:rgba(255,255,255,0.85); text-transform:uppercase; }
     .htp-meta { position:relative; font-size:10px; line-height:1.5; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom:18px; }
     .htp-mechanic-hint { position:relative; font-size:10px; line-height:1.5; letter-spacing:0.14em; font-weight:800; color:var(--gold); text-transform:uppercase; margin:0 0 12px; opacity:0.85; }
@@ -461,42 +461,41 @@
   <div class="htp-overlay" id="htpOverlay">
     <div class="htp-box htp-box--new">
       <img src="/outsmart_logo_final.png" alt="OUTSMART" class="htp-logo">
-      <div class="htp-hero-kicker">TODAY'S GLOBAL AI CHALLENGE</div>
+      <div class="htp-hero-kicker">CAN YOU BEAT TODAY'S AI?</div>
       <div class="htp-hero-sub">
   95% of players lose.
 </div>
       <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">PLAY TODAY'S CHALLENGE</button>
       <div class="htp-board-preview">
         <div class="htp-board-glow"></div>
-        <div class="htp-board-copy">🌍 Everyone plays the same challenge.</div>
-        <div class="htp-meta" style="margin-bottom:10px;">New challenge every 24 hours.</div>
+        <div class="htp-board-copy"><span class="htp-globe">🌍</span> Everyone plays the same challenge.<br>New challenge every 24 hours.</div>
         <div class="htp-sticks htp-sticks--hero">
-          <div class="htp-row"><div class="htp-stick" style="height:24px"></div></div>
+          <div class="htp-row"><div class="htp-stick" style="height:30px"></div></div>
           <div class="htp-row">
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
           </div>
           <div class="htp-row">
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
           </div>
           <div class="htp-row">
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
-            <div class="htp-stick" style="height:24px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
+            <div class="htp-stick" style="height:30px"></div>
           </div>
         </div>
       </div>
-      <div class="htp-mini-rule">GOAL<br/>Force the AI to take the last stick.</div>
-      <div class="htp-mechanic-hint" id="htpMechanicHint">Tap a stick.<br/>Tap further left to remove more sticks.</div>
+      <div class="htp-mini-rule"><span class="will-you">GOAL</span><br/>Force the AI to take the last stick.</div>
+      <div class="htp-mechanic-hint" id="htpMechanicHint">Tap a stick.<br/>Tap further left to remove multiple sticks.</div>
     </div>
   </div>
   
@@ -803,8 +802,8 @@ var dismissHtp = function() {
   var el = document.getElementById('htpMechanicHint');
   if (el) {
     el.innerHTML = isTouch
-      ? 'Tap any stick.<br/>Tap further left to remove more sticks.'
-      : 'Click any stick.<br/>Click further left to remove more sticks.';
+      ? 'Tap any stick.<br/>Tap further left to remove multiple sticks.'
+      : 'Click any stick.<br/>Click further left to remove multiple sticks.';
   }
 })();
   
