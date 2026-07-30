@@ -7,7 +7,7 @@ var TUTORIAL_STEPS = [
   { board: [1,2,3], badge: 'AI IS THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: 1, aiCount: 2, duration: 700 },
   { board: [1,0,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 700 },
   { board: [1,0,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: 2, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1100 },
-  { board: [1,0,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: 2, pendingCount: 1, aiRow: null, aiCount: 0, duration: 700 },
+  { board: [1,0,3], badge: 'YOUR MOVE', badgeType: 'player', selRow: 2, pendingCount: 3, aiRow: null, aiCount: 0, duration: 700 },
   { board: [1,0,0], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 700 },
   { board: [1,0,0], badge: 'AI IS THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1000 },
   { board: [1,0,0], badge: 'AI IS THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: 0, aiCount: 1, duration: 700 },
