@@ -202,30 +202,6 @@
     .stick.ai-removing { background:linear-gradient(180deg,#ffb3b3 0%, #FF6B6B 55%, #cc3333 100%)!important; box-shadow:none !important; transform:scaleY(1.06); }
     .row.ai-removing-row { border-color:rgba(255,107,107,0.35) !important; background:rgba(255,107,107,0.05) !important; }
     .stick.dead { background:#1a1a1a; box-shadow:none; cursor:default; }
-    .stick.alive::before, .stick.pending::before, .stick.ai-removing::before {
-      content:"";
-      position:absolute;
-      top:-6px;
-      left:50%;
-      transform:translateX(-50%);
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:#fff;
-      box-shadow:0 0 5px rgba(255,255,255,0.65);
-    }
-    .stick.alive::before, .stick.pending::before, .stick.ai-removing::before {
-      content:"";
-      position:absolute;
-      top:-6px;
-      left:50%;
-      transform:translateX(-50%);
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:#fff;
-      box-shadow:0 0 5px rgba(255,255,255,0.65);
-    }
     .row-count {
       font-family:'Orbitron',monospace;
       font-size:10px;
@@ -977,12 +953,11 @@ var renderBoard=function(){
     var sticksEl=document.createElement("div");
     sticksEl.className="sticks";
     var h=(function(){
-      var base=Math.max(24,Math.min(52,52-ri*5));
       var totalRows=state.board.filter(function(v,i){return state.initialBoard[i]>0;}).length;
       // Budget = viewport minus estimated chrome above/below board (~370px)
       // Shrink only when needed; on large screens the cap never triggers
       var rowBudget=Math.floor((window.innerHeight-370)/Math.max(totalRows,1));
-      var capped=Math.max(18,Math.min(base,rowBudget-14));
+      var capped=Math.max(18,Math.min(52,rowBudget-14));
       return capped;
     })();
     for(var si=0;si<maxCount;si++){
