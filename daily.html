@@ -363,12 +363,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      gap: 14px;
+      height: 100%;
     }
     .tw-line1 {
-      color: rgba(255,255,255,0.6);
-      font-size: 9px;
-      letter-spacing: 0.12em;
+      color: #ffffff;
+      font-size: 13px;
+      letter-spacing: 0.1em;
     }
     .tw-line2 {
       color: var(--cyan);
@@ -409,8 +411,8 @@
       transform: scaleY(1.06);
     }
     .tutorial-stick.dead {
-      opacity: 0;
-      transform: scaleY(0);
+      background: #1a1a1a;
+      box-shadow: none;
     }
     .htp-mini-rule { position:relative; margin:0 0 14px; font-size:12px; line-height:1.6; letter-spacing:0.14em; font-weight:800; color:rgba(255,255,255,0.85); text-transform:uppercase; }
     .htp-meta { position:relative; font-size:10px; line-height:1.5; letter-spacing:0.16em; font-weight:800; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-bottom:18px; }
@@ -571,7 +573,7 @@
         <span class="htp-badge-line htp-badge-sub">New challenge every 24 hours.</span>
       </div>
       <div class="htp-board-preview" id="htpAnimBoard"></div>
-      <div class="htp-mini-rule"><span class="will-you">YOUR GOAL:</span><br/>Force the AI to take the last stick.</div>
+      <div class="htp-mini-rule">Force the AI to take the last stick.</div>
       <div class="htp-mechanic-hint" id="htpMechanicHint">Tap a stick.<br/>Tap further left to remove more sticks.</div>
     </div>
   </div>
