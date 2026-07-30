@@ -23,117 +23,6 @@ var TUTORIAL_STEPS = [
 ];
 
 var MAX_STICKS = [5, 2, 3];
-var TUTORIAL_STEPS = [
-  // Step 0: Initial Board
-  {
-    board: [1, 3, 5, 2],
-    badge: 'YOUR MOVE',
-    badgeType: 'player',
-    selRow: null,
-    pendingCount: 0,
-    aiRow: null,
-    aiCount: 0,
-    duration: 1000,
-  },
-  // Step 1: Player selects & removes 1 stick from Row 1 (Index 1)
-  {
-    board: [1, 3, 5, 2],
-    badge: 'YOUR MOVE',
-    badgeType: 'player',
-    selRow: 1,
-    pendingCount: 1,
-    aiRow: null,
-    aiCount: 0,
-    duration: 800,
-  },
-  {
-    board: [1, 2, 5, 2],
-    badge: 'YOUR MOVE',
-    badgeType: 'player',
-    selRow: null,
-    pendingCount: 0,
-    aiRow: null,
-    aiCount: 0,
-    duration: 600,
-  },
-  // Step 2: Player selects & sweeps 3 sticks from Row 2 (Index 2)
-  {
-    board: [1, 2, 5, 2],
-    badge: 'YOUR MOVE',
-    badgeType: 'player',
-    selRow: 2,
-    pendingCount: 3,
-    aiRow: null,
-    aiCount: 0,
-    duration: 800,
-  },
-  {
-    board: [1, 2, 2, 2],
-    badge: 'YOUR MOVE',
-    badgeType: 'player',
-    selRow: null,
-    pendingCount: 0,
-    aiRow: null,
-    aiCount: 0,
-    duration: 600,
-  },
-  // Step 3: AI Turn - Thinking & Removes 2 sticks from Row 3 (Index 3)
-  {
-    board: [1, 2, 2, 2],
-    badge: 'AI THINKING...',
-    badgeType: 'ai',
-    selRow: null,
-    pendingCount: 0,
-    aiRow: 3,
-    aiCount: 2,
-    duration: 1200,
-  },
-  {
-    board: [1, 2, 2, 0],
-    badge: 'AI MOVED',
-    badgeType: 'ai',
-    selRow: null,
-    pendingCount: 0,
-    aiRow: null,
-    aiCount: 0,
-    duration: 800,
-  },
-  // Step 4: Strategic Endgame Setup
-  {
-    board: [1, 0, 0, 0],
-    badge: 'YOUR MOVE',
-    badgeType: 'player',
-    selRow: null,
-    pendingCount: 0,
-    aiRow: null,
-    aiCount: 0,
-    duration: 1000,
-  },
-  // Step 5: AI Forced to take last stick
-  {
-    board: [1, 0, 0, 0],
-    badge: 'AI FORCED TO TAKE LAST STICK',
-    badgeType: 'ai',
-    selRow: null,
-    pendingCount: 0,
-    aiRow: 0,
-    aiCount: 1,
-    duration: 1000,
-  },
-  // Step 6: Victory Resolution
-  {
-    board: [0, 0, 0, 0],
-    badge: 'LAST TAKER LOSES \u2014 YOU WIN!',
-    badgeType: 'player',
-    selRow: null,
-    pendingCount: 0,
-    aiRow: null,
-    aiCount: 0,
-    duration: 1500,
-  },
-];
-
-var MAX_STICKS = [1, 3, 5, 2];
 
 window.BoardAnimation = (function () {
   var containerEl = null;
@@ -167,7 +56,7 @@ window.BoardAnimation = (function () {
         stickEl.style.height = '44px';
         sticksEl.appendChild(stickEl);
       }
-      
+
       rowEl.appendChild(sticksEl);
       rowsEl.appendChild(rowEl);
     });
