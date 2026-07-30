@@ -11,7 +11,7 @@ var TUTORIAL_STEPS = [
   { board: [1,0,0], badge: 'YOUR MOVE', badgeType: 'player', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 700 },
   { board: [1,0,0], badge: 'AI IS THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 1000 },
   { board: [1,0,0], badge: 'AI IS THINKING', badgeType: 'ai', selRow: null, pendingCount: 0, aiRow: 0, aiCount: 1, duration: 700 },
-  { board: [0,0,0], badgeHTML: '<div class="tw-line1">THE AI PICKED THE LAST STICK</div><div class="tw-line2">YOU WIN</div><div class="tw-line3">\u26A1 DAILY CONQUERED</div>', badgeType: 'win', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 2500 },
+  { board: [0,0,0], badgeHTML: '<div class="tw-line1">THE AI PICKED THE LAST STICK</div><div class="tw-line2">YOU WIN</div><div class="tw-line3">\u26A1 DAILY CONQUERED</div>', badgeType: 'win', selRow: null, pendingCount: 0, aiRow: null, aiCount: 0, duration: 3000 },
 ];
 var MAX_STICKS = [5, 2, 3];
 
