@@ -139,9 +139,10 @@ window.BoardAnimation = (function () {
       for (var s = 0; s < maxCount; s++) {
         var stickEl = document.createElement('div');
         stickEl.className = 'tutorial-stick alive';
+        stickEl.style.height = '44px';
         sticksEl.appendChild(stickEl);
       }
-
+      
       rowEl.appendChild(sticksEl);
       rowsEl.appendChild(rowEl);
     });
