@@ -196,7 +196,7 @@
       transition:all 0.25s;
       cursor:pointer;
     }
-    .stick.alive { background:linear-gradient(180deg,#e0a8ff 0%, var(--purple) 55%, #7a0ecf 100%); box-shadow:0 0 6px rgba(188,19,254,0.5); }
+    .stick.alive { background:var(--purple); box-shadow:0 0 6px rgba(188,19,254,0.5); }
     .stick.pending { background:linear-gradient(180deg,#fff3b0 0%, var(--gold) 55%, #d4b100 100%)!important; box-shadow:0 0 10px rgba(255,215,0,0.6)!important; transform:scaleY(1.08); }
     /* AI removing — red, no glow, scale up — matches app */
     .stick.ai-removing { background:linear-gradient(180deg,#ffb3b3 0%, #FF6B6B 55%, #cc3333 100%)!important; box-shadow:none !important; transform:scaleY(1.06); }
@@ -397,9 +397,9 @@
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .tutorial-stick.alive {
-      background: linear-gradient(180deg, #e0a8ff 0%, var(--purple) 55%, #7a0ecf 100%);
-      box-shadow: 0 0 6px rgba(188, 19, 254, 0.5);
-    }
+  background: var(--purple);
+  box-shadow: 0 0 6px rgba(188, 19, 254, 0.5);
+}
     .tutorial-stick.pending {
       background: linear-gradient(180deg, #fff3b0 0%, var(--gold) 55%, #d4b100 100%) !important;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.6) !important;
