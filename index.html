@@ -10,16 +10,16 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="/outsmart_logo_final.png">
   <title>OUTSMART — Daily Challenge</title>
-  <meta name="description" content="Can you beat the AI? 95% of players lose. One challenge. Every day. Worldwide."/>
+  <meta name="description" content="Can you beat the AI? 9 out of 10 people lose. One challenge. Every day. Worldwide."/>
   <meta property="og:title" content="OUTSMART — Daily Challenge"/>
-  <meta property="og:description" content="Can you beat the AI? 95% of players lose. One challenge. Every day. Worldwide."/>
+  <meta property="og:description" content="Can you beat the AI? 9 out of 10 people lose. One challenge. Every day. Worldwide."/>
   <meta property="og:type" content="website"/>
   <meta property="og:url" content="https://playoutsmart.com/daily"/>
   <meta property="og:image" content="https://playoutsmart.com/preview.png" />
   <link rel="canonical" href="https://playoutsmart.com/" />
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="OUTSMART Daily Challenge"/>
-  <meta name="twitter:description" content="Can you beat the AI? 95% of players lose. One challenge. Every day. Worldwide."/>
+  <meta name="twitter:description" content="Can you beat the AI? 9 out of 10 people lose. One challenge. Every day. Worldwide."/>
   <meta name="twitter:image" content="https://playoutsmart.com/preview.png" />
   <meta name="twitter:url" content="https://playoutsmart.com/daily"/>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-1HP5RKJQMX"></script>
@@ -564,7 +564,7 @@
       <img src="/outsmart_logo_final.png" alt="OUTSMART" class="htp-logo">
       <div class="htp-hero-kicker">CAN YOU BEAT TODAY'S AI?</div>
       <div class="htp-hero-sub">
-  95% of players lose.
+  9 out of 10 people lose.
 </div>
       <button class="htp-btn htp-btn--hero" onclick="dismissHtp()">PLAY TODAY'S CHALLENGE &#9654;</button>
       <div class="htp-badge">
@@ -1173,7 +1173,7 @@ var buildInsightPanel = function(playerWon, ins) {
   var head, sub;
   if (playerWon) {
     if (ins.accuracy === 100) { head = 'FLAWLESS.'; sub = 'You never gave the AI a chance.'; }
-    else { head = 'YOU CRACKED IT.'; sub = ins.accuracy + '% accuracy. Sharper than 95% of players.'; }
+    else { head = 'YOU CRACKED IT.'; sub = ins.accuracy + '% accuracy. Sharper than 9 out of 10 people.'; }
   } else if (!state.wasWinnable) {
     head = 'TODAY WAS A BOSS BOARD.'; sub = 'Even flawless play needs the AI to slip.';
   } else {
@@ -1212,7 +1212,7 @@ var trackDownload = function(store, playerWon) {
 // real clickable links (with analytics) after.
 var buildDownloadCTA = function(playerWon) {
   var line = playerWon
-    ? "You beat today's board. 95% don't. The app ranks you against the world and serves a fresh AI to beat every day."
+    ? "You beat today's board. 9 out of 10 people don't. The app ranks you against the world and serves a fresh AI to beat every day."
     : "The AI beat you \u2014 see the exact line you missed, keep your daily streak, and climb from Rookie to Legendary.";
   var badge = function(label, store, url, isLive, sublabel) {
     var inner = '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.1em;font-weight:900;white-space:nowrap;">' + label + '</span>';
