@@ -960,15 +960,23 @@ var saveState=function(){
 // One row per attempt, one char per player move: O = optimal, X = blunder.
 // A forced move counts as O — it isn't a mistake, and the app has no forced
 // concept, so this keeps the two grids byte-identical.
+// One row per attempt, one char per player move:
+//   O = optimal   X = blunder   - = unjudgeable
+// A move is unjudgeable when the player was ALREADY in a lost position before
+// making it — every move from there loses, so it is neither right nor wrong.
+// Folding those into O made an unwinnable board render as a flawless game.
 var recordGridRow=function(){
   var row = state.moveLog.map(function(m){
-    return (m.forced || m.wasOptimal) ? "O" : "X";
+    if (m.forced) return "-";
+    return m.wasOptimal ? "O" : "X";
   }).join("");
   state.grid = (state.grid || []).concat([row]);
 };
 var renderGridText=function(){
   return (state.grid || []).map(function(r){
-    return r.split("").map(function(c){ return c === "O" ? "\uD83D\uDFE9" : "\uD83D\uDFE5"; }).join("");
+    return r.split("").map(function(c){
+      return c === "O" ? "\uD83D\uDFE9" : c === "X" ? "\uD83D\uDFE5" : "\u2B1B";
+    }).join("");
   }).join("\n");
 };
 var _ctx=null;
