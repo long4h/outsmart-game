@@ -1252,9 +1252,6 @@ var trackDownload = function(store, playerWon) {
 // showExhausted. Gated per-store (PLAY_LIVE/APP_LIVE/SAFARICOM_LIVE):
 // real clickable links (with analytics) after.
 var buildDownloadCTA = function(playerWon) {
-  var line = playerWon
-    ? "You beat today's board. 9 out of 10 people don't. The app ranks you against the world and serves a fresh AI to beat every day."
-    : "The AI beat you \u2014 see the exact line you missed, keep your daily streak, and climb from Rookie to Legendary.";
   var badge = function(label, store, url, isLive, sublabel) {
     var inner = '<span style="font-size:8px;color:#00F3FF;letter-spacing:0.1em;font-weight:900;white-space:nowrap;">' + label + '</span>';
     var sub = sublabel
@@ -1268,9 +1265,11 @@ var buildDownloadCTA = function(playerWon) {
     return '<div style="flex:1;min-width:0;height:30px;padding:0 8px;box-sizing:border-box;border:1px solid rgba(0,243,255,0.35);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;opacity:0.6;">' +
       inner + '<span style="font-size:6px;color:#FFD700;letter-spacing:0.12em;font-weight:900;">SOON</span></div>';
   };
+  // One line, no pitch. Anyone who has just played three attempts already
+  // knows what the game is — explaining it again only adds height above the
+  // buttons they might actually tap.
   return '<div class="cta-box ' + (playerWon ? '' : 'loss') + '" style="padding:10px 12px;">' +
-    '<div class="cta-headline" style="margin-bottom:4px;color:#00F3FF;">DAILY IS THE TEST.<br>THE APP IS WHERE YOU TRAIN.</div>' +
-    '<div style="font-family:\'Orbitron\',sans-serif;font-size:9px;color:#ccc;line-height:1.6;letter-spacing:0.03em;text-align:center;margin:6px 0 8px;">' + line + '</div>' +
+    '<div class="cta-headline" style="margin-bottom:8px;color:#00F3FF;">DOWNLOAD THE FULL CHALLENGE</div>' +
     '<div style="display:flex;justify-content:center;gap:10px;align-items:center;">' +
       badge('PLAY STORE', 'play', PLAY_STORE_URL, PLAY_LIVE, 'ANDROID') +
       badge('APP STORE', 'app', APP_STORE_URL, APP_LIVE, 'iOS') +
