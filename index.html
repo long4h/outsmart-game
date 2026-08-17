@@ -159,7 +159,7 @@
     }
     .think-bar { width:100%; height:2px; background:#111; border-radius:99px; overflow:hidden; margin-bottom:14px; opacity:0; transition:opacity 0.2s; }
     .think-bar.active { opacity:1; }
-    .think-bar-fill { height:100%; background:linear-gradient(90deg,var(--purple),var(--purple)88); border-radius:99px; animation:thinkProgress 3s linear forwards; }
+    .think-bar-fill { height:100%; background:linear-gradient(90deg,var(--purple),var(--purple)88); border-radius:99px; animation:thinkProgress 1.2s linear forwards; }
 
     .board {
       width:100%;
@@ -945,18 +945,32 @@ var incrementCounter = async function(playerWon) {
 };
 
 var STORE_KEY="outsmart_daily_web";
-var state={board:[],initialBoard:[],isPlayerTurn:true,winner:null,selectedRow:null,pendingCount:0,attempts:0,attemptDate:null,won:false,aiRemovingRow:null,aiRemovingCount:0,moveLog:[],wasWinnable:false};
+var state={board:[],initialBoard:[],isPlayerTurn:true,winner:null,selectedRow:null,pendingCount:0,attempts:0,attemptDate:null,won:false,aiRemovingRow:null,aiRemovingCount:0,moveLog:[],wasWinnable:false,grid:[]};
 
 var loadState=function(){
   try{
     var s=localStorage.getItem(STORE_KEY);
-    if(s){var p=JSON.parse(s);if(p.attemptDate===getDailyKey()){state.attempts=p.attempts||0;state.won=p.won||false;}}
+    if(s){var p=JSON.parse(s);if(p.attemptDate===getDailyKey()){state.attempts=p.attempts||0;state.won=p.won||false;state.grid=p.grid||[];}}
   }catch(e){}
 };
 var saveState=function(){
-  try{localStorage.setItem(STORE_KEY,JSON.stringify({attempts:state.attempts,won:state.won,attemptDate:getDailyKey()}));}catch(e){}
+  try{localStorage.setItem(STORE_KEY,JSON.stringify({attempts:state.attempts,won:state.won,attemptDate:getDailyKey(),grid:state.grid}));}catch(e){}
 };
 
+// One row per attempt, one char per player move: O = optimal, X = blunder.
+// A forced move counts as O — it isn't a mistake, and the app has no forced
+// concept, so this keeps the two grids byte-identical.
+var recordGridRow=function(){
+  var row = state.moveLog.map(function(m){
+    return (m.forced || m.wasOptimal) ? "O" : "X";
+  }).join("");
+  state.grid = (state.grid || []).concat([row]);
+};
+var renderGridText=function(){
+  return (state.grid || []).map(function(r){
+    return r.split("").map(function(c){ return c === "O" ? "\uD83D\uDFE9" : "\uD83D\uDFE5"; }).join("");
+  }).join("\n");
+};
 var _ctx=null;
 var ac=function(){if(!_ctx)_ctx=new(window.AudioContext||window.webkitAudioContext)();if(_ctx.state==="suspended")_ctx.resume();return _ctx;};
 var unlockAudio=function(){
@@ -1094,16 +1108,34 @@ var applyMove=function(isPlayer,rowIndex,count){
       setTurn("THINKING...","#FF003C");setTaunt("");
       var bar=document.getElementById("thinkBar");var fill=document.getElementById("thinkFill");
       if(bar)bar.classList.add("active");
-      if(fill){fill.style.animation="none";void fill.offsetWidth;fill.style.animation="thinkProgress 3s linear forwards";}
-      // AI delay: 3000–3500ms — matches app daily range exactly
-      var aiDelay = 3000 + Math.floor(Math.random() * 500);
+      // Ported from the app's getAIDelay(), isDaily branch. The web previously
+      // hardcoded 3000-3500ms and claimed parity — it was 2.5-3x slower.
+      var aiDelay = (function(board){
+        var minD = 900, maxD = 1400;
+        var ns = board.reduce(function(a,v){return a^v;}, 0);
+        var total = board.reduce(function(a,v){return a+v;}, 0);
+        var bigs = board.filter(function(v){return v > 1;}).length;
+        if (total <= 3) {                       // endgame — don't drag out the finish
+          minD = Math.floor(minD * 0.75);
+          maxD = Math.floor(maxD * 0.80);
+        } else if (ns !== 0) {                  // AI holds a winning nim-sum
+          maxD = Math.floor(maxD * 0.90);
+        } else if (bigs >= 3 && total > 8) {
+          minD = Math.floor(minD * 1.08);
+        }
+        return minD + Math.floor(Math.random() * Math.max(1, maxD - minD));
+      })(state.board);
+      // Think bar must be driven from the computed delay or it desyncs — the
+      // app does this via aiThinkDuration; the CSS default of 3s is now wrong.
+      if(fill){fill.style.animation="none";void fill.offsetWidth;fill.style.animation="thinkProgress " + (aiDelay/1000) + "s linear forwards";}
       var aiMove = getAIMove(state.board);
-      // Red flash: sticks turn red 1000ms before they vanish — same timing as app
+      // Red flash in the last 1000ms. Math.max because aiDelay can now be under
+      // 1000ms in the endgame, which would make this offset negative.
       setTimeout(function(){
         state.aiRemovingRow = aiMove.rowIndex;
         state.aiRemovingCount = aiMove.count;
         renderBoard();
-      }, aiDelay - 1000);
+      }, Math.max(0, aiDelay - 1000));
       // Apply move: clear red state, remove sticks
       setTimeout(function(){
         if(bar)bar.classList.remove("active");
@@ -1144,15 +1176,16 @@ var getShareText = function(playerWon, attempts, accuracy, medium) {
   var suffix = attempts > 1 ? "s" : "";
   var today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
   var shareUrl = buildShareUrl(playerWon, medium);
-  var hasAcc = (accuracy !== null && accuracy !== undefined);
-  var accLine = hasAcc ? ("\n\uD83C\uDFAF " + accuracy + "% accuracy") : "";
+  var grid = renderGridText();
+  // No pitch. Wordle's share is grid + link and nothing else — that is why it
+  // travelled. Format must stay byte-identical to the app's version.
   if (playerWon) {
     var flex = (accuracy === 100) ? " \u00B7 flawless" : "";
-    return "OUTSMART DAILY\n\n🔥 Won in " + attempts + " attempt" + suffix + flex + "\n" + today + accLine + "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nCan you beat it?\n\n" + shareUrl;
+    return "OUTSMART DAILY\n" + today + "\n\n" + grid + "\n\n🔥 Won in " + attempts + " attempt" + suffix + flex + "\n\n" + shareUrl;
   }
-  return "OUTSMART DAILY\n\n💀 Lost in " + attempts + " attempt" + suffix + "\n" + today + accLine + "\n\nThe AI is nearly unbeatable.\nMost players fail.\n\nThink you're smarter?\n\n" + shareUrl;
+  return "OUTSMART DAILY\n" + today + "\n\n" + grid + "\n\n💀 Lost \u00B7 " + attempts + "/" + MAX_ATTEMPTS + "\n\n" + shareUrl;
 };
-
+  
 // ── Post-game insight: accuracy + first turning point ───────────────
 var computeInsight = function() {
   var judged = state.moveLog.filter(function(m){ return !m.forced; });
@@ -1248,8 +1281,14 @@ var showResult=function(playerWon){
   var dateStr=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
   var ins = computeInsight();
   track('daily_insight_shown',{result:playerWon?'win':'loss',accuracy:(ins.accuracy===null?-1:ins.accuracy),turning_point:ins.turningPoint||0,was_winnable:state.wasWinnable,date:getDailyKey()});
+  recordGridRow(); saveState();
   window._shareWon = playerWon; window._shareAttempts = state.attempts; window._shareAccuracy = ins.accuracy;
   window._shareText = getShareText(playerWon, state.attempts, ins.accuracy, 'share');
+  // The day is settled once they win or burn every attempt. Sharing before that
+  // posts a half-empty grid, and one player would post three different results.
+  var dayComplete = playerWon || (state.attempts >= MAX_ATTEMPTS);
+  var gridBlock = '<div style="font-size:26px;line-height:1.25;letter-spacing:2px;text-align:center;margin:14px 0 6px;white-space:pre;">'
+    + renderGridText() + '</div>';
   var retryBtn = canRetry
     ? '<button class="btn btn-confirm" style="width:100%;margin-bottom:10px;font-size:10px;padding:10px;" onclick="startGame()">TRY AGAIN \u00B7 ATTEMPT ' + (state.attempts+1) + ' OF ' + MAX_ATTEMPTS + '</button>'
     : '';
@@ -1269,10 +1308,13 @@ var showResult=function(playerWon){
       '<div class="stat-item"><div class="stat-label">RESULT</div><div class="stat-value" style="color:' + resultColor + '">' + (playerWon ? "WIN" : "LOSS") + '</div></div>' +
       '<div class="stat-item"><div class="stat-label">DATE</div><div class="stat-value" style="color:#FFD700;font-size:10px;margin-top:4px">' + dateStr + '</div></div>' +
     '</div>' +
+    gridBlock +
     buildInsightPanel(playerWon, ins) +
     retryBtn +
-    buildDownloadCTA(playerWon) +
-    '<button class="share-btn" onclick="shareResult()">' + shareEmoji + '</button>';
+    (dayComplete
+      ? '<button class="share-btn" style="font-size:12px;padding:12px;margin-bottom:10px;" onclick="shareResult()">' + shareEmoji + '</button>'
+      : '') +
+    buildDownloadCTA(playerWon);
 };
 
 var shareTo = function(platform) {
