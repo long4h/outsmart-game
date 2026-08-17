@@ -1171,12 +1171,11 @@ var getRefToken = function(){
 // Canonical share URL: the win/lose OG landing page (so the card renders) with
 // UTM + ref attached. medium = the platform the link was shared to.
 var buildShareUrl = function(playerWon, medium){
-  // Paths kept so each result still gets its own OG preview image. Everything
-  // else is gone: four lines of utm in a WhatsApp message reads as spam and
-  // depresses forwards. `r` alone is enough to attribute — the medium is
-  // already tracked by share_platform_clicked.
-  var base = playerWon ? "https://playoutsmart.com/daily/win" : "https://playoutsmart.com/daily/lose";
-  return base + "?r=" + encodeURIComponent(getRefToken());
+  // One neutral link for every result. /win and /lose spoiled the outcome in
+  // the visible URL before the recipient tapped, and the utm string read as
+  // spam in a WhatsApp message. `r` alone attributes the share; the platform
+  // is already captured by share_platform_clicked.
+  return "https://playoutsmart.com/daily?r=" + encodeURIComponent(getRefToken());
 };
   
 var getShareText = function(playerWon, attempts, accuracy, medium) {
