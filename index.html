@@ -960,25 +960,19 @@ var saveState=function(){
 // One row per attempt, one char per player move: O = optimal, X = blunder.
 // A forced move counts as O — it isn't a mistake, and the app has no forced
 // concept, so this keeps the two grids byte-identical.
-// One row per attempt, one char per player move:
-//   O = optimal   X = blunder   - = unjudgeable
-// A move is unjudgeable when the player was ALREADY in a lost position before
-// making it — every move from there loses, so it is neither right nor wrong.
-// Folding those into O made an unwinnable board render as a flawless game.
-// One row per attempt, one square per JUDGED move: O = optimal, X = blunder.
-// Judged means the same set computeInsight uses as its accuracy denominator —
-// moves made from an already-lost position are excluded, so the grid can never
-// disagree with the percentage. 20% over five judged moves = 1 green, 4 red.
+// One row per attempt, one square per player move: O = optimal, X = not.
+// EVERY move is graded — no exclusions. A move from an already-lost position
+// can never leave the AI losing, so it grades red, which is honest and keeps
+// every attempt visible. Filtering those out made whole losing attempts
+// disappear from the grid. Same denominator as accuracy, so the two agree.
 var recordGridRow=function(){
   var row = state.moveLog
-    .filter(function(m){ return !m.forced; })
     .map(function(m){ return m.wasOptimal ? "O" : "X"; })
     .join("");
   state.grid = (state.grid || []).concat([row]);
 };
 var renderGridText=function(){
   return (state.grid || [])
-    .filter(function(r){ return r.length > 0; })
     .map(function(r){
       return r.split("").map(function(c){
         return c === "O" ? "\uD83D\uDFE9" : "\uD83D\uDFE5";
@@ -1177,15 +1171,14 @@ var getRefToken = function(){
 // Canonical share URL: the win/lose OG landing page (so the card renders) with
 // UTM + ref attached. medium = the platform the link was shared to.
 var buildShareUrl = function(playerWon, medium){
+  // Paths kept so each result still gets its own OG preview image. Everything
+  // else is gone: four lines of utm in a WhatsApp message reads as spam and
+  // depresses forwards. `r` alone is enough to attribute — the medium is
+  // already tracked by share_platform_clicked.
   var base = playerWon ? "https://playoutsmart.com/daily/win" : "https://playoutsmart.com/daily/lose";
-  var campaign = playerWon ? "daily_win" : "daily_lose";
-  return base
-    + "?utm_source=share"
-    + "&utm_medium=" + encodeURIComponent(medium || "share")
-    + "&utm_campaign=" + campaign
-    + "&ref=" + encodeURIComponent(getRefToken());
+  return base + "?r=" + encodeURIComponent(getRefToken());
 };
-
+  
 var getShareText = function(playerWon, attempts, accuracy, medium) {
   var suffix = attempts > 1 ? "s" : "";
   var today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
@@ -1202,16 +1195,19 @@ var getShareText = function(playerWon, attempts, accuracy, medium) {
   
 // ── Post-game insight: accuracy + first turning point ───────────────
 var computeInsight = function() {
-  var judged = state.moveLog.filter(function(m){ return !m.forced; });
-  var optimal = judged.filter(function(m){ return m.wasOptimal; }).length;
-  var accuracy = judged.length ? Math.round(optimal / judged.length * 100) : null;
+  // Same denominator as the grid — every move counts. `forced` is still logged
+  // and still drives the BOSS BOARD headline, but it no longer removes moves
+  // from the score, which is what made accuracy null and blanked the panel.
+  var all = state.moveLog;
+  var optimal = all.filter(function(m){ return m.wasOptimal; }).length;
+  var accuracy = all.length ? Math.round(optimal / all.length * 100) : null;
   var turningPoint = null;
-  for (var i = 0; i < state.moveLog.length; i++) {
-    if (!state.moveLog[i].forced && !state.moveLog[i].wasOptimal) { turningPoint = state.moveLog[i].moveNum; break; }
+  for (var i = 0; i < all.length; i++) {
+    if (!all[i].wasOptimal) { turningPoint = all[i].moveNum; break; }
   }
-  return { accuracy: accuracy, turningPoint: turningPoint, judged: judged.length };
+  return { accuracy: accuracy, turningPoint: turningPoint, judged: all.length };
 };
-
+  
 // Honest, branched headline + the green/red/grey per-move strip. Never claims
 // "you were close to winning" on a board that wasn't winnable.
 var buildInsightPanel = function(playerWon, ins) {
@@ -1235,8 +1231,8 @@ var buildInsightPanel = function(playerWon, ins) {
   }
   var strip = '';
   state.moveLog.forEach(function(m){
-    var c = m.forced ? '#333' : (m.wasOptimal ? '#00F3FF' : '#FF003C');
-    var op = m.forced ? 0.5 : (m.wasOptimal ? 0.85 : 1);
+    var c = m.wasOptimal ? '#00F3FF' : '#FF003C';
+    var op = m.wasOptimal ? 0.85 : 1;
     strip += '<div style="flex:1;height:10px;border-radius:3px;background:' + c + ';opacity:' + op + ';"></div>';
   });
   return '<div class="cta-box" style="padding:12px;border-color:' + accColor + '55;background:rgba(255,255,255,0.02);">' +
